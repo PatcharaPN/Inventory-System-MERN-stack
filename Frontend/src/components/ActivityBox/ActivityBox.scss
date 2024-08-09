@@ -1,0 +1,18 @@
+.box-container {
+  margin: 10px;
+  border: solid 1px #72757e88;
+  width: 251px;
+  height: 154px;
+  border-radius: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  gap: 20px;
+}
+.type-box {
+  display: flex;
+  align-items: center;
+
+  gap: 5px;
+}
