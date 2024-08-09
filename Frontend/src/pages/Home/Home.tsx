@@ -2,12 +2,20 @@ import { Icon } from "@iconify/react/dist/iconify.js";
 import ActivityBox from "../../components/ActivityBox/ActivityBox";
 import Divider from "../../components/Divider/Divider";
 import "./Home.scss";
-import { RootState, useAppSelector } from "../../store/store";
+import { RootState, useAppDispatch, useAppSelector } from "../../store/store";
 import { useEffect } from "react";
+import { getAmountSummary } from "../../features/ProductSlice";
 const Home = () => {
   const currentUser = useAppSelector(
     (state: RootState) => state.auth.currentUser
   );
+  const stock = useAppSelector((state: RootState) => state.product.totalAmonst);
+  const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    dispatch(getAmountSummary());
+  }, [dispatch]);
+
   useEffect(() => {
     console.log("Current user:", currentUser);
   }, [currentUser]);
@@ -57,7 +65,7 @@ const Home = () => {
                 <Divider />
                 <div className="summary-total">
                   <p>Quantity in hand</p>
-                  <p>0</p>
+                  <p>{stock.toString()}</p>
                 </div>
                 <Divider />
                 <div className="summary-total">

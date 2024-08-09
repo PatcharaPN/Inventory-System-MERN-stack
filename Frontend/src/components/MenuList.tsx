@@ -31,6 +31,7 @@ export const menuItems: MenuItem[] = [
       {
         label: "Composite Items",
         onClick: () => console.log("Composite Items clicked"),
+        path: "/Composite",
       },
       {
         label: "Category",
@@ -40,6 +41,7 @@ export const menuItems: MenuItem[] = [
       {
         label: "Price Types",
         onClick: () => console.log("Price Types clicked"),
+        path: "/Price",
       },
     ],
   },
@@ -63,7 +65,11 @@ export const menuItems: MenuItem[] = [
   { icon: "basil:invoice-solid", label: "Invoices" },
   { icon: "icon-park-solid:bill", label: "Bills" },
   { icon: "mdi:verified-user", label: "User Permission" },
-  { icon: "material-symbols:history", label: "Login History" },
+  {
+    icon: "material-symbols:history",
+    label: "Login History",
+    path: "/History",
+  },
 ];
 
 type MenuListProps = {
@@ -85,45 +91,50 @@ const MenuList: React.FC<MenuListProps> = ({ isCollapsed }) => {
             key={index}
             className={`menu-item ${expandedMenus === index ? "expanded" : ""}`}
           >
-            <div
-              className="menu-item-content"
-              onClick={() =>
-                item.submenu ? toggleSubmenu(index) : item.onClick?.()
-              }
-            >
-              <div className="menu-items">
-                <Icon color="#7F5AF0" icon={item.icon} width={25} />
-                {!isCollapsed && (
-                  <Link className="menu-label" to={item.path || "#"}>
-                    {item.label}
-                  </Link>
+            <Link to={item.path || "#"}>
+              {" "}
+              <div
+                className="menu-item-content"
+                onClick={() =>
+                  item.submenu ? toggleSubmenu(index) : item.onClick?.()
+                }
+              >
+                <div className="menu-items">
+                  <Icon color="#7F5AF0" icon={item.icon} width={25} />
+                  {!isCollapsed && (
+                    <Link className="menu-label" to={item.path || "#"}>
+                      {item.label}
+                    </Link>
+                  )}
+                </div>
+                {item.submenu && (
+                  <Icon
+                    icon={
+                      expandedMenus === index
+                        ? "octicon:triangle-down-16"
+                        : "octicon:triangle-right-16"
+                    }
+                    color="#2DB67D"
+                    width={25}
+                    className="submenu-toggle"
+                  />
                 )}
               </div>
-              {item.submenu && (
-                <Icon
-                  icon={
-                    expandedMenus === index
-                      ? "octicon:triangle-down-16"
-                      : "octicon:triangle-right-16"
-                  }
-                  color="#2DB67D"
-                  width={25}
-                  className="submenu-toggle"
-                />
-              )}
-            </div>
+            </Link>
             {item.submenu && !isCollapsed && (
               <ul className="submenu">
                 {item.submenu.map((subItem, subIndex) => (
-                  <li
-                    key={subIndex}
-                    className="submenu-item"
-                    onClick={subItem.onClick}
-                  >
-                    <Link className="menu-label" to={subItem.path || "#"}>
-                      {subItem.label}
-                    </Link>
-                  </li>
+                  <Link to={subItem.path || "#"}>
+                    <li
+                      key={subIndex}
+                      className="submenu-item"
+                      onClick={subItem.onClick}
+                    >
+                      <Link className="menu-label" to={subItem.path || "#"}>
+                        {subItem.label}
+                      </Link>
+                    </li>
+                  </Link>
                 ))}
               </ul>
             )}

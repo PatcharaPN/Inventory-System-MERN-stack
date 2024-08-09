@@ -1,17 +1,34 @@
 import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
-import { deleteProduct, getProduct } from "../services/productService";
-import { Product } from "../types/interface";
+import {
+  deleteProduct,
+  getAmount,
+  getProduct,
+} from "../services/productService";
+import { getAllAmount, Product } from "../types/interface";
 
 export interface ProductState {
   products: Product[];
+  totalAmonst: getAllAmount[];
   loading: boolean;
   error: string | null;
 }
 const initialState: ProductState = {
   products: [],
   loading: false,
+  totalAmonst: [],
   error: null,
 };
+
+export const getAmountSummary = createAsyncThunk<getAllAmount[]>(
+  "products/getAmont",
+  async () => {
+    const data = await getAmount();
+    if (data.length > 0) {
+      return data[0].totalStock;
+    }
+    return 0;
+  }
+);
 
 export const getAllProducts = createAsyncThunk<Product[]>(
   "products/getAll",
@@ -90,6 +107,13 @@ const productSlice = createSlice({
       })
       .addCase(deleteOne.rejected, (state, action) => {
         state.error = action.error as string;
+      })
+      .addCase(getAmountSummary.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(getAmountSummary.fulfilled, (state, action) => {
+        state.loading = false;
+        state.totalAmonst = action.payload;
       });
   },
 });

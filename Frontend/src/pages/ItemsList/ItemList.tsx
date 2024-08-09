@@ -4,14 +4,11 @@ import { Icon } from "@iconify/react/dist/iconify.js";
 import Divider from "../../components/Divider/Divider";
 import { RootState, useAppDispatch, useAppSelector } from "../../store/store";
 import { deleteOne, getAllProducts } from "../../features/ProductSlice";
+import { motion } from "framer-motion";
 
 const ItemList = () => {
   const products = useAppSelector((state: RootState) => state.product.products);
   const dispatch = useAppDispatch();
-
-  useEffect(() => {
-    dispatch(getAllProducts()).unwrap();
-  }, [dispatch]);
 
   const handleDeleteProduct = async (productId: string) => {
     console.log("Deleting product with ID:", productId);
@@ -22,6 +19,9 @@ const ItemList = () => {
       console.error("Error deleting product", error);
     }
   };
+  useEffect(() => {
+    dispatch(getAllProducts()).unwrap();
+  }, [dispatch, handleDeleteProduct]);
 
   return (
     <div className="item-list-container-wrapper">
@@ -59,7 +59,7 @@ const ItemList = () => {
           </div>
         </div>
         <Divider />
-        <div>
+        <div className="item-list-wrapper">
           {products.length === 0 ? (
             <div className="empty-img">
               <img
@@ -107,7 +107,16 @@ const ItemList = () => {
               </thead>
               <tbody className="content-wrapper">
                 {products.map((product) => (
-                  <tr key={product._id}>
+                  <motion.tr
+                    whileHover={{
+                      scale: 1.005,
+                      transition: {
+                        duration: 0.3,
+                        ease: "easeInOut",
+                      },
+                    }}
+                    key={product._id}
+                  >
                     <td>
                       <input type="checkbox" />
                     </td>
@@ -147,7 +156,7 @@ const ItemList = () => {
                         </div>
                       </div>
                     </td>
-                  </tr>
+                  </motion.tr>
                 ))}
               </tbody>
             </table>

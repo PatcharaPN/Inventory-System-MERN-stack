@@ -1,5 +1,11 @@
 const Product = require("../models/productModel");
 
+// Function to generate a unique code with prefix
+function generateCode(prefix) {
+  const randomNumber = Math.floor(10000 + Math.random() * 90000);
+  return `${prefix}${randomNumber}`;
+}
+
 const getProduct = async (req, res) => {
   try {
     const products = await Product.find()
@@ -11,6 +17,7 @@ const getProduct = async (req, res) => {
     res.status(500).json({ message: "Server error" });
   }
 };
+
 const deleteProduct = async (req, res) => {
   try {
     const productId = req.params.id;
@@ -25,9 +32,11 @@ const deleteProduct = async (req, res) => {
     });
   }
 };
+
 const createProduct = async (req, res) => {
   try {
     const {
+      prefix,
       name,
       price,
       stock,
@@ -38,12 +47,17 @@ const createProduct = async (req, res) => {
       category,
     } = req.body;
     const productImage = req.file.path.replace("public/", "");
+
     if (!createdBy) {
-      res.status(500).json({
+      return res.status(500).json({
         message: "User id is required",
       });
     }
+
+    const productId = generateCode(req.body.prefix || "UNK");
+
     const newProduct = new Product({
+      productId,
       name,
       price,
       stock,
@@ -59,7 +73,7 @@ const createProduct = async (req, res) => {
     const populatedProduct = await Product.findById(newProduct._id)
       .populate("createdBy")
       .populate("category");
-    res.status(201).json(newProduct);
+    res.status(201).json(populatedProduct);
   } catch (error) {
     res.status(500).json({
       message: error.message,
@@ -67,4 +81,21 @@ const createProduct = async (req, res) => {
   }
 };
 
-module.exports = { createProduct, getProduct, deleteProduct };
+const getInhandAmount = async (req, res) => {
+  try {
+    const getInhand = await Product.aggregate([
+      {
+        $group: {
+          _id: null,
+          totalStock: { $sum: "$stock" },
+        },
+      },
+    ]);
+    res.status(200).json(getInhand);
+  } catch (error) {
+    console.error(error);
+    res.status(500).send("Server error");
+  }
+};
+
+module.exports = { createProduct, getProduct, deleteProduct, getInhandAmount };

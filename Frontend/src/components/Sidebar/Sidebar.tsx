@@ -32,7 +32,13 @@ const Sidebar: React.FC<SidebarProps> = ({ isCollapsed, toggleSidebar }) => {
               <Icon width={50} color="#2DB67D" icon="lucide:figma" />
             </div>
             {menuItems.map((item, index) => (
-              <Icon key={index} icon={item.icon} width={30} color="#7F5AF0" />
+              <Icon
+                key={index}
+                icon={item.icon}
+                width={30}
+                color="#7F5AF0"
+                className="menu-item-list"
+              />
             ))}
           </div>
         ) : (

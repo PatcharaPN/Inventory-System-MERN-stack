@@ -1,5 +1,4 @@
 const Category = require("../models/categoryModel");
-const Product = require("../models/productModel");
 const getCategoriesWithProductCount = async (req, res) => {
   try {
     const categories = await Category.aggregate([
@@ -34,6 +33,7 @@ const getCategoriesWithProductCount = async (req, res) => {
       .json({ message: "Failed to get categories with product count" });
   }
 };
+
 const getAllCategory = async (req, res) => {
   try {
     const categories = await Category.find().populate("createdBy");
