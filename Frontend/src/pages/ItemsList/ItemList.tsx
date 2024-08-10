@@ -5,6 +5,7 @@ import Divider from "../../components/Divider/Divider";
 import { RootState, useAppDispatch, useAppSelector } from "../../store/store";
 import { deleteOne, getAllProducts } from "../../features/ProductSlice";
 import { motion } from "framer-motion";
+import ContainerData from "../../components/ContainerData/ContainerData";
 
 const ItemList = () => {
   const products = useAppSelector((state: RootState) => state.product.products);
@@ -24,41 +25,9 @@ const ItemList = () => {
   }, [dispatch, handleDeleteProduct]);
 
   return (
-    <div className="item-list-container-wrapper">
-      <div className="header-menu">
-        <h1 className="header">Inventory</h1>
-        <div className="menu-button">
-          <button className="action-btn export">
-            <Icon width={20} icon="uil:export" />
-            Export
-          </button>
-          <button className="action-btn add">
-            <Icon width={30} icon="material-symbols:add" />
-            Add Item
-          </button>
-        </div>
-      </div>
-
-      <div className="item-list-container">
-        <div className="header-top">
-          <h3 className="text-header">All items</h3>
-          <div className="right-group-btn">
-            <div className="searchbar-wrapper">
-              <Icon className="search-icon" icon="iconamoon:search-bold" />
-              <input
-                placeholder="Search product"
-                className="searchbar"
-                type="text"
-              />
-            </div>
-
-            <div className="filter-btn">
-              <Icon icon="mage:filter-fill" />
-              Filter
-            </div>
-          </div>
-        </div>
-        <Divider />
+    <div>
+      <ContainerData pagename={"Item"} path="/Item/AddItem">
+        {" "}
         <div className="item-list-wrapper">
           {products.length === 0 ? (
             <div className="empty-img">
@@ -162,7 +131,7 @@ const ItemList = () => {
             </table>
           )}
         </div>
-      </div>
+      </ContainerData>
     </div>
   );
 };

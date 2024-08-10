@@ -20,6 +20,15 @@ const Store = () => {
   const store = useAppSelector((state: RootState) => state.store.store);
   const dispatch = useAppDispatch();
 
+  const [openModal, setOpenModal] = useState(false);
+
+  const handleOpenModal = () => {
+    setOpenModal(!openModal);
+  };
+  const handleCloseModal = () => {
+    setOpenModal(!openModal);
+  };
+
   useEffect(() => {
     dispatch(getAllStore());
   }, []);

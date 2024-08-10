@@ -1,0 +1,13 @@
+.input-text {
+  width: 100%;
+  max-width: 340px;
+  padding: 20px;
+  border-radius: 10px;
+  border: solid 1px #94a1b2;
+}
+.input {
+  display: grid;
+  grid-template-columns: 0.25fr 1fr;
+  align-items: center;
+  margin-bottom: 1rem;
+}
