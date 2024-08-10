@@ -27,6 +27,7 @@ const productSchema = new Schema({
   reserved: { type: Number, required: true },
   createdBy: { type: Schema.Types.ObjectId, ref: "User", required: true },
   category: { type: Schema.Types.ObjectId, ref: "Category", required: true },
+  store: { type: Schema.Types.ObjectId, ref: "Store", required: true },
   location: { type: String, required: true },
   productImage: { type: String, required: true },
 });

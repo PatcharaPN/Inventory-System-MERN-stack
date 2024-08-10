@@ -4,23 +4,32 @@ $secondary: #72757e;
 $tertiary: #2db67d;
 $paragraph: #94a1b2;
 $background: #16161a;
+
 .sidebar {
   position: sticky;
   width: 320px;
+  height: 100vh;
   transition: width 0.3s;
   background-color: $background;
   color: #fff;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
 }
 
 .sidebar.collapsed {
   width: 80px;
 }
+
 .logo {
   display: flex;
-  height: 200px;
+  height: 20%;
   align-items: center;
   justify-content: center;
+  flex-shrink: 0;
 }
+
 .sidebar-relative {
   position: absolute;
   width: 100%;
@@ -32,11 +41,21 @@ $background: #16161a;
   position: absolute;
   top: 50%;
   right: 0;
-  transform: translateY(50%);
+  transform: translateY(-50%);
   cursor: pointer;
 }
 
 .sidebar-content {
   padding: 10px;
   flex: 1;
+  overflow-y: auto;
+}
+
+.version {
+  color: #2db67d;
+  display: flex;
+  justify-content: start;
+  align-items: center;
+  padding: 10px;
+  flex-shrink: 0;
 }

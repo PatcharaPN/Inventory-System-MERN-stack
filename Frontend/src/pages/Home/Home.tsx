@@ -56,6 +56,18 @@ const Home = () => {
                   unit={"Qty"}
                   type={"Invoiced"}
                   color={"#F0CF5A"}
+                />{" "}
+                <ActivityBox
+                  total={0}
+                  unit={"Qty"}
+                  type={"Invoiced"}
+                  color={"#F0CF5A"}
+                />{" "}
+                <ActivityBox
+                  total={0}
+                  unit={"Qty"}
+                  type={"Invoiced"}
+                  color={"#F0CF5A"}
                 />
               </div>
             </div>

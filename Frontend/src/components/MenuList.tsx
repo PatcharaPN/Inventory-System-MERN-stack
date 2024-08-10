@@ -29,6 +29,11 @@ export const menuItems: MenuItem[] = [
         path: "/item",
       },
       {
+        label: "Store",
+        onClick: () => console.log("Price Types clicked"),
+        path: "/Store",
+      },
+      {
         label: "Composite Items",
         onClick: () => console.log("Composite Items clicked"),
         path: "/Composite",

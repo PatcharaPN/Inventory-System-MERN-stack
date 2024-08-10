@@ -6,6 +6,7 @@ import Category from "../pages/Category/Category";
 import PriceType from "../pages/PriceType/PriceType";
 import CompositeItem from "../pages/Composite/CompositeItem";
 import LoginHistory from "../pages/LoginHistory/LoginHistory";
+import Store from "../pages/Store/Store";
 
 const AppRoutes: React.FC = () => {
   return (
@@ -16,6 +17,7 @@ const AppRoutes: React.FC = () => {
       <Route path="/Price" element={<PriceType />} />
       <Route path="/Composite" element={<CompositeItem />} />
       <Route path="/History" element={<LoginHistory />} />
+      <Route path="/Store" element={<Store />} />
     </Routes>
   );
 };

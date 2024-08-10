@@ -29,7 +29,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isCollapsed, toggleSidebar }) => {
         {isCollapsed ? (
           <div className="sidebar-icon">
             <div className="logo">
-              <Icon width={50} color="#2DB67D" icon="lucide:figma" />
+              <img width={60} src="/public/Logo.svg" alt="" />
             </div>
             {menuItems.map((item, index) => (
               <Icon
@@ -44,11 +44,14 @@ const Sidebar: React.FC<SidebarProps> = ({ isCollapsed, toggleSidebar }) => {
         ) : (
           <div className="content">
             <div className="logo">
-              <Icon width={50} color="#2DB67D" icon="lucide:figma" />
+              <img width={130} src="/public/Logo.svg" alt="" />
             </div>
             <MenuList isCollapsed={false} />
           </div>
         )}
+      </div>
+      <div className="version">
+        <p>1.0.0-beta.1</p>
       </div>
     </div>
   );

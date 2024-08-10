@@ -1,18 +1,26 @@
 .box-container {
   margin: 10px;
   border: solid 1px #72757e88;
-  width: 251px;
-  height: 154px;
+  width: 100%;
+  max-width: 300px;
+  height: auto;
   border-radius: 10px;
   display: flex;
   justify-content: center;
   align-items: center;
   flex-direction: column;
   gap: 20px;
+  padding: 30px;
 }
+
 .type-box {
   display: flex;
   align-items: center;
-
   gap: 5px;
+}
+
+@media (max-width: 1080px) {
+  .box-container {
+    max-width: 300px;
+  }
 }

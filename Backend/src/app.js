@@ -7,6 +7,7 @@ const authRoutes = require("./routes/authRoutes");
 const categoryRoutes = require("./routes/categoryRoutes");
 const productRoutes = require("./routes/productRoutes");
 const priceRoutes = require("./routes/priceRoutes");
+const storeRoutes = require("./routes/storeRoutes");
 const app = express();
 
 // Connect to the database
@@ -29,6 +30,7 @@ app.use((req, res, next) => {
 
 app.use("/api", productRoutes);
 app.use("/api", categoryRoutes);
+app.use("/api", storeRoutes);
 app.use("/api", priceRoutes);
 app.use("/api", userRoutes);
 app.use("/api", authRoutes);

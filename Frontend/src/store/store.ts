@@ -4,6 +4,7 @@ import authReducer from "../features/AuthSlice";
 import productReducer from "../features/ProductSlice";
 import categoryReducer from "../features/CategorySlice";
 import priceReducer from "../features/PriceSlice";
+import storeReducer from "../features/StoreSlice";
 
 const store = configureStore({
   reducer: {
@@ -11,6 +12,7 @@ const store = configureStore({
     product: productReducer,
     category: categoryReducer,
     price: priceReducer,
+    store: storeReducer,
   },
 });
 export type RootState = ReturnType<typeof store.getState>;

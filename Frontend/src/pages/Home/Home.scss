@@ -24,7 +24,10 @@ body {
   padding: 20px;
 }
 .activity-wrapper {
+  width: fit-content;
   border: solid 1px $paragraph;
+  height: 100%;
+  max-height: 230px;
   padding: 10px;
   border-radius: 10px;
 }
@@ -34,6 +37,8 @@ body {
 }
 .activity {
   display: flex;
+  height: 80%;
+  max-height: 200px;
 }
 .wrapper-filter {
   display: flex;
@@ -65,8 +70,9 @@ body {
 .summary-inventory-box {
   margin-left: 10px;
   border: solid 1px #72757e88;
-  width: 400px;
-  height: 220px;
+  width: 100%;
+  max-width: 400px;
+  height: auto;
   border-radius: 10px;
   display: flex;
   padding: 10px;
