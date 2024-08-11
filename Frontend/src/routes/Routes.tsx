@@ -8,6 +8,7 @@ import CompositeItem from "../pages/Composite/CompositeItem";
 import LoginHistory from "../pages/LoginHistory/LoginHistory";
 import Store from "../pages/Store/Store";
 import AddItem from "../pages/ItemsList/AddItem/AddItem";
+import BrandPage from "../pages/Brand/Brand";
 
 const AppRoutes: React.FC = () => {
   return (
@@ -20,6 +21,7 @@ const AppRoutes: React.FC = () => {
       <Route path="/History" element={<LoginHistory />} />
       <Route path="/Store" element={<Store />} />
       <Route path="/Item/AddItem" element={<AddItem />} />
+      <Route path="/Brand" element={<BrandPage />} />
     </Routes>
   );
 };

@@ -3,7 +3,8 @@ import { Product, User } from "../types/interface";
 import { fetchStore } from "../services/ApiService";
 
 export interface Store {
-  name: string;
+  _id: string;
+  storename: string;
   location: string;
   owner: User;
   product: Product[];

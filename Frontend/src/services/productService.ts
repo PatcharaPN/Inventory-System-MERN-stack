@@ -2,7 +2,7 @@ import axios from "axios";
 
 const API_URL = "http://localhost:3000/api/products";
 const PRODUCT_GetAmont = "http://localhost:3000/api/getAmount/";
-
+const createBrand = "http://localhost:3000/api/brand";
 export const getAmount = async () => {
   try {
     const response = await axios.get(PRODUCT_GetAmont);
@@ -12,7 +12,43 @@ export const getAmount = async () => {
     throw Error("Error with getAmont service.");
   }
 };
+const api = axios.create({
+  baseURL: "/api",
+  headers: {
+    "Content-Type": "application/json",
+  },
+});
 
+export const addProduct = async (formData: FormData) => {
+  try {
+    const response = await api.post(
+      "http://localhost:3000/api/products/",
+      formData,
+      {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+        timeout: 10000,
+      }
+    );
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
+export const addBrand = async (formData: FormData) => {
+  try {
+    const response = await axios.post(`${createBrand}`, formData, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+      timeout: 10000,
+    });
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
 export const getProduct = async () => {
   try {
     const response = await axios.get(API_URL);

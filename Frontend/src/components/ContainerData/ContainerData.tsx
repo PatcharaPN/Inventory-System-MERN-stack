@@ -9,31 +9,23 @@ type ContainerProps = {
   children?: ReactNode;
   path?: string;
   headerVisible?: boolean;
+  onClickAdd?: () => void;
+  Canadd?: boolean;
 };
 
 const ContainerData: React.FC<ContainerProps> = ({
   path,
   children,
   pagename,
+  onClickAdd,
+  Canadd = false,
   headerVisible = true,
 }) => {
   return (
     <div className="item-list-container-wrapper">
       <div className="header-menu">
         <h1 className="header">{pagename}</h1>
-        <div className="menu-button">
-          <button className="action-btn export">
-            <Icon width={20} icon="uil:export" />
-            Export
-          </button>
-          <Link to={path || "#"}>
-            {" "}
-            <div className="action-btn add">
-              <Icon width={30} icon="material-symbols:add" />
-              Add Item
-            </div>
-          </Link>
-        </div>
+        <div className="menu-button"></div>
       </div>
 
       <div className="item-list-container">
@@ -42,6 +34,12 @@ const ContainerData: React.FC<ContainerProps> = ({
             <div className="header-top">
               <h3 className="text-header">All items</h3>
               <div className="right-group-btn">
+                {Canadd ? (
+                  <div className="add-btn-item" onClick={onClickAdd}>
+                    <Icon icon="material-symbols:add" />
+                    Add
+                  </div>
+                ) : null}
                 <div className="searchbar-wrapper">
                   <Icon className="search-icon" icon="iconamoon:search-bold" />
                   <input
@@ -50,7 +48,6 @@ const ContainerData: React.FC<ContainerProps> = ({
                     type="text"
                   />
                 </div>
-
                 <div className="filter-btn">
                   <Icon icon="mage:filter-fill" />
                   Filter

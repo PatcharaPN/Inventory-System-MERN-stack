@@ -12,7 +12,7 @@ const getProduct = async (req, res) => {
       .populate("category");
     res.status(200).json(products);
   } catch (error) {
-    console.error(error);
+    console.error("Error fetching products:", error);
     res.status(500).json({ message: "Server error" });
   }
 };
@@ -20,45 +20,52 @@ const getProduct = async (req, res) => {
 const deleteProduct = async (req, res) => {
   try {
     const productId = req.params.id;
-    const deleteproducts = await Product.findByIdAndDelete(productId).exec();
-    if (!deleteproducts) {
+    const deletedProduct = await Product.findByIdAndDelete(productId).exec();
+    if (!deletedProduct) {
       return res.status(404).json({ message: "Product not found" });
     }
-    res.status(200).json(deleteproducts);
+    res.status(200).json(deletedProduct);
   } catch (error) {
-    res.status(500).json({
-      message: "Error when deleting products",
-    });
+    console.error("Error deleting product:", error);
+    res.status(500).json({ message: "Error when deleting product" });
   }
 };
 
 const createProduct = async (req, res) => {
   try {
     const {
-      prefix,
+      brand,
+      dimension,
+      priceValue,
       name,
       price,
+      store,
       stock,
       available,
       reserved,
       location,
       createdBy,
       category,
+      prefix = "UNK",
     } = req.body;
-    const productImage = req.file.path.replace("public/", "");
 
     if (!createdBy) {
-      return res.status(500).json({
-        message: "User id is required",
-      });
+      return res.status(400).json({ message: "User ID is required" });
     }
 
-    const productId = generateCode(req.body.prefix || "UNK");
+    if (!req.file || !req.file.path) {
+      return res.status(400).json({ message: "Product image is required" });
+    }
+
+    const productImage = req.file.path.replace("public/", "");
+    const productId = generateCode(prefix);
 
     const newProduct = new Product({
-      productId,
+      prefix,
+      productID: productId,
       name,
       price,
+      store,
       stock,
       available,
       location,
@@ -66,17 +73,21 @@ const createProduct = async (req, res) => {
       category,
       createdBy,
       productImage,
+      brand,
+      dimension,
+      priceValue,
     });
 
     await newProduct.save();
+
     const populatedProduct = await Product.findById(newProduct._id)
       .populate("createdBy")
       .populate("category");
+
     res.status(201).json(populatedProduct);
   } catch (error) {
-    res.status(500).json({
-      message: error.message,
-    });
+    console.error("Error creating product:", error);
+    res.status(500).json({ message: error.message });
   }
 };
 
@@ -92,7 +103,7 @@ const getInhandAmount = async (req, res) => {
     ]);
     res.status(200).json(getInhand);
   } catch (error) {
-    console.error(error);
+    console.error("Error getting inhand amount:", error);
     res.status(500).send("Server error");
   }
 };

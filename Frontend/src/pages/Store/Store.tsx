@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from "react";
 import ContainerData from "../../components/ContainerData/ContainerData";
-import TableComponent from "../../components/TableContainer/TableContainer";
+
 import { RootState, useAppDispatch, useAppSelector } from "../../store/store";
 import { getAllStore } from "../../features/StoreSlice";
 import { Icon } from "@iconify/react/dist/iconify.js";
+import TableComponent from "../../components/TableContainer/TableContainer";
 
 const headers = [
   { label: <input type="checkbox" />, key: "checkbox" },

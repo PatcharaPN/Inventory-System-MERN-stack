@@ -3,6 +3,7 @@ import axios from "axios";
 const PriceAPI = "http://localhost:3000/api/price";
 const Loginhistory = "http://localhost:3000/api/login";
 const FetchStore = "http://localhost:3000/api/store";
+const FetchBrand = "http://localhost:3000/api/brand";
 
 export const fetchPrice = async () => {
   try {
@@ -10,6 +11,15 @@ export const fetchPrice = async () => {
     return response.data;
   } catch (error) {
     console.error("Error fetching price data:", error);
+    throw error;
+  }
+};
+export const fetchBrand = async () => {
+  try {
+    const response = await axios.get(`${FetchBrand}`);
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching brand data:", error);
     throw error;
   }
 };

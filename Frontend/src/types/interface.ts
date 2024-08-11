@@ -5,6 +5,10 @@ export interface Product {
   stock: number;
   available: number;
   reserved: number;
+  productID: string;
+  category: {
+    name: string;
+  };
   createdBy: {
     _id: string;
     username: string;
@@ -16,13 +20,7 @@ export interface Product {
     updatedAt: string;
     __v: number;
   };
-  category: {
-    productCount: number;
-    _id: string;
-    name: string;
-    createdBy: string;
-    __v: number;
-  };
+
   location: string;
   productImage: string;
 
@@ -32,7 +30,7 @@ export interface getAllAmount {
   totalStock: number;
 }
 export interface User {
-  name: string;
+  username: string;
   role: string;
 }
 export interface Categories {
