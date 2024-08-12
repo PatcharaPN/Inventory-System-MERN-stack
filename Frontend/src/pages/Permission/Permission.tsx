@@ -1,7 +1,6 @@
 import { Icon } from "@iconify/react/dist/iconify.js";
 import ContainerData from "../../components/ContainerData/ContainerData";
 import { RootState, useAppDispatch, useAppSelector } from "../../store/store";
-import SmallModal from "../../components/Modal/ModalSmall/SmallModal";
 import Modal from "../../components/Modal/Modal";
 import { useEffect, useState } from "react";
 import { getAllUsers } from "../../features/AuthSlice";

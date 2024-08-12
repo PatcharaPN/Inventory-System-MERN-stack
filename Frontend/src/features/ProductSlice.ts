@@ -16,16 +16,24 @@ export interface Brand {
   prefix: string;
   addedBy: User;
 }
+export interface LowStockItem {
+  _id: string;
+  lowStock: number;
+  total: number;
+}
 export interface ProductState {
   products: Product[];
   brand: Brand[];
+  lowStock: LowStockItem[];
   totalAmount: getAllAmount[];
   loading: boolean;
   error: string | null;
 }
+
 const initialState: ProductState = {
   products: [],
   brand: [],
+  lowStock: [],
   loading: false,
   totalAmount: [],
   error: null,
@@ -62,6 +70,18 @@ export const addItem = createAsyncThunk<Product, FormData>(
       return response;
     } catch (error: any) {
       return rejectWithValue(error.response?.data || error.message);
+    }
+  }
+);
+export const lowStock = createAsyncThunk<LowStockItem[]>(
+  "product/lowStock",
+  async () => {
+    try {
+      const response = await axios.get("http://localhost:3000/api/lowstock");
+      return response.data;
+    } catch (error) {
+      console.error("Error fetching low stock data:", error);
+      throw error;
     }
   }
 );
@@ -197,6 +217,15 @@ const productSlice = createSlice({
       .addCase(createBrand.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload as string;
+      })
+      .addCase(lowStock.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(lowStock.fulfilled, (state, action) => {
+        state.lowStock = action.payload;
+      })
+      .addCase(lowStock.rejected, (state, action) => {
+        state.error = action.error as string;
       });
   },
 });

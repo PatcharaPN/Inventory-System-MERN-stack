@@ -16,6 +16,33 @@ const getProduct = async (req, res) => {
     res.status(500).json({ message: "Server error" });
   }
 };
+const getLowStock = async (req, res) => {
+  try {
+    const products = await Product.aggregate([
+      {
+        $match: {
+          stock: { $lt: 10 },
+        },
+      },
+      {
+        $group: {
+          _id: null,
+          total: { $sum: 1 },
+        },
+      },
+      {
+        $project: {
+          _id: 0,
+          total: 1,
+        },
+      },
+    ]);
+    res.status(201).json(products);
+  } catch (error) {
+    console.error("Error fetching low stock products:", error);
+    res.status(500).json({ message: "Internal server error" });
+  }
+};
 
 const deleteProduct = async (req, res) => {
   try {
@@ -108,4 +135,10 @@ const getInhandAmount = async (req, res) => {
   }
 };
 
-module.exports = { createProduct, getProduct, deleteProduct, getInhandAmount };
+module.exports = {
+  getLowStock,
+  createProduct,
+  getProduct,
+  deleteProduct,
+  getInhandAmount,
+};

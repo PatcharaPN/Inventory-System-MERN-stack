@@ -4,6 +4,7 @@ const upload = require("../middlewares/multerMiddleware");
 
 const {
   getProduct,
+  getLowStock,
   createProduct,
   deleteProduct,
   getInhandAmount,
@@ -11,6 +12,7 @@ const {
 
 router.delete("/products/:id", deleteProduct);
 router.get("/products", getProduct);
+router.get("/lowstock", getLowStock);
 router.get("/getamount", getInhandAmount);
 router.post("/products", upload.single("productImage"), createProduct);
 

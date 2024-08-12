@@ -43,7 +43,7 @@ export const getHistory = createAsyncThunk(
   async (_, { rejectWithValue }) => {
     try {
       const response = await getLoginHistory();
-      return response.data; // Make sure this is the correct data structure
+      return response;
     } catch (error) {
       return rejectWithValue(
         (error as any).response?.data?.message ||

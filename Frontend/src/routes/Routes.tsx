@@ -7,7 +7,6 @@ import PriceType from "../pages/PriceType/PriceType";
 import CompositeItem from "../pages/Composite/CompositeItem";
 import LoginHistory from "../pages/LoginHistory/LoginHistory";
 import Store from "../pages/Store/Store";
-import AddItem from "../pages/ItemsList/AddItem/AddItem";
 import BrandPage from "../pages/Brand/Brand";
 import PermissionPage from "../pages/Permission/Permission";
 
