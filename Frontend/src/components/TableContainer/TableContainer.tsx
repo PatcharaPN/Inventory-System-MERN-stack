@@ -3,7 +3,7 @@ import React from "react";
 type TableComponentProps = {
   headers: { label: React.ReactNode; key: string }[];
   data: any[];
-  renderRow: (item: any) => React.ReactNode;
+  renderRow: (item: any, index: any) => React.ReactNode;
   onSelectAll?: (event: React.ChangeEvent<HTMLInputElement>) => void;
   selectAll?: boolean;
 };

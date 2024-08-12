@@ -46,6 +46,7 @@ const ItemList = () => {
   const [OpenModel, setOpenModel] = useState(false);
 
   useEffect(() => {
+    dispatch(getAllProducts());
     dispatch(getAllStore());
     dispatch(getPrice());
     dispatch(getBrand());
@@ -90,7 +91,7 @@ const ItemList = () => {
     }
 
     dispatch(addItem(formData));
-    navigate("/Item");
+    setOpenModel(false);
   };
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files) {
@@ -106,9 +107,7 @@ const ItemList = () => {
       console.error("Error deleting product", error);
     }
   };
-  useEffect(() => {
-    dispatch(getAllProducts()).unwrap();
-  }, [dispatch, handleDeleteProduct]);
+
   const handleCloseModal = () => {
     setOpenModel(false);
   };
@@ -170,6 +169,7 @@ const ItemList = () => {
               <tbody className="content-wrapper">
                 {products.map((product) => (
                   <motion.tr
+                    className="hover"
                     whileHover={{
                       scale: 1.005,
                       transition: {

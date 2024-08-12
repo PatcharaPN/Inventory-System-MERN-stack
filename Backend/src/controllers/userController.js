@@ -2,6 +2,16 @@ const bcrypt = require("bcryptjs");
 const User = require("../models/userModel");
 const asyncHandler = require("express-async-handler");
 
+const getAllUser = async (req, res) => {
+  try {
+    const getAllUsers = await User.find().exec();
+    res.status(200).json(getAllUsers);
+  } catch (error) {
+    res.status(500).json({
+      message: error.message,
+    });
+  }
+};
 const createUser = asyncHandler(async (req, res) => {
   const { username, email, password, name, role } = req.body;
 
@@ -35,4 +45,4 @@ const createUser = asyncHandler(async (req, res) => {
   }
 });
 
-module.exports = { createUser };
+module.exports = { createUser, getAllUser };

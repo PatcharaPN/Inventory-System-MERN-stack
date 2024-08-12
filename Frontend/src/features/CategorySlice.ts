@@ -1,6 +1,7 @@
 import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
 import { getAllCategory } from "../services/categoryService";
 import { Categories, CategorieState } from "../types/interface";
+import axios from "axios";
 
 export const getCategory = createAsyncThunk("category/getAll", async () => {
   try {
@@ -11,6 +12,23 @@ export const getCategory = createAsyncThunk("category/getAll", async () => {
   }
 });
 
+export const createCategory = createAsyncThunk(
+  "product/createBrand",
+  async (
+    categoryData: { name: string; description: string; createdBy: string },
+    thunkAPI
+  ) => {
+    try {
+      const response = await axios.post(
+        "http://localhost:3000/api/Categories",
+        categoryData
+      );
+      return response.data;
+    } catch (error: any) {
+      return thunkAPI.rejectWithValue(error.response.data || error.message);
+    }
+  }
+);
 const initialState: CategorieState = {
   category: [],
   loading: false,
@@ -35,6 +53,16 @@ const categorySlice = createSlice({
         state.loading = false;
       })
       .addCase(getCategory.rejected, (state, action) => {
+        state.error = action.error as string;
+      })
+      .addCase(createCategory.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(createCategory.fulfilled, (state, action) => {
+        state.category.push(action.payload);
+        state.loading = false;
+      })
+      .addCase(createCategory.rejected, (state, action) => {
         state.error = action.error as string;
       });
   },

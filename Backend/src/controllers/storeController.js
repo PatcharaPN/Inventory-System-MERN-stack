@@ -1,7 +1,7 @@
 const Store = require("../models/storeModel");
 const getAllStore = async (req, res) => {
   try {
-    const store = await Store.find().populate("owner").populate("products");
+    const store = await Store.find().populate("owner");
     res.status(200).json(store);
   } catch (error) {
     console.log("Failed to fetching Store", error);

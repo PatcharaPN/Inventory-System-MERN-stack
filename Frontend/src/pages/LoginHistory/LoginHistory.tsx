@@ -67,7 +67,7 @@ const LoginHistory = () => {
                         {loginDate.toLocaleTimeString()}
                       </td>
                       <td>{history.ipAddress}</td>
-                      <td>{history.user.name}</td>
+                      <td>{history.user.username}</td>
                       <td>{history.user.role}</td>
 
                       <td>

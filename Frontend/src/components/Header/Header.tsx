@@ -39,7 +39,21 @@ const Header = () => {
         </div>
         <div className={`popover-menu ${isPopover ? "show" : ""}`}>
           <ul>
-            <li onClick={logout}>Log out</li>
+            <li className="menu" onClick={logout}>
+              Log out
+            </li>{" "}
+            <li className="menu" onClick={logout}>
+              Log out
+            </li>{" "}
+            <li className="menu" onClick={logout}>
+              Log out
+            </li>{" "}
+            <li className="menu" onClick={logout}>
+              Log out
+            </li>{" "}
+            <li className="menu" onClick={logout}>
+              Log out
+            </li>
           </ul>
         </div>
         <div className="user-pic">

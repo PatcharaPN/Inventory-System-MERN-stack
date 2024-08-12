@@ -2,6 +2,11 @@
   position: relative;
   width: 100vw;
   height: 100vh;
+  overflow: hidden;
+  animation: slideIn 0.5s;
+}
+.auth-container.slide-out {
+  animation: slideOut 1s ease-out;
 }
 .header-text {
   font-size: 30px;
@@ -98,4 +103,32 @@
   display: flex;
   justify-content: center;
   align-items: center;
+}
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+@keyframes slideIn {
+  from {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+@keyframes slideOut {
+  from {
+    transform: translateX(0);
+    opacity: 1;
+  }
+  to {
+    transform: translateX(100%);
+    opacity: 0;
+  }
 }

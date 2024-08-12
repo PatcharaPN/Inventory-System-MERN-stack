@@ -74,11 +74,14 @@ export const createBrand = createAsyncThunk(
     try {
       const response = await axios.post(
         "http://localhost:3000/api/brand",
-        brandData
+        brandData,
+        { timeout: 10000 }
       );
       return response.data;
     } catch (error: any) {
-      return thunkAPI.rejectWithValue(error.response.data || error.message);
+      return thunkAPI.rejectWithValue(
+        error.response?.data || error.message || "Failed to create brand"
+      );
     }
   }
 );

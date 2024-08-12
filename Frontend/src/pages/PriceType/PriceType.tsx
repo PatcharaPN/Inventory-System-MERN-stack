@@ -1,24 +1,49 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import ContainerData from "../../components/ContainerData/ContainerData";
 import { Icon } from "@iconify/react/dist/iconify.js";
 import { RootState, useAppDispatch, useAppSelector } from "../../store/store";
 import { motion } from "framer-motion";
 import { useDispatch } from "react-redux";
-import { getPrice } from "../../features/PriceSlice";
+import { createPrice, getPrice } from "../../features/PriceSlice";
+import SmallModal from "../../components/Modal/ModalSmall/SmallModal";
+import CustomInput from "../../components/Input/Input";
 
 const PriceType = () => {
+  const currentUser = useAppSelector(
+    (state: RootState) => state.auth.currentUser
+  );
   const price = useAppSelector((state: RootState) => state.price.price);
+  const [openModal, setOpenModal] = useState(false);
   const dispatch = useAppDispatch();
-
-  console.log(price);
-
+  const [pricename, setPricename] = useState("");
+  const [priceUnit, setPriceUnit] = useState("");
+  const [description, setDescription] = useState("");
   useEffect(() => {
     dispatch(getPrice());
   }, []);
+  const handleOpenModal = () => {
+    setOpenModal(!openModal);
+  };
+  const handleCloseModal = () => {
+    setOpenModal(false);
+  };
+
+  const handldeSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+
+    const priceData = {
+      name: pricename,
+      unit: priceUnit,
+      description,
+      addedBy: currentUser._id,
+    };
+    dispatch(createPrice(priceData));
+    setOpenModal(false);
+  };
 
   return (
     <div>
-      <ContainerData pagename="Price List">
+      <ContainerData pagename="Price List" Canadd onClickAdd={handleOpenModal}>
         <div className="item-list-wrapper">
           {price.length === 0 ? (
             <div className="empty-img">
@@ -103,6 +128,42 @@ const PriceType = () => {
           )}
         </div>
       </ContainerData>
+      {openModal ? (
+        <SmallModal header={""} onClose={handleCloseModal}>
+          <div className="additem-content">
+            <div className="additem-topmenu">
+              <h2 style={{ fontWeight: "bold" }}>New Store</h2>
+            </div>
+            <div className="additem-form">
+              <form className="form-grid">
+                <CustomInput
+                  label={"Name*"}
+                  value={pricename}
+                  onChange={(e) => setPricename(e.target.value)}
+                />
+                <CustomInput
+                  label={"Unit*"}
+                  value={priceUnit}
+                  onChange={(e) => setPriceUnit(e.target.value)}
+                />{" "}
+                <CustomInput
+                  label={"Description*"}
+                  value={description}
+                  onChange={(e) => setDescription(e.target.value)}
+                />
+              </form>
+            </div>
+          </div>
+          <div className="btn-section">
+            <button className="btn" onClick={handldeSubmit}>
+              Save
+            </button>
+            <button className="btn white" onClick={handleCloseModal}>
+              Discard
+            </button>
+          </div>
+        </SmallModal>
+      ) : null}
     </div>
   );
 };

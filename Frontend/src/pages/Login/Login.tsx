@@ -1,7 +1,7 @@
+import React, { useState, useEffect } from "react";
+import "./Login.scss";
 import { Icon } from "@iconify/react/dist/iconify.js";
 import InputButton from "../../components/InputButton/InputButton";
-import "./Login.scss";
-import React, { useState } from "react";
 import { useAppDispatch } from "../../store/store";
 import { loginUser } from "../../features/AuthSlice";
 import { useNavigate } from "react-router-dom";
@@ -9,8 +9,15 @@ import { useNavigate } from "react-router-dom";
 const Login = () => {
   const [email, setemail] = useState("");
   const [password, setPassword] = useState("");
+  const [slideOut, setSlideOut] = useState(false);
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
+
+  useEffect(() => {
+    // Add a timeout to add slide-out class when the component unmounts
+    return () => setSlideOut(true);
+  }, []);
+
   const handleSubmit = (
     e: React.FormEvent<HTMLInputElement | HTMLFormElement>
   ) => {
@@ -24,7 +31,7 @@ const Login = () => {
   };
 
   return (
-    <div className="auth-container">
+    <div className={`auth-container ${slideOut ? "slide-out" : ""}`}>
       <div className="auth-form">
         <div className="form">
           <div className="auth-section">

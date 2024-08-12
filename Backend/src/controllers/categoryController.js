@@ -45,14 +45,14 @@ const getAllCategory = async (req, res) => {
 
 const createCategory = async (req, res) => {
   try {
-    const { name, createdBy } = req.body;
+    const { name, createdBy, description } = req.body;
     if (!createdBy) {
       return res.status(400).json({ message: "User id is required" });
     }
     if (!name) {
       return res.status(400).json({ message: "Category name is required" });
     }
-    let newCategory = new Category({ name, createdBy });
+    let newCategory = new Category({ name, createdBy, description });
     newCategory = await newCategory.save();
     newCategory = await Category.populate(newCategory, { path: "createdBy" });
     res.status(201).json(newCategory);

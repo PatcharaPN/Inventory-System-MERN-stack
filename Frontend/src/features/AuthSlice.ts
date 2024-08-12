@@ -1,10 +1,11 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-
 import { login } from "../services/authService";
 import { getLoginHistory } from "../services/ApiService";
 import { User } from "../types/interface";
+import axios from "axios";
 
 const storedUser = localStorage.getItem("currentUser");
+
 export interface History {
   userId: string;
   user: User;
@@ -12,21 +13,46 @@ export interface History {
   loginTime: Date;
   userAgent: string;
 }
+
 const initialState = {
   currentUser: storedUser ? JSON.parse(atob(storedUser)) : null,
   loginHistory: [] as History[],
+  users: [] as User[],
   isLoading: false,
   error: null as string | null,
 };
 
-export const getHistory = createAsyncThunk("auth/history", async () => {
-  try {
-    const result = await getLoginHistory();
-    return result;
-  } catch (error) {
-    console.log(error);
+export const getAllUsers = createAsyncThunk(
+  "auth/getUser",
+  async (_, { rejectWithValue }) => {
+    try {
+      const response = await axios.get("http://localhost:3000/api/users");
+      console.log(response.data);
+
+      return response.data;
+    } catch (error) {
+      return rejectWithValue(
+        (error as any).response?.data?.message || "Failed to fetch users"
+      );
+    }
   }
-});
+);
+
+export const getHistory = createAsyncThunk(
+  "auth/history",
+  async (_, { rejectWithValue }) => {
+    try {
+      const response = await getLoginHistory();
+      return response.data; // Make sure this is the correct data structure
+    } catch (error) {
+      return rejectWithValue(
+        (error as any).response?.data?.message ||
+          "Failed to fetch login history"
+      );
+    }
+  }
+);
+
 export const loginUser = createAsyncThunk(
   "auth/loginUser",
   async (
@@ -35,13 +61,12 @@ export const loginUser = createAsyncThunk(
   ) => {
     try {
       const user = await login(email, password);
-      console.log(user.token);
       localStorage.setItem("currentUser", btoa(JSON.stringify(user)));
       localStorage.setItem("accessToken", user.token);
       return user;
     } catch (error) {
       return rejectWithValue(
-        (error as any).response?.data?.message || "login failed"
+        (error as any).response?.data?.message || "Login failed"
       );
     }
   }
@@ -54,6 +79,8 @@ const authSlice = createSlice({
     logout: (state) => {
       state.currentUser = null;
       state.loginHistory = [];
+      localStorage.removeItem("currentUser");
+      localStorage.removeItem("accessToken");
     },
   },
   extraReducers: (builder) => {
@@ -67,6 +94,7 @@ const authSlice = createSlice({
       })
       .addCase(loginUser.rejected, (state, action) => {
         state.error = action.payload as string;
+        state.isLoading = false;
       })
       .addCase(getHistory.pending, (state) => {
         state.isLoading = true;
@@ -76,9 +104,22 @@ const authSlice = createSlice({
         state.loginHistory = action.payload;
       })
       .addCase(getHistory.rejected, (state, action) => {
-        state.error = action.error as string;
+        state.error = action.payload as string;
+        state.isLoading = false;
+      })
+      .addCase(getAllUsers.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(getAllUsers.fulfilled, (state, action) => {
+        state.users = action.payload;
+        state.isLoading = false;
+      })
+      .addCase(getAllUsers.rejected, (state, action) => {
+        state.error = action.payload as string;
+        state.isLoading = false;
       });
   },
 });
+
 export const { logout } = authSlice.actions;
 export default authSlice.reducer;

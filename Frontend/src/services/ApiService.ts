@@ -4,6 +4,7 @@ const PriceAPI = "http://localhost:3000/api/price";
 const Loginhistory = "http://localhost:3000/api/login";
 const FetchStore = "http://localhost:3000/api/store";
 const FetchBrand = "http://localhost:3000/api/brand";
+const CreateStore = "http://localhost:3000/api/Store";
 
 export const fetchPrice = async () => {
   try {
@@ -14,6 +15,20 @@ export const fetchPrice = async () => {
     throw error;
   }
 };
+export const createStore = async (storeData: {
+  name: string;
+  address: string;
+  addedBy: string;
+}) => {
+  try {
+    const response = await axios.post("/api/store", storeData);
+    return response.data;
+  } catch (error) {
+    console.error("Error creating store:", error);
+    throw error;
+  }
+};
+
 export const fetchBrand = async () => {
   try {
     const response = await axios.get(`${FetchBrand}`);

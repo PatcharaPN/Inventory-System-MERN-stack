@@ -74,7 +74,7 @@ export const menuItems: MenuItem[] = [
   { icon: "basil:bag-solid", label: "Purchases Orders" },
   { icon: "basil:invoice-solid", label: "Invoices" },
   { icon: "icon-park-solid:bill", label: "Bills" },
-  { icon: "mdi:verified-user", label: "User Permission" },
+  { icon: "mdi:verified-user", label: "User Permission", path: "/Permission" },
   {
     icon: "material-symbols:history",
     label: "Login History",
@@ -98,7 +98,7 @@ const MenuList: React.FC<MenuListProps> = ({ isCollapsed }) => {
       <ul>
         {menuItems.map((item, index) => (
           <li
-            key={index}
+            key={item.label}
             className={`menu-item ${expandedMenus === index ? "expanded" : ""}`}
           >
             <Link to={item.path || "#"}>
@@ -111,11 +111,7 @@ const MenuList: React.FC<MenuListProps> = ({ isCollapsed }) => {
               >
                 <div className="menu-items">
                   <Icon color="#7F5AF0" icon={item.icon} width={25} />
-                  {!isCollapsed && (
-                    <Link className="menu-label" to={item.path || "#"}>
-                      {item.label}
-                    </Link>
-                  )}
+                  {item.label}
                 </div>
                 {item.submenu && (
                   <Icon
@@ -133,16 +129,14 @@ const MenuList: React.FC<MenuListProps> = ({ isCollapsed }) => {
             </Link>
             {item.submenu && !isCollapsed && (
               <ul className="submenu">
-                {item.submenu.map((subItem, subIndex) => (
+                {item.submenu.map((subItem) => (
                   <Link to={subItem.path || "#"}>
                     <li
-                      key={subIndex}
+                      key={subItem.label}
                       className="submenu-item"
                       onClick={subItem.onClick}
                     >
-                      <Link className="menu-label" to={subItem.path || "#"}>
-                        {subItem.label}
-                      </Link>
+                      {subItem.label}
                     </li>
                   </Link>
                 ))}

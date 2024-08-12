@@ -7,6 +7,7 @@ $headerColor: #16161a;
 }
 .user-container {
   display: flex;
+  width: 100%;
   height: 100%;
   gap: 20px;
   justify-content: end;
@@ -28,8 +29,6 @@ $headerColor: #16161a;
 .popover-user {
   display: flex;
   gap: 5px;
-}
-.popover-menu {
 }
 
 .head-container {
@@ -60,6 +59,7 @@ $headerColor: #16161a;
       visibility: hidden;
       transform: translateY(-10px);
       transition: opacity 0.3s ease, transform 0.3s ease;
+      z-index: 100;
 
       ul {
         list-style: none;
@@ -73,6 +73,10 @@ $headerColor: #16161a;
         }
         li:hover {
           background-color: #7f5af0;
+        }
+        .menu:hover {
+          background-color: #7f5af0;
+          transition: 0.2s;
         }
       }
 

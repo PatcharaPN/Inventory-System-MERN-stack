@@ -6,6 +6,7 @@ import { motion } from "framer-motion";
 import { createBrand, getBrand } from "../../features/ProductSlice";
 import Modal from "../../components/Modal/Modal";
 import CustomInput from "../../components/Input/Input";
+import SmallModal from "../../components/Modal/ModalSmall/SmallModal";
 
 const BrandPage = () => {
   const brand = useAppSelector((state: RootState) => state.product.brand);
@@ -48,7 +49,7 @@ const BrandPage = () => {
       onClickAdd={handleOpenModal}
     >
       {isModalOpen && (
-        <Modal header={"Add Brand"} onClose={handleClosenModal}>
+        <SmallModal header={"Add Brand"} onClose={handleClosenModal}>
           <div className="modal-wrapper">
             <form onSubmit={handleSubmit}>
               <CustomInput
@@ -75,7 +76,7 @@ const BrandPage = () => {
               </div>
             </form>
           </div>
-        </Modal>
+        </SmallModal>
       )}
       <div className="item-list-wrapper">
         {brand.length === 0 ? (
@@ -131,8 +132,7 @@ const BrandPage = () => {
                   <td>{brand.name}</td>
                   <td>{brand.prefix}</td>
                   <td></td>
-                  <td>{brand.addedBy.username}</td>
-
+                  <td>{brand.addedBy?.username}</td>
                   <td>
                     <div className="button-section-wrapper">
                       <div className="button-section">
