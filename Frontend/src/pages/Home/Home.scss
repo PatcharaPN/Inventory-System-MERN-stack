@@ -26,6 +26,7 @@ body {
 .dashboard-menu {
   @extend .dashboard;
   display: flex;
+  margin-bottom: 15px;
 }
 .activity-wrapper {
   width: fit-content;

@@ -6,7 +6,7 @@ type ActivityProps = {
   total: any;
   unit: string;
   type: string;
-  showType?: "warning" | "success" | "info" | "error";
+  showType?: "warning" | "success" | "info" | "error" | "incoming";
   text?: string;
   color: "#5A8DF0" | "#FE4646" | "#2DB67D" | "#F0CF5A";
 };
@@ -14,10 +14,13 @@ type ActivityProps = {
 const TYPE_STYLES: Record<string, { color: string; icon: string }> = {
   warning: { color: "#FFA361", icon: "ph:warning-bold" },
   success: { color: "#2DB67D", icon: "gg:check-o" },
-  info: { color: "#5A8DF0", icon: "iconamoon:info-circle-duotone" },
-  error: { color: "#FE4646", icon: "iconamoon:error-circle-duotone" },
+  info: { color: "#5A8DF0", icon: "icon-park-outline:ad-product" },
+  error: { color: "#FE4646", icon: "ri:bill-line" },
+  incoming: {
+    color: "#7F5AF0",
+    icon: "ic:outline-upcoming",
+  },
 };
-
 const ActivityBox: React.FC<ActivityProps> = ({
   color,
   total,
@@ -26,7 +29,6 @@ const ActivityBox: React.FC<ActivityProps> = ({
   text,
   showType,
 }) => {
-  // Determine styles based on showType
   const { color: typeColor, icon } = showType
     ? TYPE_STYLES[showType]
     : { color, icon: "lets-icons:check-ring" };

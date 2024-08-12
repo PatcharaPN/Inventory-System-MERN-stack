@@ -44,6 +44,30 @@ const Home = () => {
           showType="success"
           color={"#FE4646"}
           text="Complete"
+        />{" "}
+        <ActivityBox
+          total={0}
+          unit={"Qty"}
+          type={""}
+          showType="info"
+          color={"#FE4646"}
+          text="Products sale"
+        />{" "}
+        <ActivityBox
+          total={0}
+          unit={"Task"}
+          type={""}
+          showType="error"
+          color={"#FE4646"}
+          text="Pending Requests"
+        />{" "}
+        <ActivityBox
+          total={0}
+          unit={"Qty"}
+          type={""}
+          showType="incoming"
+          color={"#FE4646"}
+          text="Incoming Invoices"
         />
       </div>
     </div>
