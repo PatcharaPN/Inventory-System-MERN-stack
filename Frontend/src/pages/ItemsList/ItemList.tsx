@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import "./ItemList.scss";
 import { Icon } from "@iconify/react/dist/iconify.js";
-import Divider from "../../components/Divider/Divider";
+
 import { RootState, useAppDispatch, useAppSelector } from "../../store/store";
 import {
   addItem,
@@ -16,8 +16,13 @@ import SelectInput from "../../components/Input/Selecter/Selecter";
 import { getCategory } from "../../features/CategorySlice";
 import { getPrice } from "../../features/PriceSlice";
 import { getAllStore } from "../../features/StoreSlice";
-import { useNavigate } from "react-router-dom";
+
 import Modal from "../../components/Modal/Modal";
+import TextAreaInput from "../../components/Input/Description/Description";
+import CurrencyInput from "../../components/Input/CurrencyInput/CurrencyInput";
+import Longinput from "../../components/Input/LongInput/Longinput";
+import TrippleInput from "../../components/Input/TrippleInput/TrippleInput";
+import MeasurementInput from "../../components/Input/TrippleInput/TrippleInput";
 
 const ItemList = () => {
   const products = useAppSelector((state: RootState) => state.product.products);
@@ -25,7 +30,7 @@ const ItemList = () => {
   const currentUser = useAppSelector(
     (state: RootState) => state.auth.currentUser
   );
-  const navigate = useNavigate();
+
   const store = useAppSelector((state: RootState) => state.store.store);
   const price = useAppSelector((state: RootState) => state.price.price);
   const category = useAppSelector(
@@ -44,13 +49,15 @@ const ItemList = () => {
   const [priceValue, setPriceValue] = useState("");
   const [image, setImage] = useState<File | null>(null);
   const [OpenModel, setOpenModel] = useState(false);
-
+  const [currency, setCurrency] = useState("");
+  const currentcy = useAppSelector((state: RootState) => state.price.price);
   useEffect(() => {
     dispatch(getAllProducts());
     dispatch(getAllStore());
     dispatch(getPrice());
     dispatch(getBrand());
     dispatch(getCategory());
+    dispatch(getPrice());
   }, [dispatch]);
 
   const priceOptions = price.map((price) => ({
@@ -61,7 +68,10 @@ const ItemList = () => {
     value: cat._id || "",
     label: cat.name || "Unnamed Price",
   }));
-
+  const currencyOption = currentcy.map((cur) => ({
+    value: cur._id || "",
+    label: cur.unit || "Unnamed Price",
+  }));
   const brandOptions = brand.map((brand) => ({
     value: brand._id || "",
     label: brand.name || "Unnamed Brand",
@@ -72,7 +82,7 @@ const ItemList = () => {
     label: store.storename || "Unnamed Store",
   }));
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     console.log(selectedStore);
     const formData = new FormData();
@@ -90,8 +100,14 @@ const ItemList = () => {
       formData.append("productImage", image);
     }
 
-    dispatch(addItem(formData));
-    setOpenModel(false);
+    try {
+      const result = await dispatch(addItem(formData)).unwrap();
+      console.log(result);
+      setOpenModel(false);
+      dispatch(getAllProducts());
+    } catch (error) {
+      console.error("Error adding item", error);
+    }
   };
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files) {
@@ -114,6 +130,7 @@ const ItemList = () => {
   const handleOpenModal = () => {
     setOpenModel(!OpenModel);
   };
+  const handleSelect = () => {};
   return (
     <div>
       <ContainerData
@@ -240,80 +257,172 @@ const ItemList = () => {
             </div>
             <div className="additem-form">
               <form className="additems-grid">
-                <div className="additems-input">
-                  <CustomInput
-                    required={true}
-                    label={"Name*"}
-                    value={itemName}
-                    placeholder="Name"
-                    onChange={(e) => setItemName(e.target.value)}
-                  />
-                  <CustomInput
-                    required={false}
-                    label={"SKU"}
-                    value={sku}
-                    placeholder="Enter SKU"
-                    onChange={(e) => setSku(e.target.value)}
-                  />
-                  <SelectInput
-                    label={"Unit"}
-                    options={[]}
-                    value={unit}
-                    onChange={(e) => setUnit(e.target.value)}
-                    placeholder={"Select unit"}
-                  />
-                  <SelectInput
-                    label={"Brand"}
-                    options={brandOptions}
-                    value={selectedBrand}
-                    onChange={(e) => setSelectedBrand(e.target.value)}
-                    placeholder={"Select Brand"}
-                  />
-                  <SelectInput
-                    label={"Store"}
-                    options={storeOptions}
-                    value={selectedStore}
-                    onChange={(e) => setSelectedStore(e.target.value)}
-                    placeholder={"Select Store"}
-                  />
-                  <CustomInput
-                    required={false}
-                    label={"Dimension"}
-                    value={dimension}
-                    placeholder="Enter dimension"
-                    onChange={(e) => setDimension(e.target.value)}
-                  />
-                  <CustomInput
-                    required={false}
-                    label={"Price"}
-                    value={priceValue}
-                    placeholder="Enter price"
-                    onChange={(e) => setPriceValue(e.target.value)}
-                  />
-                  <SelectInput
-                    label={"Price Type"}
-                    options={priceOptions}
-                    value={priceType}
-                    onChange={(e) => setPriceType(e.target.value)}
-                    placeholder={"Price Type"}
-                  />{" "}
-                  <SelectInput
-                    label={"Category"}
-                    options={categoryOption}
-                    value={categoryType}
-                    onChange={(e) => setcategoryType(e.target.value)}
-                    placeholder={"Price Type"}
-                  />
-                </div>
-                <div className="image-upload-section">
-                  <div className="image-input-border">
-                    <div className="upload-text">
-                      <p>Drag image here</p> <br /> <p>or</p> <br />{" "}
-                      <p style={{ color: "#7F5AF0" }}>Browse Image</p>
+                <div className="create-iten-input">
+                  <div className="option-1">
+                    <div className="name-unit">
+                      <div className="input-name-section">
+                        <CustomInput
+                          required={true}
+                          label={"Name*"}
+                          value={itemName}
+                          placeholder="Name"
+                          onChange={(e) => setItemName(e.target.value)}
+                        />{" "}
+                        <SelectInput
+                          label={"Unit"}
+                          options={[]}
+                          value={unit}
+                          onChange={(e) => setUnit(e.target.value)}
+                          placeholder={"Select unit"}
+                        />{" "}
+                        <CustomInput
+                          required={false}
+                          label={"SKU"}
+                          value={sku}
+                          placeholder="Enter SKU"
+                          onChange={(e) => setSku(e.target.value)}
+                        />{" "}
+                        <SelectInput
+                          label={"Store"}
+                          options={storeOptions}
+                          value={selectedStore}
+                          onChange={(e) => setSelectedStore(e.target.value)}
+                          placeholder={"Select Store"}
+                        />
+                      </div>
+                      <div className="image-upload-section">
+                        <div className="image-input-border">
+                          <div className="upload-text">
+                            <p>Drag image here</p> <br /> <p>or</p> <br />{" "}
+                            <p style={{ color: "#7F5AF0" }}>Browse Image</p>
+                          </div>
+                          <input type="file" onChange={handleFileChange} />
+                        </div>
+                        <p style={{ fontWeight: "500" }}>File (Max: 15MB)</p>
+                      </div>
                     </div>
-                    <input type="file" onChange={handleFileChange} />
+                    <div className="product-information">
+                      <Longinput
+                        currency={""}
+                        amount={""}
+                        label={"Weight"}
+                        value={""}
+                        options={[]}
+                        onChange={function (
+                          e: React.ChangeEvent<HTMLSelectElement>
+                        ): void {
+                          throw new Error("Function not implemented.");
+                        }}
+                        onChangeText={function (
+                          e: React.ChangeEvent<HTMLInputElement>
+                        ): void {
+                          throw new Error("Function not implemented.");
+                        }}
+                      />
+                      <MeasurementInput label="Dimention" />{" "}
+                      <CustomInput
+                        required={false}
+                        label={"Manufacturer"}
+                        value={dimension}
+                        placeholder="Enter dimension"
+                        onChange={(e) => setDimension(e.target.value)}
+                      />
+                      <SelectInput
+                        label={"Brand"}
+                        options={brandOptions}
+                        value={selectedBrand}
+                        onChange={(e) => setSelectedBrand(e.target.value)}
+                        placeholder={"Select Brand"}
+                      />{" "}
+                      <SelectInput
+                        label={"Category"}
+                        options={categoryOption}
+                        value={categoryType}
+                        onChange={(e) => setcategoryType(e.target.value)}
+                        placeholder={"Price Type"}
+                      />{" "}
+                      <CustomInput
+                        required={false}
+                        label={"Manufacturer"}
+                        value={dimension}
+                        placeholder="Enter dimension"
+                        onChange={(e) => setDimension(e.target.value)}
+                      />
+                    </div>
                   </div>
-                  <p>File: {image?.name}</p>
+                  <div className="sale-information">
+                    <div className="sale-section">
+                      <div className="target-selctor">
+                        <input type="checkbox" name="Sale" id="" />
+                        <p>Saler information</p>
+                      </div>
+                      <CurrencyInput
+                        currency={currentcy[0]?.unit || ""}
+                        options={currencyOption}
+                        value={currency}
+                        amount={priceValue}
+                        label={"Sales Price"}
+                        onChange={(e) => {
+                          setCurrency(e.target.value);
+                        }}
+                        onChangeText={(e) => {
+                          setPriceValue(e.target.value);
+                        }}
+                      />
+                      <TextAreaInput label={"Description"} value={""} />
+                      <SelectInput
+                        label={"Taxes"}
+                        options={categoryOption}
+                        value={categoryType}
+                        onChange={(e) => setcategoryType(e.target.value)}
+                        placeholder={"Price Type"}
+                      />
+                    </div>
+                    <div className="sale-section">
+                      <div className="target-selctor">
+                        <input type="checkbox" name="Sale" id="" />
+                        <p>Buyer information</p>
+                      </div>
+                      <CurrencyInput
+                        currency={currentcy[0]?.unit || ""}
+                        options={currencyOption}
+                        value={currency}
+                        amount={priceValue}
+                        label={"Sales Price"}
+                        onChange={(e) => {
+                          setCurrency(e.target.value);
+                        }}
+                        onChangeText={(e) => {
+                          setPriceValue(e.target.value);
+                        }}
+                      />
+                      <TextAreaInput label={"Description"} value={""} />
+                      <SelectInput
+                        label={"Taxes"}
+                        options={categoryOption}
+                        value={categoryType}
+                        onChange={(e) => setcategoryType(e.target.value)}
+                        placeholder={"Price Type"}
+                      />
+                    </div>
+                  </div>
+                  {/*<Longinput
+                      currency={""}
+                      amount={""}
+                      label={""}
+                      value={""}
+                      options={[]}
+                      onChange={function (
+                        e: React.ChangeEvent<HTMLSelectElement>
+                      ): void {
+                        throw new Error("Function not implemented.");
+                      }}
+                      onChangeText={function (
+                        e: React.ChangeEvent<HTMLInputElement>
+                      ): void {
+                        throw new Error("Function not implemented.");
+                      }}
+                    />*/}
                 </div>
               </form>
             </div>

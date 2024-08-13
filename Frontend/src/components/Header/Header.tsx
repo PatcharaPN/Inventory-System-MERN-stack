@@ -31,7 +31,9 @@ const Header = () => {
         <Icon color="#7F5AF0" icon="uil:setting" width={30} />
         <Icon color="#7F5AF0" icon="material-symbols:mail" width={30} />
         <div className="popover-user">
-          <p>{currentUser.username}</p>
+          <p>
+            {currentUser.username} ({currentUser.role})
+          </p>
           <Icon
             onClick={() => setPopover(!isPopover)}
             icon="iconamoon:arrow-down-2-duotone"
@@ -40,23 +42,22 @@ const Header = () => {
         <div className={`popover-menu ${isPopover ? "show" : ""}`}>
           <ul>
             <li className="menu" onClick={logout}>
-              Log out
-            </li>{" "}
+              Edit Profile
+            </li>
             <li className="menu" onClick={logout}>
-              Log out
-            </li>{" "}
-            <li className="menu" onClick={logout}>
-              Log out
-            </li>{" "}
-            <li className="menu" onClick={logout}>
-              Log out
-            </li>{" "}
+              Setting
+            </li>
             <li className="menu" onClick={logout}>
               Log out
             </li>
           </ul>
         </div>
-        <div className="user-pic">
+        <div
+          className="user-pic"
+          style={{
+            border: currentUser.role === "admin" ? "solid 2px #00FF95" : "none",
+          }}
+        >
           {getUserInitials(currentUser.username).toUpperCase()}
         </div>
       </div>

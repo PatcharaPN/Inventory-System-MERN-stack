@@ -9,9 +9,9 @@ const productRoutes = require("./routes/productRoutes");
 const priceRoutes = require("./routes/priceRoutes");
 const storeRoutes = require("./routes/storeRoutes");
 const brandRoutes = require("./routes/brandRoutes");
+const compositeItemRoutes = require("./routes/compositeItemRoutes");
 const app = express();
 
-// Connect to the database
 connectDB();
 
 app.use(helmet({ crossOriginResourcePolicy: false }));
@@ -20,7 +20,6 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use("/uploads", express.static("public/uploads"));
 
-// headers middleware
 app.use((req, res, next) => {
   res.setHeader("Cross-Origin-Resource-Policy", "cross-origin");
   res.setHeader("Cache-Control", "no-store");
@@ -36,6 +35,7 @@ app.use("/api", storeRoutes);
 app.use("/api", priceRoutes);
 app.use("/api", userRoutes);
 app.use("/api", authRoutes);
+app.use("/api", compositeItemRoutes);
 
 app.use((err, req, res, next) => {
   console.error(err.stack);

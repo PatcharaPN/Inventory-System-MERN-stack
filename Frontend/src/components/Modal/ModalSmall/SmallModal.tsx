@@ -1,14 +1,13 @@
 import React, { ReactNode } from "react";
 import "./SmallModal.scss";
-import { Icon } from "@iconify/react/dist/iconify.js";
 
 type ModalProps = {
   header: string;
-  children: ReactNode;
+  children?: ReactNode;
   onClose: () => void;
 };
 
-const SmallModal: React.FC<ModalProps> = ({ children, onClose, header }) => {
+const SmallModal: React.FC<ModalProps> = ({ children, header }) => {
   return (
     <div className="modal-backdrop">
       <div className="modal-content-small">

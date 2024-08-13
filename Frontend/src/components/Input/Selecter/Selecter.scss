@@ -2,19 +2,21 @@
   display: grid;
   grid-template-columns: 0.25fr 1fr;
   align-items: center;
-  margin-bottom: 1rem;
   position: relative;
+  p {
+    font-weight: 500;
+  }
 
   .input-select {
-    padding: 20px;
+    padding: 12px;
     width: 100%;
-    max-width: 140px;
+    max-width: 260px;
     background-color: transparent;
     background: url("../../../../public/assets/Selecter.svg") no-repeat right
       8px center;
     font-size: 14px;
     border: solid 1px #94a1b2;
-    border-radius: 4px;
+    border-radius: 8px;
     outline: none;
     appearance: none;
     transition: border-color 0.3s ease;

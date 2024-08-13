@@ -38,7 +38,7 @@
 }
 .additems-grid {
   display: grid;
-  grid-template-columns: 2fr 1fr;
+  grid-template-columns: 1fr;
   flex-direction: column;
 }
 .additems-input {
@@ -46,23 +46,7 @@
   grid-template-columns: 1fr 1fr;
   gap: 20px;
 }
-.image-input-border {
-  margin-left: 40px;
-  width: 100%;
-  max-width: 350px;
-  height: 100%;
-  max-height: 350px;
-  background: url("../../../../public/assets/Upload.svg") no-repeat center
-    center;
-  background-size: 10%;
-  border-radius: 10px;
-  border: dotted 2px black;
-  position: relative;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-}
+
 .upload-text {
   position: absolute;
   margin-top: 150px;

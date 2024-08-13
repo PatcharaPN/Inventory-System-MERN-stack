@@ -14,7 +14,6 @@ const Login = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    // Add a timeout to add slide-out class when the component unmounts
     return () => setSlideOut(true);
   }, []);
 

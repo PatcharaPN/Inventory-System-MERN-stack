@@ -1,6 +1,6 @@
 import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
 import { getAllCategory } from "../services/categoryService";
-import { Categories, CategorieState } from "../types/interface";
+import { Categories, Product, User } from "../types/interface";
 import axios from "axios";
 
 export const getCategory = createAsyncThunk("category/getAll", async () => {
@@ -29,11 +29,42 @@ export const createCategory = createAsyncThunk(
     }
   }
 );
+interface Composite {
+  _id: string;
+  name: string;
+  addedBy: User;
+  createdAt: Date;
+  products: Product[];
+  productCount: number;
+}
+
+interface CategorieState {
+  category: Categories[];
+  composite: Composite[];
+  loading: boolean;
+  error: string | null;
+}
+
 const initialState: CategorieState = {
   category: [],
+  composite: [],
   loading: false,
   error: null,
 };
+
+export const getTotalComposite = createAsyncThunk(
+  "composite/getTotal",
+  async () => {
+    try {
+      const result = await axios.get(
+        "http://localhost:3000/api/composite/findtotal"
+      );
+      return result.data;
+    } catch (error) {
+      console.error(error);
+    }
+  }
+);
 
 const categorySlice = createSlice({
   name: "category",
@@ -63,6 +94,15 @@ const categorySlice = createSlice({
         state.loading = false;
       })
       .addCase(createCategory.rejected, (state, action) => {
+        state.error = action.error as string;
+      })
+      .addCase(getTotalComposite.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(getTotalComposite.fulfilled, (state, action) => {
+        state.composite = action.payload;
+      })
+      .addCase(getTotalComposite.rejected, (state, action) => {
         state.error = action.error as string;
       });
   },

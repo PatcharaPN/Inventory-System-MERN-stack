@@ -45,9 +45,3 @@ export interface Categories {
     role: string;
   };
 }
-
-export interface CategorieState {
-  category: Categories[];
-  loading: boolean;
-  error: string | null;
-}
