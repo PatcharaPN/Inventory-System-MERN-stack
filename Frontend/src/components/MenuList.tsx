@@ -18,7 +18,12 @@ export type MenuItem = {
 };
 
 export const menuItems: MenuItem[] = [
-  { icon: "material-symbols:dashboard", label: "Dashboard", path: "/" },
+  { icon: "material-symbols:dashboard", label: "Selling Interface", path: "/" },
+  {
+    icon: "material-symbols:dashboard",
+    label: "Dashboard",
+    path: "/Dashboard",
+  },
   {
     icon: "material-symbols-light:inventory-2-rounded",
     label: "Inventory",

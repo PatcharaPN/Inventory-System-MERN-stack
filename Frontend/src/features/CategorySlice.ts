@@ -38,7 +38,7 @@ interface Composite {
   productCount: number;
 }
 
-interface CategorieState {
+export interface CategorieState {
   category: Categories[];
   composite: Composite[];
   loading: boolean;

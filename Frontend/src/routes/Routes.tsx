@@ -9,11 +9,13 @@ import LoginHistory from "../pages/LoginHistory/LoginHistory";
 import Store from "../pages/Store/Store";
 import BrandPage from "../pages/Brand/Brand";
 import PermissionPage from "../pages/Permission/Permission";
+import Sellpage from "../pages/SellPage/Sellpage";
 
 const AppRoutes: React.FC = () => {
   return (
     <Routes>
-      <Route path="/" element={<Home />} />
+      <Route path="/" element={<Sellpage />} />
+      <Route path="/Dashboard" element={<Home />} />
       <Route path="/item" element={<ItemList />} />
       <Route path="/Category" element={<Category />} />
       <Route path="/Price" element={<PriceType />} />

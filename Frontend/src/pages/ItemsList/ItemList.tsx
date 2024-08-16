@@ -60,10 +60,6 @@ const ItemList = () => {
     dispatch(getPrice());
   }, [dispatch]);
 
-  const priceOptions = price.map((price) => ({
-    value: price._id || "",
-    label: price.unit || "Unnamed Price",
-  }));
   const categoryOption = category.map((cat) => ({
     value: cat._id || "",
     label: cat.name || "Unnamed Price",
@@ -130,7 +126,6 @@ const ItemList = () => {
   const handleOpenModal = () => {
     setOpenModel(!OpenModel);
   };
-  const handleSelect = () => {};
   return (
     <div>
       <ContainerData
@@ -139,7 +134,6 @@ const ItemList = () => {
         Canadd={true}
         onClickAdd={handleOpenModal}
       >
-        {" "}
         <div className="item-list-wrapper">
           {products.length === 0 ? (
             <div className="empty-img">
@@ -308,14 +302,10 @@ const ItemList = () => {
                         label={"Weight"}
                         value={""}
                         options={[]}
-                        onChange={function (
-                          e: React.ChangeEvent<HTMLSelectElement>
-                        ): void {
+                        onChange={function (): void {
                           throw new Error("Function not implemented.");
                         }}
-                        onChangeText={function (
-                          e: React.ChangeEvent<HTMLInputElement>
-                        ): void {
+                        onChangeText={function (): void {
                           throw new Error("Function not implemented.");
                         }}
                       />

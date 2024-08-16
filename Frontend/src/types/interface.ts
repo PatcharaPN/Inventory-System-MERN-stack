@@ -6,6 +6,7 @@ export interface Product {
   available: number;
   reserved: number;
   productID: string;
+  quantity: number;
   category: {
     name: string;
   };
