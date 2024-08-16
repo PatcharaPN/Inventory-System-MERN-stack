@@ -9,7 +9,7 @@ const productRoutes = require("./routes/productRoutes");
 const priceRoutes = require("./routes/priceRoutes");
 const storeRoutes = require("./routes/storeRoutes");
 const brandRoutes = require("./routes/brandRoutes");
-const unitRoutes = require("./routes/unitRoutes ");
+const unitRoutes = require("./routes/unitRoutes");
 const compositeItemRoutes = require("./routes/compositeItemRoutes");
 const app = express();
 
