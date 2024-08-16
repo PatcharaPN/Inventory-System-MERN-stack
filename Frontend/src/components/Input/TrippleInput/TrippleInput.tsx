@@ -3,6 +3,7 @@ import "./TrippleInput.scss";
 
 interface MeasurementInputProps {
   label?: string;
+  option?: { value?: string; label?: string[] };
   onChange?: (values: {
     value1: string;
     value2: string;

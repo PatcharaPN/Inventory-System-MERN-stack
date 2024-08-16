@@ -61,18 +61,21 @@ const deleteProduct = async (req, res) => {
 const createProduct = async (req, res) => {
   try {
     const {
-      brand,
-      dimension,
-      priceValue,
       name,
-      price,
+      unit,
+      sku,
       store,
+      weight,
+      weightunit,
+      manufacturer,
+      category,
+      brand,
+      price,
       stock,
       available,
       reserved,
-      location,
       createdBy,
-      category,
+
       prefix = "UNK",
     } = req.body;
 
@@ -91,18 +94,20 @@ const createProduct = async (req, res) => {
       prefix,
       productID: productId,
       name,
-      price,
+      unit,
+      sku,
       store,
+      weight,
+      weightunit,
+      manufacturer,
+      category,
+      brand,
+      price,
       stock,
       available,
-      location,
       reserved,
-      category,
       createdBy,
       productImage,
-      brand,
-      dimension,
-      priceValue,
     });
 
     await newProduct.save();

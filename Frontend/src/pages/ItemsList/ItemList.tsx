@@ -23,8 +23,20 @@ import CurrencyInput from "../../components/Input/CurrencyInput/CurrencyInput";
 import Longinput from "../../components/Input/LongInput/Longinput";
 import TrippleInput from "../../components/Input/TrippleInput/TrippleInput";
 import MeasurementInput from "../../components/Input/TrippleInput/TrippleInput";
+import { getAllUnit } from "../../features/UnitSlice";
+interface WeightUnit {
+  value: string;
+  label: string;
+}
 
+export const allweightUnit: WeightUnit[] = [
+  { value: "kg", label: "kg" },
+  { value: "g", label: "g" },
+  { value: "lb", label: "lb" },
+  { value: "oz", label: "oz" },
+];
 const ItemList = () => {
+  const unitType = useAppSelector((state: RootState) => state.unit.unit);
   const products = useAppSelector((state: RootState) => state.product.products);
   const dispatch = useAppDispatch();
   const currentUser = useAppSelector(
@@ -42,10 +54,13 @@ const ItemList = () => {
   const [sku, setSku] = useState("");
   const [unit, setUnit] = useState("");
   const [selectedStore, setSelectedStore] = useState("");
-  const [priceType, setPriceType] = useState("");
+  const [weightUnit, setweightUnit] = useState("");
+  const [weight, setweight] = useState("");
+  const [stock, setStock] = useState("");
+  const [available, setAvailable] = useState("");
   const [categoryType, setcategoryType] = useState("");
+  const [manufacturer, setmanufacturer] = useState("");
   const [selectedBrand, setSelectedBrand] = useState("");
-  const [dimension, setDimension] = useState("");
   const [priceValue, setPriceValue] = useState("");
   const [image, setImage] = useState<File | null>(null);
   const [OpenModel, setOpenModel] = useState(false);
@@ -53,17 +68,34 @@ const ItemList = () => {
   const currentcy = useAppSelector((state: RootState) => state.price.price);
   useEffect(() => {
     dispatch(getAllProducts());
+  }, [dispatch]);
+  useEffect(() => {
+    dispatch(getAllUnit());
+  }, [dispatch]);
+  useEffect(() => {
     dispatch(getAllStore());
-    dispatch(getPrice());
-    dispatch(getBrand());
-    dispatch(getCategory());
+  }, [dispatch]);
+  useEffect(() => {
     dispatch(getPrice());
   }, [dispatch]);
-
+  useEffect(() => {
+    dispatch(getBrand());
+  }, [dispatch]);
+  useEffect(() => {
+    dispatch(getCategory());
+  }, [dispatch]);
+  useEffect(() => {
+    dispatch(getPrice());
+  }, [dispatch]);
+  const unitOption = unitType.map((unit) => ({
+    value: unit.unit || "",
+    label: unit.unit || "Unnamed Price",
+  }));
   const categoryOption = category.map((cat) => ({
     value: cat._id || "",
     label: cat.name || "Unnamed Price",
   }));
+
   const currencyOption = currentcy.map((cur) => ({
     value: cur._id || "",
     label: cur.unit || "Unnamed Price",
@@ -83,14 +115,18 @@ const ItemList = () => {
     console.log(selectedStore);
     const formData = new FormData();
     formData.append("name", itemName);
-    formData.append("sku", sku);
     formData.append("unit", unit);
+    formData.append("sku", sku);
     formData.append("store", selectedStore);
-    formData.append("priceType", priceType);
-    formData.append("brand", selectedBrand);
+    formData.append("weight", weight);
+    formData.append("weightunit", weightUnit);
     formData.append("category", categoryType);
-    formData.append("dimension", dimension);
-    formData.append("priceValue", priceValue);
+    formData.append("brand", selectedBrand);
+    formData.append("price", priceValue);
+    formData.append("priceunit", currency);
+    formData.append("manufacturer", manufacturer);
+    formData.append("stock", stock);
+    formData.append("available", available);
     formData.append("createdBy", currentUser._id);
     if (image) {
       formData.append("productImage", image);
@@ -264,7 +300,7 @@ const ItemList = () => {
                         />{" "}
                         <SelectInput
                           label={"Unit"}
-                          options={[]}
+                          options={unitOption}
                           value={unit}
                           onChange={(e) => setUnit(e.target.value)}
                           placeholder={"Select unit"}
@@ -298,24 +334,20 @@ const ItemList = () => {
                     <div className="product-information">
                       <Longinput
                         currency={""}
-                        amount={""}
+                        amount={weight}
                         label={"Weight"}
-                        value={""}
-                        options={[]}
-                        onChange={function (): void {
-                          throw new Error("Function not implemented.");
-                        }}
-                        onChangeText={function (): void {
-                          throw new Error("Function not implemented.");
-                        }}
+                        value={weightUnit}
+                        options={allweightUnit}
+                        onChange={(e) => setweightUnit(e.target.value)}
+                        onChangeText={(e) => setweight(e.target.value)}
                       />
-                      <MeasurementInput label="Dimention" />{" "}
+
                       <CustomInput
                         required={false}
                         label={"Manufacturer"}
-                        value={dimension}
-                        placeholder="Enter dimension"
-                        onChange={(e) => setDimension(e.target.value)}
+                        value={manufacturer}
+                        placeholder="Enter manufacturer name"
+                        onChange={(e) => setmanufacturer(e.target.value)}
                       />
                       <SelectInput
                         label={"Brand"}
@@ -323,20 +355,22 @@ const ItemList = () => {
                         value={selectedBrand}
                         onChange={(e) => setSelectedBrand(e.target.value)}
                         placeholder={"Select Brand"}
-                      />{" "}
+                      />
                       <SelectInput
                         label={"Category"}
                         options={categoryOption}
                         value={categoryType}
                         onChange={(e) => setcategoryType(e.target.value)}
                         placeholder={"Price Type"}
-                      />{" "}
+                      />
                       <CustomInput
                         required={false}
-                        label={"Manufacturer"}
-                        value={dimension}
-                        placeholder="Enter dimension"
-                        onChange={(e) => setDimension(e.target.value)}
+                        label={"Stock amount"}
+                        value={stock}
+                        placeholder="Enter Stock amount Default is 1"
+                        onChange={(e) => {
+                          setStock(e.target.value);
+                        }}
                       />
                     </div>
                   </div>
@@ -346,19 +380,7 @@ const ItemList = () => {
                         <input type="checkbox" name="Sale" id="" />
                         <p>Saler information</p>
                       </div>
-                      <CurrencyInput
-                        currency={currentcy[0]?.unit || ""}
-                        options={currencyOption}
-                        value={currency}
-                        amount={priceValue}
-                        label={"Sales Price"}
-                        onChange={(e) => {
-                          setCurrency(e.target.value);
-                        }}
-                        onChangeText={(e) => {
-                          setPriceValue(e.target.value);
-                        }}
-                      />
+
                       <TextAreaInput label={"Description"} value={""} />
                       <SelectInput
                         label={"Taxes"}

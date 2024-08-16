@@ -20,18 +20,18 @@ const CurrencyInput: React.FC<CurrencyInputProps> = ({
   onChangeText,
 }) => {
   return (
-    <div className="label">
+    <div className="currency-input-wrapper">
       <p>{label}</p>
       <div className="currency-input">
-        <select className="currency" value={value} onChange={onChange}>
-          {options.map((options, index) => (
-            <option key={index} value={options.value}>
-              {options.label}
+        <select className="currency-select" value={value} onChange={onChange}>
+          {options.map((option, index) => (
+            <option key={index} value={option.value}>
+              {option.label}
             </option>
           ))}
         </select>
         <input
-          className="currentcy-input-text"
+          className="currency-input-text"
           type="text"
           placeholder="Amount"
           value={amount}

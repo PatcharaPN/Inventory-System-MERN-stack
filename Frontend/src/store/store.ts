@@ -2,6 +2,7 @@ import { combineReducers, configureStore } from "@reduxjs/toolkit";
 import { TypedUseSelectorHook, useDispatch, useSelector } from "react-redux";
 import authReducer from "../features/AuthSlice";
 import productReducer from "../features/ProductSlice";
+import unitReducer from "../features/UnitSlice";
 import categoryReducer from "../features/CategorySlice";
 import priceReducer from "../features/PriceSlice";
 import storeReducer from "../features/StoreSlice";
@@ -15,6 +16,7 @@ const store = configureStore({
     price: priceReducer,
     store: storeReducer,
     cart: cartReducer,
+    unit: unitReducer,
   },
 });
 export type RootState = ReturnType<typeof store.getState>;

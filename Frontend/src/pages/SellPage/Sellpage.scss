@@ -24,6 +24,10 @@
     font-weight: bold;
   }
 }
+.product-list {
+  display: flex;
+  gap: 20px;
+}
 .filter-product {
   display: flex;
   gap: 10px;
