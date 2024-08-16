@@ -7,7 +7,9 @@ export interface Product {
   reserved: number;
   productID: string;
   quantity: number;
+  priceunit: string;
   category: {
+    _id: string;
     name: string;
   };
   createdBy: {

@@ -97,7 +97,7 @@ const ItemList = () => {
   }));
 
   const currencyOption = currentcy.map((cur) => ({
-    value: cur._id || "",
+    value: cur.unit || "",
     label: cur.unit || "Unnamed Price",
   }));
   const brandOptions = brand.map((brand) => ({

@@ -6,6 +6,7 @@ import { getCategory } from "../../features/CategorySlice";
 import { addtocart, deleteItem } from "../../features/CartSlice";
 import { Product } from "../../types/interface";
 import { Icon } from "@iconify/react/dist/iconify.js";
+import { motion } from "framer-motion";
 
 const Sellpage = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -15,7 +16,8 @@ const Sellpage = () => {
   );
   const products = useAppSelector((state: RootState) => state.product.products);
   const cart = useAppSelector((state: RootState) => state.cart.items);
-
+  const [filterproduct, setFilterproduct] = useState<Product[]>([]);
+  const [expandId, setExpandId] = useState<string | null>(null);
   useEffect(() => {
     dispatch(getAllProducts());
   }, [dispatch]);
@@ -34,7 +36,16 @@ const Sellpage = () => {
   const tax = useMemo(() => {
     return subtotal * 0.1;
   }, [subtotal]);
-
+  const filteredproduct = (productCat: string) => {
+    if (productCat === "") {
+      setFilterproduct(products);
+    } else {
+      const filterproduct = products.filter((product) => {
+        return product.category._id === productCat;
+      });
+      setFilterproduct(filterproduct);
+    }
+  };
   const totalAmount = useMemo(() => {
     return subtotal + tax;
   }, [subtotal, tax]);
@@ -47,21 +58,46 @@ const Sellpage = () => {
     dispatch(deleteItem(products));
     setIsOpen(false);
   };
-  const toggleMenu = () => {
-    setIsOpen(!isOpen);
+  const toggleMenu = (productID: any) => {
+    setExpandId((prevID) => (prevID === productID ? null : productID));
   };
   return (
     <div className="item-list-container-wrapper">
       <div className="sell-page">
         <div className="item-section">
           <div className="filter-product">
-            {categories.map((item) => (
-              <div className="product-filter-btn">{item.name}</div>
-            ))}
+            <div className="filter-menu">
+              {categories.map((item) => (
+                <div
+                  className="product-filter-btn"
+                  onClick={() => filteredproduct(item._id)}
+                >
+                  {item.name}
+                </div>
+              ))}
+            </div>
+            <div className="searchbar-wrapper">
+              <Icon className="search-icon" icon="iconamoon:search-bold" />
+              <input
+                placeholder="Search product"
+                className="searchbar"
+                type="text"
+              />
+            </div>
           </div>
           <div className="product-list">
-            {products.map((products) => (
-              <div
+            {filterproduct.map((products) => (
+              <motion.div
+                whileHover={{
+                  scale: 1.1,
+                  boxShadow: "0px 8px 16px rgba(0, 0, 0, 0.3)",
+                }}
+                transition={{
+                  duration: 0.3,
+                  type: "spring",
+                  stiffness: 300,
+                  damping: 20,
+                }}
                 className="product-card"
                 onClick={() => handleAddtoCart(products)}
               >
@@ -71,8 +107,11 @@ const Sellpage = () => {
                   src={`http://localhost:3000/${products.productImage}`}
                 ></img>
                 <div>{products.name}</div>
-                <div>{products.price}</div>
-              </div>
+                <div className="price-section">
+                  <div>{products.price}</div>
+                  <div>{products.priceunit}</div>
+                </div>
+              </motion.div>
             ))}
           </div>
         </div>
@@ -86,11 +125,16 @@ const Sellpage = () => {
                 {cart.map((item) => (
                   <div
                     key={item.product.productID}
-                    className={`group-remove ${isOpen ? "open" : ""}`}
+                    className={`group-remove ${
+                      expandId === item.product._id ? "open" : ""
+                    }`}
                   >
                     <div className="item-wrapper">
                       <div className="product-items-list">
-                        <div className="arrow-wrapper" onClick={toggleMenu}>
+                        <div
+                          className="arrow-wrapper"
+                          onClick={() => toggleMenu(item.product._id)}
+                        >
                           <Icon
                             className="arrow-icon"
                             icon="iconamoon:arrow-right-2-bold"
@@ -98,23 +142,31 @@ const Sellpage = () => {
                         </div>
 
                         <div className="item-list-menu">
-                          <p>{item.product.name}</p>
-                          <p>Quantity: {item.quantity}</p>{" "}
-                          <button
-                            className="remove-btn"
-                            onClick={() => handleDeleteItem(item.product)}
-                          >
-                            <Icon width={20} icon="pajamas:remove-all" />
-                          </button>{" "}
+                          <div className="text-wrapper">
+                            <p>{item.product.name}</p>
+                            <p>Quantity: {item.quantity}</p>{" "}
+                          </div>
+                          <div>
+                            <button
+                              className="remove-btn"
+                              onClick={() => handleDeleteItem(item.product)}
+                            >
+                              <Icon width={20} icon="pajamas:remove-all" />
+                            </button>
+                          </div>
                         </div>
                       </div>
                     </div>{" "}
                     <div className="items-span">
-                      {isOpen ? (
+                      {expandId === item.product._id ? (
                         <div className="quantity-edit">
                           <div className="group-menu">
                             <p>Quantity</p>
-                            <input className="input-quantity" type="text" />
+                            <input
+                              className="input-quantity"
+                              placeholder={item.quantity.toString()}
+                              type="text"
+                            />
                           </div>
                           <div className="group-menu">
                             <p>Discount (%)</p>
