@@ -38,6 +38,7 @@
 .filter-menu {
   display: flex;
   align-content: center;
+  gap: 10px;
 }
 .product-filter-btn {
   display: flex;
@@ -86,6 +87,10 @@
   transition: 0.5s;
   z-index: 1;
   overflow: hidden;
+}
+.top-product-card {
+  display: flex;
+  justify-content: space-between;
 }
 .pay-btn::before {
   content: " ";
@@ -174,6 +179,7 @@
   transition: max-height 0.3s ease-out, padding 0.3s ease-out;
   max-height: 60px;
   overflow: hidden;
+  margin-bottom: 10px;
 }
 .items-span {
   display: flex;
@@ -229,4 +235,74 @@
 }
 .items-container {
   height: 100%;
+}
+.grid-layout-payment {
+  display: grid;
+  grid-template-columns: 300px auto;
+}
+
+.grid-layout-payment {
+  height: 100%;
+}
+.flex-header {
+  display: flex;
+  justify-content: space-between;
+}
+.item-list-cart {
+  display: flex;
+  justify-content: space-between;
+
+  align-items: center;
+}
+.list-item {
+  height: 650px;
+  padding: 20px;
+  border: 1px solid #94a1b2;
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  justify-content: space-between;
+}
+.empry-cart {
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.total-amount {
+  display: flex;
+  justify-content: space-between;
+}
+.payment-method {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.payment-method-item {
+  display: grid;
+  width: 300px;
+  grid-template-columns: 60px auto;
+  padding: 10px;
+  margin: 10px;
+  border-radius: 10px;
+  box-shadow: rgba(50, 50, 93, 0.25) 0px 10px 12px -2px,
+    rgba(0, 0, 0, 0.3) 0px 3px 7px -3px;
+}
+.payment-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.payment-name {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 500;
+}
+.flex-product-info {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
 }

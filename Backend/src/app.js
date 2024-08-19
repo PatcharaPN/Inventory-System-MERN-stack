@@ -10,6 +10,7 @@ const priceRoutes = require("./routes/priceRoutes");
 const storeRoutes = require("./routes/storeRoutes");
 const brandRoutes = require("./routes/brandRoutes");
 const unitRoutes = require("./routes/unitRoutes");
+const paymentRoutes = require("./routes/paymentroutes");
 const compositeItemRoutes = require("./routes/compositeItemRoutes");
 const app = express();
 
@@ -38,6 +39,7 @@ app.use("/api", userRoutes);
 app.use("/api", authRoutes);
 app.use("/api", compositeItemRoutes);
 app.use("/api", unitRoutes);
+app.use("/api", paymentRoutes);
 
 app.use((err, req, res, next) => {
   console.error(err.stack);

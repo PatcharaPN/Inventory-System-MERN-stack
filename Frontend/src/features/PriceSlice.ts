@@ -48,6 +48,7 @@ export const createPrice = createAsyncThunk<
     return thunkAPI.rejectWithValue(error.response?.data || error.message);
   }
 });
+
 const priceSlice = createSlice({
   name: "price",
   initialState,

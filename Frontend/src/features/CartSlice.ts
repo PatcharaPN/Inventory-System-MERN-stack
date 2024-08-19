@@ -8,12 +8,14 @@ interface CartItem {
 export interface CartState {
   items: CartItem[];
   loading: boolean;
+  outOfStock: boolean;
   error: string | null;
 }
 const initialState: CartState = {
   items: [],
   loading: false,
   error: null,
+  outOfStock: false,
 };
 
 const cartSlice = createSlice({
@@ -22,24 +24,37 @@ const cartSlice = createSlice({
   reducers: {
     addtocart: (state, action: PayloadAction<Product>) => {
       const existingItem = state.items.find(
-        (item) => item.product.name === action.payload.name
+        (item) => item.product._id === action.payload._id
       );
       if (existingItem) {
-        existingItem.quantity += 1;
+        if (existingItem.quantity >= action.payload.available) {
+          state.outOfStock = true;
+        } else {
+          existingItem.quantity += 1;
+          state.outOfStock = false;
+        }
       } else {
-        state.items.push({
-          product: action.payload,
-          quantity: 1,
-        });
+        if (action.payload.available > 0) {
+          state.items.push({
+            product: action.payload,
+            quantity: 1,
+          });
+          state.outOfStock = false;
+        } else {
+          state.outOfStock = true;
+        }
       }
     },
-
+    clearCart: (state) => {
+      state.items = [];
+    },
     deleteItem: (state, action: PayloadAction<Product>) => {
       const existingItem = state.items.find(
         (item) => item.product.name === action.payload.name
       );
       if (existingItem) {
         existingItem.quantity -= 1;
+        state.outOfStock = false;
         if (existingItem.quantity <= 0) {
           state.items = state.items.filter(
             (item) => item.product.name !== action.payload.name
@@ -50,5 +65,5 @@ const cartSlice = createSlice({
   },
 });
 
-export const { addtocart, deleteItem } = cartSlice.actions;
+export const { clearCart, addtocart, deleteItem } = cartSlice.actions;
 export default cartSlice.reducer;

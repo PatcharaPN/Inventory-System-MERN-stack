@@ -10,6 +10,8 @@ import Store from "../pages/Store/Store";
 import BrandPage from "../pages/Brand/Brand";
 import PermissionPage from "../pages/Permission/Permission";
 import Sellpage from "../pages/SellPage/Sellpage";
+import PaymentPage from "../pages/PaymentPage/PaymentPage";
+import PaymentHistory from "../pages/PaymentHistory/PaymentHistory";
 
 const AppRoutes: React.FC = () => {
   return (
@@ -24,6 +26,8 @@ const AppRoutes: React.FC = () => {
       <Route path="/Store" element={<Store />} />
       <Route path="/Brand" element={<BrandPage />} />
       <Route path="/Permission" element={<PermissionPage />} />
+      <Route path="/Payment" element={<PaymentPage />} />
+      <Route path="/PaymentHistory" element={<PaymentHistory />} />
     </Routes>
   );
 };

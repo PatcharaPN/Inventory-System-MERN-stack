@@ -57,7 +57,7 @@ const ItemList = () => {
   const [weightUnit, setweightUnit] = useState("");
   const [weight, setweight] = useState("");
   const [stock, setStock] = useState("");
-  const [available, setAvailable] = useState("");
+  const [available, setAvailable] = useState("1");
   const [categoryType, setcategoryType] = useState("");
   const [manufacturer, setmanufacturer] = useState("");
   const [selectedBrand, setSelectedBrand] = useState("");

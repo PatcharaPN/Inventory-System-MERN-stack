@@ -76,7 +76,11 @@ export const menuItems: MenuItem[] = [
       },
     ],
   },
-  { icon: "basil:bag-solid", label: "Purchases Orders" },
+  {
+    icon: "basil:bag-solid",
+    label: "Purchases History",
+    path: "/PaymentHistory",
+  },
   { icon: "basil:invoice-solid", label: "Invoices" },
   { icon: "icon-park-solid:bill", label: "Bills" },
   { icon: "mdi:verified-user", label: "User Permission", path: "/Permission" },
