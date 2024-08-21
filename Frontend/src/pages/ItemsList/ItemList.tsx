@@ -54,6 +54,8 @@ const ItemList = () => {
   const [weightUnit, setweightUnit] = useState("");
   const [weight, setweight] = useState("");
   const [stock, setStock] = useState("");
+  const [currentpage, setCurrentpage] = useState<number>(1);
+  const itemPerPage = 7;
   const [available, setAvailable] = useState("1");
   const [categoryType, setcategoryType] = useState("");
   const [manufacturer, setmanufacturer] = useState("");
@@ -63,6 +65,13 @@ const ItemList = () => {
   const [OpenModel, setOpenModel] = useState(false);
   const [currency, setCurrency] = useState("");
   const currentcy = useAppSelector((state: RootState) => state.price.price);
+
+  const indexOfLastPayment = currentpage * itemPerPage;
+  const indexOfFirstPayment = indexOfLastPayment - itemPerPage;
+  const currentProducts = products.slice(
+    indexOfFirstPayment,
+    indexOfLastPayment
+  );
   useEffect(() => {
     dispatch(getAllProducts());
   }, [dispatch]);
@@ -159,6 +168,12 @@ const ItemList = () => {
   const handleOpenModal = () => {
     setOpenModel(!OpenModel);
   };
+  const totalPages = Math.ceil(products.length / itemPerPage);
+  const handlePageChange = (page: number) => {
+    if (page > 0 && page <= totalPages) {
+      setCurrentpage(page);
+    }
+  };
   return (
     <div>
       <ContainerData
@@ -167,105 +182,128 @@ const ItemList = () => {
         Canadd={true}
         onClickAdd={handleOpenModal}
       >
-        <div className="item-list-wrapper">
-          {products.length === 0 ? (
-            <div className="empty-img">
-              <img
-                width={450}
-                src="/assets/undraw_empty_re_opql.svg"
-                alt="Empty"
-              />
-              <h2 className="text-alert">
-                Oops! Your inventory is empty. Try to adding new items.
-              </h2>
-            </div>
-          ) : (
-            <table>
-              <thead>
-                <tr>
-                  <th>
-                    <input type="checkbox" name="" id="" />
-                  </th>
-                  <th className="align-header">
-                    Product Name <Icon icon="octicon:triangle-down-16" />
-                  </th>
-                  <th className="align-header">
-                    Product ID <Icon icon="octicon:triangle-down-16" />
-                  </th>
-                  <th className="align-header">
-                    Category <Icon icon="octicon:triangle-down-16" />
-                  </th>
-                  <th className="align-header">
-                    Added by <Icon icon="octicon:triangle-down-16" />
-                  </th>
-                  <th className="align-header">
-                    Available <Icon icon="octicon:triangle-down-16" />
-                  </th>
-                  <th className="align-header">
-                    Reserved <Icon icon="octicon:triangle-down-16" />
-                  </th>
-                  <th className="align-header">
-                    Stock <Icon icon="octicon:triangle-down-16" />
-                  </th>
-                  <th className="button-section">Action</th>
-                </tr>
-              </thead>
-              <tbody className="content-wrapper">
-                {products.map((product) => (
-                  <motion.tr
-                    className="hover"
-                    whileHover={{
-                      scale: 1.005,
-                      transition: {
-                        duration: 0.3,
-                        ease: "easeInOut",
-                      },
-                    }}
-                    key={product._id}
-                  >
-                    <td>
-                      <input type="checkbox" />
-                    </td>
-                    <td className="table-data">
-                      <img
-                        width={50}
-                        height={50}
-                        src={`http://localhost:3000/${product.productImage}`}
-                      />
-                      {product.name}
-                    </td>
-                    <td>{product.productID || ""}</td>
-                    <td>{product.category.name}</td>
-                    <td>{product.createdBy.name}</td>
-                    <td>{product.available}</td>
-                    <td>{product.reserved}</td>
-                    <td>{product.stock}</td>
-                    <td>
-                      <div className="button-section-wrapper">
-                        <div className="button-section">
-                          <button className="button-action view">
-                            <Icon width={20} icon="hugeicons:view" />
-                          </button>
-                          <button className="button-action edit">
-                            <Icon width={20} icon="uil:edit" />
-                          </button>
-                          <button
-                            className="button-action delete"
-                            onClick={() => handleDeleteProduct(product._id)}
-                          >
-                            <Icon
-                              width={20}
-                              icon="material-symbols:delete-outline"
-                            />
-                          </button>
+        <div className="layout-table">
+          <div className="item-list-wrapper">
+            {products.length === 0 ? (
+              <div className="empty-img">
+                <img
+                  width={450}
+                  src="/assets/undraw_empty_re_opql.svg"
+                  alt="Empty"
+                />
+                <h2 className="text-alert">
+                  Oops! Your inventory is empty. Try to adding new items.
+                </h2>
+              </div>
+            ) : (
+              <table>
+                <thead>
+                  <tr>
+                    <th>
+                      <input type="checkbox" name="" id="" />
+                    </th>
+                    <th className="align-header">
+                      Product Name <Icon icon="octicon:triangle-down-16" />
+                    </th>
+                    <th className="align-header">
+                      Product ID <Icon icon="octicon:triangle-down-16" />
+                    </th>
+                    <th className="align-header">
+                      Category <Icon icon="octicon:triangle-down-16" />
+                    </th>
+                    <th className="align-header">
+                      Added by <Icon icon="octicon:triangle-down-16" />
+                    </th>
+                    <th className="align-header">
+                      Available <Icon icon="octicon:triangle-down-16" />
+                    </th>
+                    <th className="align-header">
+                      Reserved <Icon icon="octicon:triangle-down-16" />
+                    </th>
+                    <th className="align-header">
+                      Stock <Icon icon="octicon:triangle-down-16" />
+                    </th>
+                    <th className="button-section">Action</th>
+                  </tr>
+                </thead>
+                <tbody className="content-wrapper">
+                  {currentProducts.map((product) => (
+                    <motion.tr
+                      className="hover"
+                      whileHover={{
+                        scale: 1.005,
+                        transition: {
+                          duration: 0.3,
+                          ease: "easeInOut",
+                        },
+                      }}
+                      key={product._id}
+                    >
+                      <td>
+                        <input type="checkbox" />
+                      </td>
+                      <td className="table-data">
+                        <img
+                          width={50}
+                          height={50}
+                          src={`http://localhost:3000/${product.productImage}`}
+                        />
+                        {product.name}
+                      </td>
+                      <td>{product.productID || ""}</td>
+                      <td>{product.category.name}</td>
+                      <td>{product.createdBy.name}</td>
+                      <td>{product.available}</td>
+                      <td>{product.reserved}</td>
+                      <td>{product.stock}</td>
+                      <td>
+                        <div className="button-section-wrapper">
+                          <div className="button-section">
+                            <button className="button-action view">
+                              <Icon width={20} icon="hugeicons:view" />
+                            </button>
+                            <button className="button-action edit">
+                              <Icon width={20} icon="uil:edit" />
+                            </button>
+                            <button
+                              className="button-action delete"
+                              onClick={() => handleDeleteProduct(product._id)}
+                            >
+                              <Icon
+                                width={20}
+                                icon="material-symbols:delete-outline"
+                              />
+                            </button>
+                          </div>
                         </div>
-                      </div>
-                    </td>
-                  </motion.tr>
-                ))}
-              </tbody>
-            </table>
-          )}
+                      </td>
+                    </motion.tr>
+                  ))}
+                </tbody>
+              </table>
+            )}
+          </div>
+          <div className="pagination">
+            <div className="button">
+              <button
+                className="pagination-btn"
+                onClick={() => handlePageChange(currentpage - 1)}
+                disabled={currentpage === 1}
+              >
+                <Icon icon="iconamoon:arrow-left-2-bold" />
+              </button>
+              <span>
+                {currentpage} of {totalPages}
+              </span>
+              <button
+                className="pagination-btn"
+                onClick={() => handlePageChange(currentpage + 1)}
+                disabled={currentpage === totalPages}
+              >
+                <Icon icon="iconamoon:arrow-right-2-bold" />
+              </button>
+            </div>
+          </div>
         </div>
       </ContainerData>{" "}
       {OpenModel ? (
@@ -437,7 +475,7 @@ const ItemList = () => {
             </div>
           </div>
         </Modal>
-      ) : null}
+      ) : null}{" "}
     </div>
   );
 };

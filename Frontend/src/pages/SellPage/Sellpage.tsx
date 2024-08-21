@@ -57,8 +57,6 @@ const Sellpage = () => {
     return subtotal * 0.1;
   }, [subtotal]);
   const filteredproduct = (productCat: string) => {
-    console.log("productCat", productCat);
-
     if (!productCat) {
       setFilterproduct(products);
     } else {
@@ -122,6 +120,12 @@ const Sellpage = () => {
         <div className="item-section">
           <div className="filter-product">
             <div className="filter-menu">
+              <div
+                className="product-filter-btn"
+                onClick={() => filteredproduct("")}
+              >
+                All
+              </div>
               {categories.map((item) => (
                 <div
                   className="product-filter-btn"

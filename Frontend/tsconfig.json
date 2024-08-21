@@ -1,12 +1,14 @@
 {
   "compilerOptions": {
+    "jsx": "react-jsx",
     "target": "es6",
     "module": "commonjs",
     "strict": false,
     "noImplicitAny": false,
     "esModuleInterop": true,
     "skipLibCheck": true,
-    "forceConsistentCasingInFileNames": true
+    "forceConsistentCasingInFileNames": true,
+    "types": ["jest"]
   },
   "files": [],
   "references": [

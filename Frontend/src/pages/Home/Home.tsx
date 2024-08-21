@@ -8,11 +8,7 @@ import {
   lowStock,
 } from "../../features/ProductSlice";
 import { getAmountOfPayment } from "../../features/paymentSlice";
-import ContainerData from "../../components/ContainerData/ContainerData";
-/* App.js */
-import React, { Component } from "react";
 import MyChart from "../../components/Graph/BarChart";
-import PieChart from "../../components/Graph/PieChart";
 import { Product } from "../../types/interface";
 import { motion } from "framer-motion";
 
@@ -27,9 +23,6 @@ const Home = () => {
   const product = useAppSelector((state: RootState) => state.product.products);
   const lowStockProducts = useAppSelector(
     (state: RootState) => state.product.lowStock
-  );
-  const currentUser = useAppSelector(
-    (state: RootState) => state.auth.currentUser
   );
   useEffect(() => {
     if (product.length > 0) {
