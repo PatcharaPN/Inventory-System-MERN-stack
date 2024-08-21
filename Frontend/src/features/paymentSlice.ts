@@ -1,32 +1,42 @@
-import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
 import { Product, User } from "../types/interface";
 import axios from "axios";
 
-// Define the Payment type
 export type Payment = {
   _id: string;
   createdBy: User;
   products: Product;
   status: string;
+  amount: number;
   createdAt: Date;
   updatedAt: Date;
 };
+export type PaymentSummary = {
+  _id: {
+    month: number;
+    year: number;
+  };
+  totalPayments: number;
+  totalAmount: number;
+  monthName: string;
+};
 
-// Define the PaymentState interface
 export interface PaymentState {
   payments: Payment[]; // Changed to 'payments' to reflect multiple payments
   loading: boolean;
+  paymentSummary: PaymentSummary[];
+  amount: Payment | any;
   error: string | null;
 }
 
-// Initialize the state
 const initialState: PaymentState = {
   payments: [],
+  paymentSummary: [],
+  amount: 0,
   loading: false,
   error: null,
 };
 
-// Define the thunk for creating a payment
 export const createPayment = createAsyncThunk<
   Payment,
   { createdBy: string; products: string[]; status: string } // Updated `products` to be an array of strings
@@ -41,8 +51,40 @@ export const createPayment = createAsyncThunk<
     return thunkAPI.rejectWithValue(error.response?.data || error.message);
   }
 });
+export const getPaymentSummary = createAsyncThunk(
+  "payment/getSummary",
+  async () => {
+    try {
+      const response = await axios.get<PaymentSummary[]>(
+        "http://localhost:3000/api/getSummary"
+      );
+      return response.data;
+    } catch (error) {
+      console.log(
+        "Error when fetching Summay Data from Server reason: ",
+        error
+      );
+      return [];
+    }
+  }
+);
 
-// Define the thunk for fetching all payments
+export const getAmountOfPayment = createAsyncThunk(
+  "payment/getAmount",
+  async () => {
+    try {
+      const response = await axios.get<Payment>(
+        "http://localhost:3000/api/paymentcount"
+      );
+      console.log(response.data);
+
+      return response.data;
+    } catch (error) {
+      console.log(error);
+    }
+  }
+);
+
 export const getAllPayments = createAsyncThunk<Payment[]>(
   "payment/getAll", // Updated action type to reflect fetching all payments
   async (_, thunkAPI) => {
@@ -82,6 +124,29 @@ const paymentSlice = createSlice({
       })
       .addCase(getAllPayments.rejected, (state, action) => {
         state.error = action.error.message || null;
+      })
+      .addCase(getAmountOfPayment.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(getAmountOfPayment.fulfilled, (state, action) => {
+        state.loading = false;
+        state.amount = action.payload?.amount;
+      })
+      .addCase(getAmountOfPayment.rejected, (state, action) => {
+        state.error = action.error as string;
+      })
+      .addCase(getPaymentSummary.pending, (state) => {
+        state.loading = false;
+      })
+      .addCase(
+        getPaymentSummary.fulfilled,
+        (state, action: PayloadAction<PaymentSummary[]>) => {
+          state.loading = false;
+          state.paymentSummary = action.payload;
+        }
+      )
+      .addCase(getPaymentSummary.rejected, (state, action) => {
+        state.error = action.error as string;
       });
   },
 });

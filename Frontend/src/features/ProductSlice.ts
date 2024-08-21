@@ -73,6 +73,7 @@ export const addItem = createAsyncThunk<Product, FormData>(
     }
   }
 );
+
 export const lowStock = createAsyncThunk<LowStockItem[]>(
   "product/lowStock",
   async () => {
@@ -85,6 +86,7 @@ export const lowStock = createAsyncThunk<LowStockItem[]>(
     }
   }
 );
+
 export const createBrand = createAsyncThunk(
   "product/createBrand",
   async (

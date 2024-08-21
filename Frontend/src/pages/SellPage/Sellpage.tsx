@@ -10,7 +10,10 @@ import { motion } from "framer-motion";
 import Swal from "sweetalert2";
 import { useNavigate } from "react-router-dom";
 import Modal from "../../components/Modal/Modal";
+import { createPayment } from "../../features/paymentSlice";
+import ItemList from "../ItemsList/ItemList";
 const Sellpage = () => {
+  const user = useAppSelector((state: RootState) => state.auth.currentUser);
   const [isOpen, setIsOpen] = useState(false);
   const dispatch = useAppDispatch();
   const categories = useAppSelector(
@@ -23,9 +26,16 @@ const Sellpage = () => {
   const [expandId, setExpandId] = useState<string | null>(null);
   const outOfStock = useAppSelector((state) => state.cart.outOfStock);
   const [isModalOpen, setModalOpen] = useState(false);
+
+  const [createdBy, setcreatedBy] = useState("");
   const loading = useAppSelector((state) => state.product.loading);
   const [showAlert, setAlert] = useState(false);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    setcreatedBy(user._id);
+  }, []);
+
   useEffect(() => {
     dispatch(getAllProducts());
   }, [dispatch]);
@@ -42,8 +52,6 @@ const Sellpage = () => {
       0
     );
   }, [cart]);
-
-  console.log(cart);
 
   const tax = useMemo(() => {
     return subtotal * 0.1;
@@ -75,6 +83,19 @@ const Sellpage = () => {
     } else {
       setModalOpen(true);
     }
+  };
+  const handlePayment = () => {
+    const productID = cart.map((item) => item.product._id);
+    handleCreatePayment(productID);
+  };
+  const handleCreatePayment = (products: string[]) => {
+    const paymentData = {
+      createdBy,
+      products: products,
+      status: "Success",
+    };
+    dispatch(createPayment(paymentData));
+    navigate("/Payment");
   };
   const handleAddtoCart = (products: Product) => {
     dispatch(addtocart(products));
@@ -314,7 +335,7 @@ const Sellpage = () => {
                   damping: 20,
                 }}
                 className="payment-method-item"
-                onClick={() => navigate("/Payment")}
+                onClick={handlePayment}
               >
                 <div className="payment-icon">
                   <Icon width={50} icon="flowbite:cash-outline" />
@@ -343,7 +364,7 @@ const Sellpage = () => {
           </div>
         </Modal>
       ) : null}
-  </div>
+    </div>
   );
 };
 

@@ -11,23 +11,26 @@ type ContainerProps = {
   headerVisible?: boolean;
   onClickAdd?: () => void;
   Canadd?: boolean;
+  pagenameContainer?: boolean;
 };
 
 const ContainerData: React.FC<ContainerProps> = ({
   path,
   children,
   pagename,
+  pagenameContainer = true,
   onClickAdd,
   Canadd = false,
   headerVisible = true,
 }) => {
   return (
     <div className="item-list-container-wrapper">
-      <div className="header-menu">
-        <h1 className="header">{pagename}</h1>
-        <div className="menu-button"></div>
-      </div>
-
+      {pagenameContainer ? (
+        <div className="header-menu">
+          <h1 className="header">{pagename}</h1>
+          <div className="menu-button"></div>
+        </div>
+      ) : null}
       <div className="item-list-container">
         {headerVisible ? (
           <div>

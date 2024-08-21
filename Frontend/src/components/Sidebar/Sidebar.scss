@@ -4,20 +4,20 @@ $secondary: #72757e;
 $tertiary: #2db67d;
 $paragraph: #94a1b2;
 $background: #16161a;
-
 .sidebar {
-  position: sticky;
+  position: fixed;
   width: 320px;
-  height: 100vh;
+  height: 100vh; // กำหนดความสูงให้เต็มหน้าจอ
   transition: width 0.3s;
   background-color: $background;
   color: #fff;
-  overflow: hidden;
   display: flex;
   flex-direction: column;
   box-sizing: border-box;
+  z-index: 999;
+  top: 0;
+  left: 0; // ตำแหน่งขวาให้ติดขอบขวาของหน้าจอ
 }
-
 .sidebar.collapsed {
   width: 80px;
 }

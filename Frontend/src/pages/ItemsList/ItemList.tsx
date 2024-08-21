@@ -21,8 +21,6 @@ import Modal from "../../components/Modal/Modal";
 import TextAreaInput from "../../components/Input/Description/Description";
 import CurrencyInput from "../../components/Input/CurrencyInput/CurrencyInput";
 import Longinput from "../../components/Input/LongInput/Longinput";
-import TrippleInput from "../../components/Input/TrippleInput/TrippleInput";
-import MeasurementInput from "../../components/Input/TrippleInput/TrippleInput";
 import { getAllUnit } from "../../features/UnitSlice";
 interface WeightUnit {
   value: string;
@@ -44,7 +42,6 @@ const ItemList = () => {
   );
 
   const store = useAppSelector((state: RootState) => state.store.store);
-  const price = useAppSelector((state: RootState) => state.price.price);
   const category = useAppSelector(
     (state: RootState) => state.category.category
   );

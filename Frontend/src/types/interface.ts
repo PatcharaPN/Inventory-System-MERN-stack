@@ -26,7 +26,8 @@ export interface Product {
 
   location: string;
   productImage: string;
-
+  createdAt: string;
+  updatedAt: string;
   __v: number;
 }
 export interface getAllAmount {
