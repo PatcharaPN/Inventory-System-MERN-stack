@@ -1,13 +1,22 @@
+import { Brand } from "../features/ProductSlice";
+import { Store } from "../features/StoreSlice";
+
 export interface Product {
   _id: string;
   name: string;
   price: number;
-  stock: number;
+  stock: string;
   available: number;
   reserved: number;
   productID: string;
   quantity: number;
   priceunit: string;
+  unit: string;
+  sku: string;
+  store: Store;
+  weight: string;
+  manufacturer: string;
+  brand: Brand;
   category: {
     _id: string;
     name: string;

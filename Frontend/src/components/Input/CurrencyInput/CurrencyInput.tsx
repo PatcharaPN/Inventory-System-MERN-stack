@@ -6,6 +6,7 @@ type CurrencyInputProps = {
   amount: string;
   label: string;
   value: string;
+  placeholder?: string;
   options: { value: string; label: string }[];
   onChange: (e: React.ChangeEvent<HTMLSelectElement>) => void;
   onChangeText: (e: React.ChangeEvent<HTMLInputElement>) => void;
@@ -16,6 +17,7 @@ const CurrencyInput: React.FC<CurrencyInputProps> = ({
   label,
   value,
   onChange,
+  placeholder,
   options,
   onChangeText,
 }) => {
@@ -33,7 +35,7 @@ const CurrencyInput: React.FC<CurrencyInputProps> = ({
         <input
           className="currentcy-input-text"
           type="text"
-          placeholder="Amount"
+          placeholder={placeholder || "amount"}
           value={amount}
           onChange={onChangeText}
         />

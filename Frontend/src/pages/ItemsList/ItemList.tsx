@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import "./ItemList.scss";
 import { Icon } from "@iconify/react/dist/iconify.js";
 
@@ -22,6 +22,9 @@ import TextAreaInput from "../../components/Input/Description/Description";
 import CurrencyInput from "../../components/Input/CurrencyInput/CurrencyInput";
 import Longinput from "../../components/Input/LongInput/Longinput";
 import { getAllUnit } from "../../features/UnitSlice";
+import { Product } from "../../types/interface";
+import axios from "axios";
+import { Console } from "console";
 interface WeightUnit {
   value: string;
   label: string;
@@ -34,6 +37,7 @@ export const allweightUnit: WeightUnit[] = [
   { value: "oz", label: "oz" },
 ];
 const ItemList = () => {
+  const [EditModal, setEditModal] = useState(false);
   const unitType = useAppSelector((state: RootState) => state.unit.unit);
   const products = useAppSelector((state: RootState) => state.product.products);
   const dispatch = useAppDispatch();
@@ -64,6 +68,7 @@ const ItemList = () => {
   const [image, setImage] = useState<File | null>(null);
   const [OpenModel, setOpenModel] = useState(false);
   const [currency, setCurrency] = useState("");
+  const [currentProduct, setcurrentProduct] = useState<Product | null>(null);
   const currentcy = useAppSelector((state: RootState) => state.price.price);
 
   const indexOfLastPayment = currentpage * itemPerPage;
@@ -147,6 +152,40 @@ const ItemList = () => {
       console.error("Error adding item", error);
     }
   };
+  const handleUpdate = async (id: any) => {
+    console.log(selectedStore);
+    const formData = new FormData();
+    formData.append("name", itemName);
+    formData.append("unit", unit);
+    formData.append("sku", sku);
+    formData.append("store", selectedStore);
+    formData.append("weight", weight);
+    formData.append("weightunit", weightUnit);
+    formData.append("category", categoryType);
+    formData.append("brand", selectedBrand);
+    formData.append("price", priceValue);
+    formData.append("priceunit", currency);
+    formData.append("manufacturer", manufacturer);
+    formData.append("stock", stock);
+    formData.append("available", available);
+    formData.append("createdBy", currentUser._id);
+    if (image) {
+      formData.append("productImage", image);
+    }
+
+    try {
+      const result = await axios.put(
+        `(http://localhost:3000/api/products/${id}`,
+        formData
+      );
+
+      console.log(formData);
+      setOpenModel(false);
+      dispatch(getAllProducts());
+    } catch (error) {
+      console.error("Error adding item", error);
+    }
+  };
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files) {
       setImage(e.target.files[0]);
@@ -174,6 +213,27 @@ const ItemList = () => {
       setCurrentpage(page);
     }
   };
+  const handleOpenEditModal = (id: string) => {
+    fetchCurrentProduct(id);
+    console.log(id);
+    setEditModal(true);
+  };
+  const handleCloseEditModal = () => {
+    setEditModal(false);
+    setcurrentProduct(null);
+  };
+  const fetchCurrentProduct = useCallback(async (id: string) => {
+    try {
+      const response = await axios.get(
+        `http://localhost:3000/api/products/${id}`
+      );
+      console.log(response.data);
+      setcurrentProduct(response.data);
+    } catch (err) {
+    } finally {
+      console.log("Fetch complete");
+    }
+  }, []);
   return (
     <div>
       <ContainerData
@@ -262,7 +322,10 @@ const ItemList = () => {
                             <button className="button-action view">
                               <Icon width={20} icon="hugeicons:view" />
                             </button>
-                            <button className="button-action edit">
+                            <button
+                              className="button-action edit"
+                              onClick={() => handleOpenEditModal(product._id)}
+                            >
                               <Icon width={20} icon="uil:edit" />
                             </button>
                             <button
@@ -312,7 +375,10 @@ const ItemList = () => {
             <div className="additem-topmenu">
               <h2 style={{ fontWeight: "bold" }}>New Item</h2>
               <div className="btn-section">
-                <button className="btn" onClick={handleSubmit}>
+                <button
+                  className="btn"
+                  onClick={() => handleUpdate(currentProduct?._id)}
+                >
                   Save
                 </button>
                 <button className="btn white" onClick={handleCloseModal}>
@@ -475,7 +541,179 @@ const ItemList = () => {
             </div>
           </div>
         </Modal>
-      ) : null}{" "}
+      ) : null}
+      {EditModal ? (
+        <Modal header={""} onClose={handleCloseEditModal}>
+          <div className="flex-btn">
+            <h1>Edit item</h1>
+            <div className="btn-section">
+              <button className="btn" onClick={handleSubmit}>
+                Save
+              </button>
+              <button className="btn white" onClick={handleCloseEditModal}>
+                Discard
+              </button>
+            </div>
+          </div>
+          <div className="additem-form">
+            <form className="additems-grid">
+              <div className="create-iten-input">
+                <div className="option-1">
+                  <div className="name-unit">
+                    <div className="input-name-section">
+                      <CustomInput
+                        required={true}
+                        label={"Name*"}
+                        value={itemName}
+                        placeholder={currentProduct?.name}
+                        onChange={(e) => setItemName(e.target.value)}
+                      />{" "}
+                      <SelectInput
+                        label={"Unit"}
+                        options={unitOption}
+                        value={unit}
+                        onChange={(e) => setUnit(e.target.value)}
+                        placeholder={currentProduct?.unit}
+                      />{" "}
+                      <CustomInput
+                        required={false}
+                        label={"SKU"}
+                        value={sku}
+                        placeholder={currentProduct?.sku}
+                        onChange={(e) => setSku(e.target.value)}
+                      />{" "}
+                      <SelectInput
+                        label={"Store"}
+                        options={storeOptions}
+                        value={selectedStore}
+                        onChange={(e) => setSelectedStore(e.target.value)}
+                        placeholder={currentProduct?.store.storename}
+                      />
+                    </div>
+                    <div className="image-upload-section">
+                      <div className="image-input-border">
+                        <img
+                          width={200}
+                          src={`http://localhost:3000/${currentProduct?.productImage}`}
+                          alt=""
+                        />
+                        <div className="upload-text"></div>
+                        <input type="file" onChange={handleFileChange} />
+                      </div>
+                      <p style={{ fontWeight: "500" }}>File (Max: 15MB)</p>
+                    </div>
+                  </div>
+                  <div className="product-information">
+                    <Longinput
+                      placeholder={currentProduct?.weight}
+                      currency={""}
+                      amount={weight}
+                      label={"Weight"}
+                      value={weightUnit}
+                      options={allweightUnit}
+                      onChange={(e) => setweightUnit(e.target.value)}
+                      onChangeText={(e) => setweight(e.target.value)}
+                    />
+
+                    <CustomInput
+                      required={false}
+                      label={"Manufacturer"}
+                      value={manufacturer}
+                      placeholder={currentProduct?.manufacturer}
+                      onChange={(e) => setmanufacturer(e.target.value)}
+                    />
+                    <SelectInput
+                      label={"Brand"}
+                      options={brandOptions}
+                      value={selectedBrand}
+                      onChange={(e) => setSelectedBrand(e.target.value)}
+                      placeholder={currentProduct?.brand.name}
+                    />
+                    <SelectInput
+                      label={"Category"}
+                      options={categoryOption}
+                      value={categoryType}
+                      onChange={(e) => setcategoryType(e.target.value)}
+                      placeholder={"Price Type"}
+                    />
+                    <CustomInput
+                      required={false}
+                      label={"Stock amount"}
+                      value={stock}
+                      placeholder={currentProduct?.stock}
+                      onChange={(e) => {
+                        setStock(e.target.value);
+                      }}
+                    />
+                  </div>
+                </div>
+                <div className="sale-information">
+                  <div className="sale-section">
+                    <div className="target-selctor">
+                      <input type="checkbox" name="Sale" id="" />
+                      <p>Saler information</p>
+                    </div>
+
+                    <TextAreaInput label={"Description"} value={""} />
+                    <SelectInput
+                      label={"Taxes"}
+                      options={categoryOption}
+                      value={categoryType}
+                      onChange={(e) => setcategoryType(e.target.value)}
+                      placeholder={"Price Type"}
+                    />
+                  </div>
+                  <div className="sale-section">
+                    <div className="target-selctor">
+                      <input type="checkbox" name="Sale" id="" />
+                      <p>Buyer information</p>
+                    </div>
+                    <CurrencyInput
+                      currency={currentcy[0]?.unit || ""}
+                      options={currencyOption}
+                      value={currency}
+                      amount={priceValue}
+                      label={"Sales Price"}
+                      placeholder={currentProduct?.price.toString()}
+                      onChange={(e) => {
+                        setCurrency(e.target.value);
+                      }}
+                      onChangeText={(e) => {
+                        setPriceValue(e.target.value);
+                      }}
+                    />
+                    <TextAreaInput label={"Description"} value={""} />
+                    <SelectInput
+                      label={"Taxes"}
+                      options={categoryOption}
+                      value={categoryType}
+                      onChange={(e) => setcategoryType(e.target.value)}
+                      placeholder={currentProduct?.priceunit}
+                    />
+                  </div>
+                </div>
+                {/*<Longinput
+                      currency={""}
+                      amount={""}
+                      label={""}
+                      value={""}
+                      options={[]}
+                      onChange={function (
+                        e: React.ChangeEvent<HTMLSelectElement>
+                      ): void {
+                        throw new Error("Function not implemented.");
+                      }}
+                      onChangeText={function (
+                        e: React.ChangeEvent<HTMLInputElement>
+                      ): void {
+                        throw new Error("Function not implemented.");
+                      }}
+                    />*/}
+              </div>
+            </form>
+          </div>
+        </Modal>
+      ) : null}
     </div>
   );
 };

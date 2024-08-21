@@ -6,7 +6,7 @@ type SelectInputProps = {
   options: { value: string; label: string }[];
   value: string;
   onChange: (e: React.ChangeEvent<HTMLSelectElement>) => void;
-  placeholder: string;
+  placeholder: any;
 };
 
 const SelectInput: React.FC<SelectInputProps> = ({
@@ -18,9 +18,9 @@ const SelectInput: React.FC<SelectInputProps> = ({
 }) => {
   return (
     <div className="input-selector">
-      <p className="selector-input-name">{label}</p>
+      <p className="selector-input-name">{label || placeholder}</p>
       <select className="input-select" value={value} onChange={onChange}>
-        <option value="" disabled></option>
+        <option value="">{placeholder}</option>
 
         {options.map((option) => (
           <option key={option.value} value={option.value}>

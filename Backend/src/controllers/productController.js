@@ -124,7 +124,79 @@ const createProduct = async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 };
+const updateProduct = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const {
+      name,
+      unit,
+      sku,
+      store,
+      weight,
+      weightunit,
+      manufacturer,
+      category,
+      priceunit,
+      brand,
+      price,
+      stock,
+      available,
+      reserved,
+      createdBy,
+      prefix = "UNK",
+    } = req.body;
 
+    const existingProduct = await Product.findById(id);
+    if (!existingProduct) {
+      return res.status(404).json({ message: "Product not found" });
+    }
+    let productImage;
+    if (req.file) {
+      productImage = req.file.path.replace("public/", "");
+    } else {
+      productImage = existingProduct.productImage;
+    }
+    const update = await Product.findByIdAndUpdate(
+      id,
+      {
+        prefix,
+        name,
+        unit,
+        sku,
+        store,
+        weight,
+        weightunit,
+        manufacturer,
+        category,
+        brand,
+        price,
+        stock,
+        priceunit,
+        available,
+        reserved,
+        createdBy,
+        productImage,
+      },
+      {
+        new: true,
+      }
+    )
+      .populate("createdBy")
+      .populate("category");
+
+    if (!update) {
+      return res.status(404).json({
+        message: "Product not found",
+      });
+    }
+    res.status(200).json(update);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({
+      message: "Server error",
+    });
+  }
+};
 const getInhandAmount = async (req, res) => {
   try {
     const getInhand = await Product.aggregate([
@@ -142,10 +214,32 @@ const getInhandAmount = async (req, res) => {
   }
 };
 
+const getProductById = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const product = await Product.findById(id)
+      .populate("createdBy")
+      .populate("category")
+      .populate("store")
+      .populate("brand");
+    if (!product) {
+      return res.status(404).json({ message: "Product not found" });
+    }
+    res.status(200).json(product);
+  } catch (error) {
+    console.error("Error fetching product :", error);
+    res.status(500).json({
+      message: error.message,
+    });
+  }
+};
+
 module.exports = {
   getLowStock,
   createProduct,
   getProduct,
   deleteProduct,
   getInhandAmount,
+  updateProduct,
+  getProductById,
 };

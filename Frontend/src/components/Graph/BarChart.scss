@@ -8,3 +8,14 @@
 .bar-element {
   width: 100px;
 }
+.chart-container-week {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 650px;
+  height: 800px;
+}
+.grid-layout-bar {
+  display: grid;
+  grid-template-rows: repeat(0.1fr, auto);
+}

@@ -169,6 +169,7 @@ td {
   gap: 40px;
 }
 .button-section-wrapper {
+  height: 100%;
   display: flex;
   justify-content: start;
   align-items: center;
@@ -186,6 +187,9 @@ td {
   row-gap: 40px;
 }
 .button-section {
+  height: 100%;
+  align-items: center;
+  justify-content: center;
   display: flex;
   gap: 10px;
 }

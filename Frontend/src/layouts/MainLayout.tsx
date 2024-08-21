@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import "./MainLayout.scss";
 import Sidebar from "../components/Sidebar/Sidebar";
 import Header from "../components/Header/Header";
+import Footer from "../components/Footer/Footer";
 
 type MainLayoutProps = {
   children: React.ReactNode;

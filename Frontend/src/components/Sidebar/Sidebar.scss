@@ -24,6 +24,7 @@ $background: #16161a;
 
 .logo {
   display: flex;
+  margin-bottom: 10%;
   height: 20%;
   align-items: center;
   justify-content: center;
@@ -54,8 +55,21 @@ $background: #16161a;
 .version {
   color: #2db67d;
   display: flex;
-  justify-content: start;
+  justify-content: space-between;
   align-items: center;
   padding: 10px;
   flex-shrink: 0;
+}
+.btn-donate {
+  all: unset;
+  padding: 0.3rem;
+  width: fit-content;
+  border-radius: 1rem;
+  background-color: #feed00;
+  color: #16161a;
+  display: flex;
+  font-weight: bold;
+  align-items: center;
+  font-size: 0.8rem;
+  gap: 5px;
 }

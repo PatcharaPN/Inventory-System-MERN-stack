@@ -51,7 +51,17 @@ const Sidebar: React.FC<SidebarProps> = ({ isCollapsed, toggleSidebar }) => {
         )}
       </div>
       <div className="version">
-        <p>1.0.0-beta.1</p>
+        <p>1.0.0-beta.4</p>
+        <div className="Donate-me">
+          <button className="btn-donate">
+            <img
+              src="../../../public/assets/Buy Me a Coffee Icon.png"
+              width={30}
+              alt=""
+            />
+            Buy me a Coffee
+          </button>
+        </div>
       </div>
     </div>
   );

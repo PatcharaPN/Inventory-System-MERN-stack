@@ -11,6 +11,7 @@ import { getAmountOfPayment } from "../../features/paymentSlice";
 import MyChart from "../../components/Graph/BarChart";
 import { Product } from "../../types/interface";
 import { motion } from "framer-motion";
+import WeeklyLineChart from "../../components/Graph/WeekChart";
 
 //var CanvasJSReact = require('@canvasjs/react-charts');
 
@@ -96,34 +97,9 @@ const Home = () => {
         <div className="dashboard-graph">
           <MyChart />
         </div>
-        <div className="dashboard-graph">
-          <div className="product-new-list">
-            <h1>New Products</h1>
-            <div className="flex-productlist">
-              {newProducts.map((item) => (
-                <motion.div
-                  whileHover={{
-                    scale: 1.1,
-                    boxShadow: "0px 8px 16px rgba(0, 0, 0, 0.3)",
-                  }}
-                  transition={{
-                    duration: 0.3,
-                    type: "spring",
-                    stiffness: 300,
-                    damping: 20,
-                  }}
-                  className="product-card-new"
-                >
-                  <img
-                    width={100}
-                    height={100}
-                    src={`http://localhost:3000/${item.productImage}`}
-                    alt=""
-                  />
-                  <p style={{ fontSize: "0.9rem" }}>{item.name}</p>
-                </motion.div>
-              ))}
-            </div>
+        <div className="dashboard-graph-line">
+          <div>
+            <WeeklyLineChart />
           </div>
         </div>
       </div>
@@ -132,3 +108,4 @@ const Home = () => {
 };
 
 export default Home;
+//WeeklyLineChart

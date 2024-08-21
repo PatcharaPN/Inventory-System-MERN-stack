@@ -22,3 +22,13 @@
   flex-direction: column;
   justify-content: space-between;
 }
+.status-banner {
+  border: #a1e7a1 solid 1px;
+  border-radius: 2rem;
+  width: fit-content;
+  padding: 0.6rem;
+  font-weight: bolder;
+  font-size: 0.8rem;
+  color: #1c901c;
+  background-color: #c2ffda;
+}

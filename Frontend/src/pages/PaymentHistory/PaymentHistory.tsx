@@ -61,6 +61,9 @@ const PaymentHistory = () => {
               <th className="align-header">
                 Role <Icon icon="octicon:triangle-down-16" />
               </th>
+              <th className="align-header">
+                Status <Icon icon="octicon:triangle-down-16" />
+              </th>
               <th className="button-section">Action</th>
             </tr>
           </thead>
@@ -82,22 +85,32 @@ const PaymentHistory = () => {
                 <td>{history.products.name}</td>
                 <td>{history.createdBy.name}</td>
                 <td>{history.createdBy.role || "N/A"}</td>{" "}
+                <td>
+                  <div className="status-banner">
+                    {history.status.toLowerCase()}
+                  </div>
+                </td>
                 {/* Handle missing role */}
-                <td className="button-section">
-                  <button className="button-action view">
-                    <Icon width={20} icon="hugeicons:view" />
-                  </button>
-                  <button className="button-action edit">
-                    <Icon width={20} icon="uil:edit" />
-                  </button>
-                  <button
-                    className="button-action delete"
-                    onClick={() => {
-                      /* Handle delete */
-                    }}
-                  >
-                    <Icon width={20} icon="material-symbols:delete-outline" />
-                  </button>
+                <td>
+                  <div className="button-section-wrapper">
+                    <div className="button-section">
+                      <button className="button-action view">
+                        <Icon width={20} icon="hugeicons:view" />
+                      </button>
+                      <button className="button-action edit" onClick={() => {}}>
+                        <Icon width={20} icon="uil:edit" />
+                      </button>
+                      <button
+                        className="button-action delete"
+                        onClick={() => {}}
+                      >
+                        <Icon
+                          width={20}
+                          icon="material-symbols:delete-outline"
+                        />
+                      </button>
+                    </div>
+                  </div>
                 </td>
               </tr>
             ))}

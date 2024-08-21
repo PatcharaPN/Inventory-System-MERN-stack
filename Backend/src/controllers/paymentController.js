@@ -42,6 +42,89 @@ const getSumofPayment = async (req, res) => {
     });
   }
 };
+const getWeeklySummary = async (req, res) => {
+  try {
+    const summary = await Payment.aggregate([
+      {
+        $addFields: {
+          weekStart: {
+            $dateFromParts: {
+              isoWeekYear: { $isoWeekYear: "$createdAt" },
+              isoWeek: { $isoWeek: "$createdAt" },
+              isoDayOfWeek: 1, // วันจันทร์เป็นวันเริ่มต้นสัปดาห์
+            },
+          },
+          dayOfWeek: { $isoDayOfWeek: "$createdAt" }, // กำหนดวันในสัปดาห์
+        },
+      },
+      {
+        $group: {
+          _id: {
+            weekStart: "$weekStart",
+            dayOfWeek: "$dayOfWeek",
+          },
+          totalPayments: { $sum: 1 },
+        },
+      },
+      {
+        $addFields: {
+          dayName: {
+            $arrayElemAt: [
+              [
+                "Monday",
+                "Tuesday",
+                "Wednesday",
+                "Thursday",
+                "Friday",
+                "Saturday",
+                "Sunday",
+              ],
+              { $subtract: ["$_id.dayOfWeek", 1] }, // แปลงค่าให้สอดคล้องกับ index ของ array
+            ],
+          },
+        },
+      },
+      {
+        $group: {
+          _id: "$_id.weekStart",
+          days: {
+            $push: {
+              day: "$dayName",
+              totalPayments: "$totalPayments",
+            },
+          },
+        },
+      },
+      {
+        $addFields: {
+          weekLabel: {
+            $concat: [
+              { $dateToString: { format: "%Y-%m-%d", date: "$_id" } },
+              " ถึง ",
+              {
+                $dateToString: {
+                  format: "%Y-%m-%d",
+                  date: { $add: ["$_id", 6 * 24 * 60 * 60 * 1000] }, // เพิ่ม 6 วัน
+                },
+              },
+            ],
+          },
+        },
+      },
+      {
+        $sort: { _id: -1 }, // เรียงลำดับจากสัปดาห์ล่าสุดไปหาเก่าสุด
+      },
+      { $limit: 1 }, // จำกัดให้ดึงแค่สัปดาห์ล่าสุด
+    ]);
+
+    res.status(200).json(summary);
+  } catch (error) {
+    res.status(500).json({
+      message: "Error when fetching Weekly Summary !!",
+      error: error.message,
+    });
+  }
+};
 const getMounthSummary = async (req, res) => {
   try {
     const year = parseInt(req.query.year) || new Date().getFullYear();
@@ -113,6 +196,7 @@ const getAllPayment = async (req, res) => {
 };
 module.exports = {
   getMounthSummary,
+  getWeeklySummary,
   getSumofPayment,
   getAllPayment,
   createPayment,
