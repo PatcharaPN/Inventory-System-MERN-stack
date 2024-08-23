@@ -261,15 +261,22 @@
 
   align-items: center;
 }
-.list-item {
-  height: 650px;
-  padding: 20px;
+.list-item-space {
+  padding: 1rem;
   border: 1px solid #94a1b2;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  justify-content: space-between;
+}
+.list-item {
+  height: 570px;
+  padding: 20px;
+
   border-radius: 10px;
   display: flex;
   flex-direction: column;
   gap: 20px;
-  justify-content: space-between;
 }
 .empry-cart {
   height: 100%;
@@ -312,4 +319,12 @@
   width: 100%;
   display: flex;
   justify-content: space-between;
+}
+body,
+.sell-page {
+  font-family: "Arial", sans-serif; /* Default font for English */
+}
+
+.thai-text {
+  font-family: "Sarabun", sans-serif; /* Font for Thai */
 }

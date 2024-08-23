@@ -12,6 +12,7 @@ import {
 import { RootState, useAppDispatch, useAppSelector } from "../../store/store";
 import { useEffect } from "react";
 import { getPaymentSummary } from "../../features/paymentSlice";
+import { useTranslation } from "react-i18next";
 
 ChartJS.register(
   CategoryScale,
@@ -23,6 +24,7 @@ ChartJS.register(
 );
 
 const BarChart: React.FC = () => {
+  const { t } = useTranslation();
   const dispatch = useAppDispatch();
   const paymentSummary = useAppSelector(
     (state: RootState) => state.payment.paymentSummary
@@ -34,7 +36,7 @@ const BarChart: React.FC = () => {
     labels: paymentSummary.map((month) => month.monthName),
     datasets: [
       {
-        label: "Sales",
+        label: t("graphLanguage.barUnit"),
         data: paymentSummary.map((summary) => summary.totalPayments),
         backgroundColor: [
           "rgba(255, 99, 132, 0.2)",
@@ -109,7 +111,7 @@ const BarChart: React.FC = () => {
 
   return (
     <div>
-      <h1>Monthly Summary</h1>
+      <h1>{t("graphLanguage.headerBar")}</h1>
       <div className="chart-container">
         <Bar className="bar-element" data={data} options={options} />
       </div>

@@ -5,7 +5,7 @@ export interface Product {
   _id: string;
   name: string;
   price: number;
-  stock: string;
+  stock: number;
   available: number;
   reserved: number;
   productID: string;

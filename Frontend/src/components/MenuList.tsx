@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Icon } from "@iconify/react/dist/iconify.js";
 import "./MenuList.scss";
 import { Link } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 
 type SubmenuItem = {
   label: string;
@@ -62,7 +63,7 @@ export const menuItems: MenuItem[] = [
   },
   {
     icon: "akar-icons:cart",
-    label: "Sales Orders",
+    label: "Member Customer",
     submenu: [
       { label: "Customers", onClick: () => console.log("Items clicked") },
       {
@@ -96,6 +97,7 @@ type MenuListProps = {
 };
 
 const MenuList: React.FC<MenuListProps> = ({ isCollapsed }) => {
+  const { t } = useTranslation();
   const [expandedMenus, setExpandedMenus] = useState<number | null>(null);
 
   const toggleSubmenu = (index: number) => {
@@ -111,7 +113,6 @@ const MenuList: React.FC<MenuListProps> = ({ isCollapsed }) => {
             className={`menu-item ${expandedMenus === index ? "expanded" : ""}`}
           >
             <Link to={item.path || "#"}>
-              {" "}
               <div
                 className="menu-item-content"
                 onClick={() =>
@@ -120,7 +121,7 @@ const MenuList: React.FC<MenuListProps> = ({ isCollapsed }) => {
               >
                 <div className="menu-items">
                   <Icon color="#7F5AF0" icon={item.icon} width={25} />
-                  {item.label}
+                  {t(`menuItems.${item.label}`)}
                 </div>
                 {item.submenu && (
                   <Icon
@@ -139,13 +140,9 @@ const MenuList: React.FC<MenuListProps> = ({ isCollapsed }) => {
             {item.submenu && !isCollapsed && (
               <ul className="submenu">
                 {item.submenu.map((subItem) => (
-                  <Link to={subItem.path || "#"}>
-                    <li
-                      key={subItem.label}
-                      className="submenu-item"
-                      onClick={subItem.onClick}
-                    >
-                      {subItem.label}
+                  <Link key={subItem.label} to={subItem.path || "#"}>
+                    <li className="submenu-item" onClick={subItem.onClick}>
+                      {t(`menuItems.${subItem.label}`)}
                     </li>
                   </Link>
                 ))}

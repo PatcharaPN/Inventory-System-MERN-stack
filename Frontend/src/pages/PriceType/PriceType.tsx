@@ -7,8 +7,10 @@ import { useDispatch } from "react-redux";
 import { createPrice, getPrice } from "../../features/PriceSlice";
 import SmallModal from "../../components/Modal/ModalSmall/SmallModal";
 import CustomInput from "../../components/Input/Input";
+import { useTranslation } from "react-i18next"; // Import the hook
 
 const PriceType = () => {
+  const { t } = useTranslation(); // Destructure t from useTranslation hook
   const currentUser = useAppSelector(
     (state: RootState) => state.auth.currentUser
   );
@@ -43,7 +45,11 @@ const PriceType = () => {
 
   return (
     <div>
-      <ContainerData pagename="Price List" Canadd onClickAdd={handleOpenModal}>
+      <ContainerData
+        pagename={t("priceList")}
+        Canadd
+        onClickAdd={handleOpenModal}
+      >
         <div className="item-list-wrapper">
           {price.length === 0 ? (
             <div className="empty-img">
@@ -52,9 +58,7 @@ const PriceType = () => {
                 src="/assets/undraw_empty_re_opql.svg"
                 alt="Empty"
               />
-              <h2 className="text-alert">
-                Oops! Your inventory is empty. Try to adding new items.
-              </h2>
+              <h2 className="text-alert">{t("emptyInventory")}</h2>
             </div>
           ) : (
             <table>
@@ -64,20 +68,18 @@ const PriceType = () => {
                     <input type="checkbox" name="" id="" />
                   </th>
                   <th className="align-header">
-                    Price Unit <Icon icon="octicon:triangle-down-16" />
+                    {t("priceUnit")} <Icon icon="octicon:triangle-down-16" />
                   </th>
                   <th className="align-header">
-                    Price name <Icon icon="octicon:triangle-down-16" />
+                    {t("priceName")} <Icon icon="octicon:triangle-down-16" />
                   </th>
                   <th className="align-header">
-                    Description <Icon icon="octicon:triangle-down-16" />
+                    {t("description")} <Icon icon="octicon:triangle-down-16" />
                   </th>
                   <th className="align-header">
-                    Added by <Icon icon="octicon:triangle-down-16" />
+                    {t("addedBy")} <Icon icon="octicon:triangle-down-16" />
                   </th>
-                  <th className="align-header">
-                    Action <Icon icon="octicon:triangle-down-16" />
-                  </th>
+                  <th className="button-section-action">{t("action")}</th>
                 </tr>
               </thead>
               <tbody className="content-wrapper">
@@ -132,22 +134,22 @@ const PriceType = () => {
         <SmallModal header={""} onClose={handleCloseModal}>
           <div className="additem-content">
             <div className="additem-topmenu">
-              <h2 style={{ fontWeight: "bold" }}>New Store</h2>
+              <h2 style={{ fontWeight: "bold" }}>{t("newStore")}</h2>
             </div>
             <div className="additem-form">
               <form className="form-grid">
                 <CustomInput
-                  label={"Name*"}
+                  label={t("name")}
                   value={pricename}
                   onChange={(e) => setPricename(e.target.value)}
                 />
                 <CustomInput
-                  label={"Unit*"}
+                  label={t("unit")}
                   value={priceUnit}
                   onChange={(e) => setPriceUnit(e.target.value)}
-                />{" "}
+                />
                 <CustomInput
-                  label={"Description*"}
+                  label={t("description")}
                   value={description}
                   onChange={(e) => setDescription(e.target.value)}
                 />
@@ -156,10 +158,10 @@ const PriceType = () => {
           </div>
           <div className="btn-section">
             <button className="btn" onClick={handldeSubmit}>
-              Save
+              {t("save")}
             </button>
             <button className="btn white" onClick={handleCloseModal}>
-              Discard
+              {t("discard")}
             </button>
           </div>
         </SmallModal>

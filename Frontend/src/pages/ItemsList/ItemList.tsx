@@ -25,6 +25,8 @@ import { getAllUnit } from "../../features/UnitSlice";
 import { Product } from "../../types/interface";
 import axios from "axios";
 import { Console } from "console";
+import { t } from "i18next";
+import { useTranslation } from "react-i18next";
 interface WeightUnit {
   value: string;
   label: string;
@@ -120,7 +122,7 @@ const ItemList = () => {
     value: store._id || "",
     label: store.storename || "Unnamed Store",
   }));
-
+  const { t } = useTranslation();
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     console.log(selectedStore);
@@ -263,27 +265,28 @@ const ItemList = () => {
                       <input type="checkbox" name="" id="" />
                     </th>
                     <th className="align-header">
-                      Product Name <Icon icon="octicon:triangle-down-16" />
+                      {t("productName")}{" "}
+                      <Icon icon="octicon:triangle-down-16" />
                     </th>
                     <th className="align-header">
-                      Product ID <Icon icon="octicon:triangle-down-16" />
+                      {t("productID")} <Icon icon="octicon:triangle-down-16" />
                     </th>
                     <th className="align-header">
-                      Category <Icon icon="octicon:triangle-down-16" />
+                      {t("category")} <Icon icon="octicon:triangle-down-16" />
                     </th>
                     <th className="align-header">
-                      Added by <Icon icon="octicon:triangle-down-16" />
+                      {t("addedBy")} <Icon icon="octicon:triangle-down-16" />
                     </th>
                     <th className="align-header">
-                      Available <Icon icon="octicon:triangle-down-16" />
+                      {t("available")} <Icon icon="octicon:triangle-down-16" />
                     </th>
                     <th className="align-header">
-                      Reserved <Icon icon="octicon:triangle-down-16" />
+                      {t("reserved")} <Icon icon="octicon:triangle-down-16" />
                     </th>
                     <th className="align-header">
-                      Stock <Icon icon="octicon:triangle-down-16" />
+                      {t("stock")} <Icon icon="octicon:triangle-down-16" />
                     </th>
-                    <th className="button-section">Action</th>
+                    <th className="button-section">{t("action")}</th>
                   </tr>
                 </thead>
                 <tbody className="content-wrapper">
@@ -640,7 +643,7 @@ const ItemList = () => {
                       required={false}
                       label={"Stock amount"}
                       value={stock}
-                      placeholder={currentProduct?.stock}
+                      placeholder={currentProduct?.stock.toString()}
                       onChange={(e) => {
                         setStock(e.target.value);
                       }}

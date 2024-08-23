@@ -4,11 +4,13 @@ import { RootState, useAppDispatch, useAppSelector } from "../../store/store";
 import { Icon } from "@iconify/react/dist/iconify.js";
 import { motion } from "framer-motion";
 import { createBrand, getBrand } from "../../features/ProductSlice";
-import Modal from "../../components/Modal/Modal";
 import CustomInput from "../../components/Input/Input";
 import SmallModal from "../../components/Modal/ModalSmall/SmallModal";
+import { useTranslation } from "react-i18next"; // Import useTranslation hook
 
 const BrandPage = () => {
+  const { t } = useTranslation(); // Get translation function
+
   const brand = useAppSelector((state: RootState) => state.product.brand);
   const currentUser = useAppSelector(
     (state: RootState) => state.auth.currentUser
@@ -20,14 +22,16 @@ const BrandPage = () => {
 
   useEffect(() => {
     dispatch(getBrand());
-  }, []);
+  }, [dispatch]);
+
   const handleOpenModal = () => {
     setIsModalOpen(!isModalOpen);
   };
-  const handleClosenModal = () => {
+
+  const handleCloseModal = () => {
     setIsModalOpen(false);
   };
-  currentUser;
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
 
@@ -42,36 +46,37 @@ const BrandPage = () => {
     dispatch(createBrand(brandData));
     setIsModalOpen(false);
   };
+
   return (
     <ContainerData
-      pagename={"Brand"}
+      pagename={t("brand")}
       Canadd={true}
       onClickAdd={handleOpenModal}
     >
       {isModalOpen && (
-        <SmallModal header={"Add Brand"} onClose={handleClosenModal}>
+        <SmallModal header={t("addBrand")} onClose={handleCloseModal}>
           <div className="modal-wrapper">
             <form onSubmit={handleSubmit}>
               <CustomInput
-                label={"Name*"}
+                label={t("name")}
                 value={name}
                 onChange={(e) => setName(e.target.value)}
               />
               <CustomInput
-                label={"Prefix*"}
+                label={t("prefix")}
                 value={prefix}
                 onChange={(e) => setPrefix(e.target.value)}
               />
               <div className="btn-section">
                 <button className="btn" type="submit">
-                  Save
+                  {t("save")}
                 </button>
                 <button
                   className="btn white"
                   type="button"
-                  onClick={handleClosenModal}
+                  onClick={handleCloseModal}
                 >
-                  Discard
+                  {t("discard")}
                 </button>
               </div>
             </form>
@@ -86,9 +91,7 @@ const BrandPage = () => {
               src="/assets/undraw_empty_re_opql.svg"
               alt="Empty"
             />
-            <h2 className="text-alert">
-              Oops! Your inventory is empty. Try to adding new items.
-            </h2>
+            <h2 className="text-alert">{t("emptyInventory")}</h2>
           </div>
         ) : (
           <table>
@@ -98,19 +101,19 @@ const BrandPage = () => {
                   <input type="checkbox" name="" id="" />
                 </th>
                 <th className="align-header">
-                  Brand Name <Icon icon="octicon:triangle-down-16" />
+                  {t("brand")} <Icon icon="octicon:triangle-down-16" />
                 </th>
                 <th className="align-header">
-                  Prefix <Icon icon="octicon:triangle-down-16" />
+                  {t("prefix")} <Icon icon="octicon:triangle-down-16" />
                 </th>
                 <th className="align-header">
-                  Description <Icon icon="octicon:triangle-down-16" />
-                </th>{" "}
-                <th className="align-header">
-                  AddedBy <Icon icon="octicon:triangle-down-16" />
+                  {t("description")} <Icon icon="octicon:triangle-down-16" />
                 </th>
                 <th className="align-header">
-                  Action <Icon icon="octicon:triangle-down-16" />
+                  {t("addedBy")} <Icon icon="octicon:triangle-down-16" />
+                </th>
+                <th className="align-header">
+                  {t("action")} <Icon icon="octicon:triangle-down-16" />
                 </th>
               </tr>
             </thead>

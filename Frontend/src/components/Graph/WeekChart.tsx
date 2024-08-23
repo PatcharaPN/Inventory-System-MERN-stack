@@ -12,6 +12,8 @@ import {
   PointElement,
 } from "chart.js";
 import axios from "axios";
+import { t } from "i18next";
+import { useTranslation } from "react-i18next";
 
 // Register Chart.js components
 ChartJS.register(
@@ -49,6 +51,7 @@ interface ChartData {
 }
 
 const WeeklyLineChart: React.FC = () => {
+  const { t } = useTranslation();
   const [chartData, setChartData] = useState<ChartData>({
     labels: [],
     datasets: [
@@ -118,7 +121,7 @@ const WeeklyLineChart: React.FC = () => {
 
   return (
     <div className="grid-layout-bar">
-      <h1>Weekly Payments Line Graph</h1>
+      <h1>{t("graphLanguage.headerLine")}</h1>
       <div>
         <Line className="chart-container-week" data={chartData} />
       </div>

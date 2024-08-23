@@ -4,37 +4,37 @@ import { Icon } from "@iconify/react/dist/iconify.js";
 import { motion } from "framer-motion";
 import { RootState, useAppDispatch, useAppSelector } from "../../store/store";
 import { getTotalComposite } from "../../features/CategorySlice";
-import Modal from "../../components/Modal/Modal";
 import SmallModal from "../../components/Modal/ModalSmall/SmallModal";
 import CustomInput from "../../components/Input/Input";
+import { useTranslation } from "react-i18next"; // Import useTranslation hook
 
 const CompositeItem = () => {
+  const { t } = useTranslation(); // Get translation function
+
   const dispatch = useAppDispatch();
   const getTotal = useAppSelector(
     (state: RootState) => state.category.composite
   );
-  const [isModalOpen, serOpenModal] = useState(false);
+  const [isModalOpen, setOpenModal] = useState(false);
+
   useEffect(() => {
     dispatch(getTotalComposite());
   }, [dispatch]);
-  console.log(getTotal);
 
   return (
     <div>
       {isModalOpen ? (
         <SmallModal
-          header={""}
-          onClose={function (): void {
-            throw new Error("Function not implemented.");
-          }}
+          header={t("addCompositeItem")}
+          onClose={() => setOpenModal(false)}
         >
           <h2 style={{ marginBottom: "20px", fontWeight: "bold" }}>
-            Add Composite Item
+            {t("addCompositeItem")}
           </h2>
-          <CustomInput label={"Name*"} value={""} />
+          <CustomInput label={t("name")} value={""} />
         </SmallModal>
       ) : null}
-      <ContainerData pagename="Composite Item" Canadd>
+      <ContainerData pagename={t("compositeItem")} Canadd>
         <div className="item-list-wrapper">
           {getTotal.length === 0 ? (
             <div className="empty-img">
@@ -43,9 +43,7 @@ const CompositeItem = () => {
                 src="/assets/undraw_empty_re_opql.svg"
                 alt="Empty"
               />
-              <h2 className="text-alert">
-                Oops! Your inventory is empty. Try to adding new items.
-              </h2>
+              <h2 className="text-alert">{t("emptyInventory")}</h2>
             </div>
           ) : (
             <table>
@@ -55,19 +53,19 @@ const CompositeItem = () => {
                     <input type="checkbox" name="" id="" />
                   </th>
                   <th className="align-header">
-                    Composite Name <Icon icon="octicon:triangle-down-16" />
+                    {t("name")} <Icon icon="octicon:triangle-down-16" />
                   </th>
                   <th className="align-header">
-                    Product Count <Icon icon="octicon:triangle-down-16" />
+                    {t("productCount")} <Icon icon="octicon:triangle-down-16" />
                   </th>
                   <th className="align-header">
-                    AddedBy <Icon icon="octicon:triangle-down-16" />
-                  </th>{" "}
-                  <th className="align-header">
-                    Role <Icon icon="octicon:triangle-down-16" />
+                    {t("addedBy")} <Icon icon="octicon:triangle-down-16" />
                   </th>
                   <th className="align-header">
-                    Action <Icon icon="octicon:triangle-down-16" />
+                    {t("role")} <Icon icon="octicon:triangle-down-16" />
+                  </th>
+                  <th className="button-section-action">
+                    {t("action")} <Icon icon="octicon:triangle-down-16" />
                   </th>
                 </tr>
               </thead>
@@ -87,7 +85,6 @@ const CompositeItem = () => {
                       <input type="checkbox" />
                     </td>
                     <td>{total.name}</td>
-
                     <td>{total.productCount}</td>
                     <td>{total.addedBy.username}</td>
                     <td>{total.addedBy.role}</td>

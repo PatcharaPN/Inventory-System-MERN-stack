@@ -4,44 +4,44 @@ import { RootState, useAppDispatch, useAppSelector } from "../../store/store";
 import Modal from "../../components/Modal/Modal";
 import { useEffect, useState } from "react";
 import { getAllUsers } from "../../features/AuthSlice";
+import { useTranslation } from "react-i18next";
 
 const PermissionPage = () => {
+  const { t } = useTranslation(); // Destructure t from useTranslation
   const dispatch = useAppDispatch();
   const users = useAppSelector((state: RootState) => state.auth.users);
-  console.log(users);
 
   useEffect(() => {
     dispatch(getAllUsers());
-  }, []);
+  }, [dispatch]);
 
   const [isModalOpen, setIsModalOpen] = useState(false);
+
   return (
-    <ContainerData pagename={"Permission"}>
+    <ContainerData pagename={t("permission")}>
       {isModalOpen ? (
         <Modal
           header={""}
           children={undefined}
-          onClose={function (): void {
-            throw new Error("Function not implemented.");
-          }}
+          onClose={() => setIsModalOpen(false)}
         ></Modal>
       ) : null}
       <table>
         <thead>
           <tr>
             <th>
-              <input type="checkbox" name="" id="" />
+              <input type="checkbox" />
             </th>
             <th className="align-header">
-              Username <Icon icon="octicon:triangle-down-16" />
+              {t("username")} <Icon icon="octicon:triangle-down-16" />
             </th>
             <th className="align-header">
-              Name <Icon icon="octicon:triangle-down-16" />
-            </th>{" "}
-            <th className="align-header">
-              Role <Icon icon="octicon:triangle-down-16" />
+              {t("name")} <Icon icon="octicon:triangle-down-16" />
             </th>
-            <th className="button-section">Action</th>
+            <th className="align-header">
+              {t("role")} <Icon icon="octicon:triangle-down-16" />
+            </th>
+            <th className="button-section">{t("action")}</th>
           </tr>
         </thead>
         <tbody>

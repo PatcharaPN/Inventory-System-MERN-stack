@@ -12,10 +12,13 @@ import PermissionPage from "../pages/Permission/Permission";
 import Sellpage from "../pages/SellPage/Sellpage";
 import PaymentPage from "../pages/PaymentPage/PaymentPage";
 import PaymentHistory from "../pages/PaymentHistory/PaymentHistory";
+import PageTranslate from "../pages/textlanguage/PageTranslate";
+import NotFound from "../pages/NotFound/NotFound";
 
 const AppRoutes: React.FC = () => {
   return (
     <Routes>
+      <Route path="*" element={<NotFound />} />
       <Route path="/" element={<Sellpage />} />
       <Route path="/Dashboard" element={<Home />} />
       <Route path="/item" element={<ItemList />} />

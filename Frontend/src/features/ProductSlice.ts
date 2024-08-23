@@ -54,6 +54,7 @@ export const getAmountSummary = createAsyncThunk<getAllAmount[]>(
   async () => {
     try {
       const data = await getAmount();
+      console.log(data);
       return data;
     } catch (error) {
       console.error("Error when fetching amount summary", error);

@@ -6,7 +6,7 @@ import NoSidebarLayout from "./layouts/NoSidebarLayout";
 import Login from "./pages/Login/Login";
 import ProtectedRoute from "./components/ProtectedRoute/ProtectedRoute";
 import { RootState, useAppSelector } from "./store/store";
-
+import "./i18n";
 const App: React.FC = () => {
   const isAuthenticated = useAppSelector(
     (state: RootState) => state.auth.currentUser !== null

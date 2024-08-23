@@ -4,8 +4,10 @@ import { Icon } from "@iconify/react";
 import { RootState, useAppDispatch, useAppSelector } from "../../store/store";
 import { motion } from "framer-motion";
 import { getHistory } from "../../features/AuthSlice";
+import { useTranslation } from "react-i18next"; // Import useTranslation
 
 const LoginHistory = () => {
+  const { t } = useTranslation(); // Destructure t from useTranslation
   const loginHistory = useAppSelector(
     (state: RootState) => state.auth.loginHistory
   );
@@ -16,7 +18,7 @@ const LoginHistory = () => {
   }, [dispatch]);
 
   return (
-    <ContainerData pagename="Login History">
+    <ContainerData pagename={t("loginHistory")}>
       <div className="item-list-wrapper">
         {loginHistory.length === 0 ? (
           <div className="empty-img">
@@ -25,9 +27,7 @@ const LoginHistory = () => {
               src="/assets/undraw_empty_re_opql.svg"
               alt="Empty"
             />
-            <h2 className="text-alert">
-              Oops! Your inventory is empty. Try to adding new items.
-            </h2>
+            <h2 className="text-alert">{t("emptyInventoryMessage")}</h2>
           </div>
         ) : (
           <table>
@@ -36,11 +36,11 @@ const LoginHistory = () => {
                 <th>
                   <input type="checkbox" />
                 </th>
-                <th className="align-header">Login Time</th>
-                <th className="align-header">IP Address</th>{" "}
-                <th className="align-header">User name</th>
-                <th className="align-header">User role</th>
-                <th className="button-section">Action</th>
+                <th className="align-header">{t("loginTime")}</th>
+                <th className="align-header">{t("ipAddress")}</th>
+                <th className="align-header">{t("username")}</th>
+                <th className="align-header">{t("userRole")}</th>
+                <th className="button-section">{t("action")}</th>
               </tr>
             </thead>
             <tbody className="content-wrapper">

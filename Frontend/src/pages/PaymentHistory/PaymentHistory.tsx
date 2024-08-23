@@ -3,14 +3,19 @@ import ContainerData from "../../components/ContainerData/ContainerData";
 import { Icon } from "@iconify/react/dist/iconify.js";
 import { RootState, useAppDispatch, useAppSelector } from "../../store/store";
 import { getAllPayments } from "../../features/paymentSlice";
+import { useTranslation } from "react-i18next"; // Import useTranslation hook
 import "./PaymentHistory.scss";
+
 const PaymentHistory = () => {
+  const { t } = useTranslation(); // Get translation function
+
   const [currentpage, setCurrentpage] = useState<number>(1);
   const itemPerPage = 7;
   const dispatch = useAppDispatch();
   const paymentHistory = useAppSelector(
     (state: RootState) => state.payment.payments
   );
+
   const indexOfLastPayment = currentpage * itemPerPage;
   const indexOfFirstPayment = indexOfLastPayment - itemPerPage;
   const currentPayments = paymentHistory.slice(
@@ -18,6 +23,7 @@ const PaymentHistory = () => {
     indexOfLastPayment
   );
   const totalPages = Math.ceil(paymentHistory.length / itemPerPage);
+
   const handlePageChange = (page: number) => {
     if (page > 0 && page <= totalPages) {
       setCurrentpage(page);
@@ -26,22 +32,18 @@ const PaymentHistory = () => {
 
   useEffect(() => {
     dispatch(getAllPayments());
-  }, []);
-
-  useEffect(() => {
-    dispatch(getAllPayments());
-  }, [dispatch]); // Added dispatch to dependency array
+  }, [dispatch]);
 
   if (paymentHistory.length === 0) {
     return (
-      <ContainerData pagename="Payment History">
-        <p>No payment history available.</p>
+      <ContainerData pagename={t("paymentHistory")}>
+        <p>{t("noPaymentHistory")}</p>
       </ContainerData>
     );
   }
 
   return (
-    <ContainerData pagename="Payment History">
+    <ContainerData pagename={t("paymentHistory")}>
       <div className="layout-table">
         <table>
           <thead>
@@ -50,21 +52,21 @@ const PaymentHistory = () => {
                 <input type="checkbox" />
               </th>
               <th className="align-header">
-                Date and Time <Icon icon="octicon:triangle-down-16" />
+                {t("dateAndTime")} <Icon icon="octicon:triangle-down-16" />
               </th>
               <th className="align-header">
-                Products <Icon icon="octicon:triangle-down-16" />
+                {t("products")} <Icon icon="octicon:triangle-down-16" />
               </th>
               <th className="align-header">
-                Created by <Icon icon="octicon:triangle-down-16" />
+                {t("createdBy")} <Icon icon="octicon:triangle-down-16" />
               </th>
               <th className="align-header">
-                Role <Icon icon="octicon:triangle-down-16" />
+                {t("role")} <Icon icon="octicon:triangle-down-16" />
               </th>
               <th className="align-header">
-                Status <Icon icon="octicon:triangle-down-16" />
+                {t("status")} <Icon icon="octicon:triangle-down-16" />
               </th>
-              <th className="button-section">Action</th>
+              <th className="button-section-action">{t("action")}</th>
             </tr>
           </thead>
           <tbody>
@@ -72,9 +74,8 @@ const PaymentHistory = () => {
               <tr key={history._id}>
                 <td>
                   <input type="checkbox" />
-                </td>{" "}
+                </td>
                 <td className="table-data">
-                  {" "}
                   <img
                     width={50}
                     src={`http://localhost:3000/${history.products.productImage}`}
@@ -84,13 +85,12 @@ const PaymentHistory = () => {
                 </td>
                 <td>{history.products.name}</td>
                 <td>{history.createdBy.name}</td>
-                <td>{history.createdBy.role || "N/A"}</td>{" "}
+                <td>{history.createdBy.role || "N/A"}</td>
                 <td>
                   <div className="status-banner">
                     {history.status.toLowerCase()}
                   </div>
                 </td>
-                {/* Handle missing role */}
                 <td>
                   <div className="button-section-wrapper">
                     <div className="button-section">
@@ -126,7 +126,7 @@ const PaymentHistory = () => {
               <Icon icon="iconamoon:arrow-left-2-bold" />
             </button>
             <span>
-              {currentpage} of {totalPages}
+              {t("page")} {currentpage} {t("of")} {totalPages}
             </span>
             <button
               className="pagination-btn"

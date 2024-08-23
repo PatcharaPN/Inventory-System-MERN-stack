@@ -7,8 +7,10 @@ import { createCategory, getCategory } from "../../features/CategorySlice";
 import ContainerData from "../../components/ContainerData/ContainerData";
 import SmallModal from "../../components/Modal/ModalSmall/SmallModal";
 import CustomInput from "../../components/Input/Input";
+import { useTranslation } from "react-i18next"; // Import useTranslation hook
 
 const Category = () => {
+  const { t } = useTranslation(); // Destructure t from useTranslation
   const category = useAppSelector(
     (state: RootState) => state.category.category
   );
@@ -42,36 +44,37 @@ const Category = () => {
     dispatch(createCategory(categoryData));
     setIsModalOpen(false);
   };
+
   return (
     <ContainerData
-      pagename={"Category"}
+      pagename={t("category")}
       Canadd={true}
       onClickAdd={handleOpenModal}
     >
       {isModalOpen ? (
         <SmallModal header={""} onClose={handleCloseModal}>
           <h2 style={{ fontWeight: "bold", marginBottom: "40px" }}>
-            New Category
+            {t("newCategory")}
           </h2>
           <CustomInput
-            label={"Name*"}
-            placeholder="Insert Name"
+            label={t("name")}
+            placeholder={t("insertName")}
             value={name}
             onChange={(e) => setName(e.target.value)}
           />
           <CustomInput
-            label={"Description"}
-            placeholder="Insert Description"
+            label={t("description")}
+            placeholder={t("insertDescription")}
             value={description}
             onChange={(e) => setDescription(e.target.value)}
           />
           <div className="additem-content">
             <div className="btn-section">
               <button className="btn" onClick={handleSubmit}>
-                Save
+                {t("save")}
               </button>
               <button className="btn white" onClick={handleCloseModal}>
-                Discard
+                {t("discard")}
               </button>
             </div>
           </div>
@@ -84,18 +87,18 @@ const Category = () => {
               <input type="checkbox" name="" id="" />
             </th>
             <th className="align-header">
-              Category Name <Icon icon="octicon:triangle-down-16" />
+              {t("categoryName")} <Icon icon="octicon:triangle-down-16" />
             </th>
             <th className="align-header">
-              Products <Icon icon="octicon:triangle-down-16" />
+              {t("products")} <Icon icon="octicon:triangle-down-16" />
             </th>
             <th className="align-header">
-              Created by <Icon icon="octicon:triangle-down-16" />
+              {t("createdBy")} <Icon icon="octicon:triangle-down-16" />
             </th>
             <th className="align-header">
-              Role <Icon icon="octicon:triangle-down-16" />
+              {t("role")} <Icon icon="octicon:triangle-down-16" />
             </th>
-            <th className="button-section">Action</th>
+            <th className="button-section">{t("action")}</th>
           </tr>
         </thead>
         <tbody>

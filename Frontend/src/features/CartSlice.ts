@@ -27,14 +27,14 @@ const cartSlice = createSlice({
         (item) => item.product._id === action.payload._id
       );
       if (existingItem) {
-        if (existingItem.quantity >= action.payload.available) {
+        if (existingItem.quantity >= action.payload.stock) {
           state.outOfStock = true;
         } else {
           existingItem.quantity += 1;
           state.outOfStock = false;
         }
       } else {
-        if (action.payload.available > 0) {
+        if (action.payload.stock > 0) {
           state.items.push({
             product: action.payload,
             quantity: 1,
