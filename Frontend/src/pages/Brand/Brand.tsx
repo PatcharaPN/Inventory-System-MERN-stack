@@ -19,7 +19,7 @@ const BrandPage = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [name, setName] = useState("");
   const [prefix, setPrefix] = useState("");
-
+  const [searchTerm, setSearchTerm] = useState("");
   useEffect(() => {
     dispatch(getBrand());
   }, [dispatch]);
@@ -46,9 +46,13 @@ const BrandPage = () => {
     dispatch(createBrand(brandData));
     setIsModalOpen(false);
   };
-
+  const filteredBrand = brand.filter((brand) =>
+    brand.name.toLowerCase().includes(searchTerm.toLowerCase())
+  );
   return (
     <ContainerData
+      value={searchTerm}
+      onChange={(e) => setSearchTerm(e.target.value)}
       pagename={t("brand")}
       Canadd={true}
       onClickAdd={handleOpenModal}
@@ -118,7 +122,7 @@ const BrandPage = () => {
               </tr>
             </thead>
             <tbody className="content-wrapper">
-              {brand.map((brand) => (
+              {filteredBrand.map((brand) => (
                 <motion.tr
                   whileHover={{
                     scale: 1.005,

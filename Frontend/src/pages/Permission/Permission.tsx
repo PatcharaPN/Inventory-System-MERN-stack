@@ -18,7 +18,7 @@ const PermissionPage = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   return (
-    <ContainerData pagename={t("permission")}>
+    <ContainerData pagename={t("permision")}>
       {isModalOpen ? (
         <Modal
           header={""}

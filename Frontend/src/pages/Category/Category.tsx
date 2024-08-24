@@ -19,7 +19,7 @@ const Category = () => {
     (state: RootState) => state.auth.currentUser
   );
   const [isModalOpen, setIsModalOpen] = useState(false);
-
+  const [searchTerm, setSearchTerm] = useState("");
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
   useEffect(() => {
@@ -44,9 +44,12 @@ const Category = () => {
     dispatch(createCategory(categoryData));
     setIsModalOpen(false);
   };
-
+  const filterdCategory = category.filter((cat) =>
+    cat.name.toLowerCase().includes(searchTerm.toLowerCase())
+  );
   return (
     <ContainerData
+      onChange={(e) => setSearchTerm(e.target.value)}
       pagename={t("category")}
       Canadd={true}
       onClickAdd={handleOpenModal}
@@ -102,7 +105,7 @@ const Category = () => {
           </tr>
         </thead>
         <tbody>
-          {category.map((cat) => (
+          {filterdCategory.map((cat) => (
             <tr key={cat._id}>
               <td>
                 <input type="checkbox" />

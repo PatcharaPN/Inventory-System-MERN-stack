@@ -16,6 +16,7 @@ const PaymentHistory = () => {
     (state: RootState) => state.payment.payments
   );
 
+  const [searchTerm, setSearchTerm] = useState("");
   const indexOfLastPayment = currentpage * itemPerPage;
   const indexOfFirstPayment = indexOfLastPayment - itemPerPage;
   const currentPayments = paymentHistory.slice(
@@ -41,9 +42,15 @@ const PaymentHistory = () => {
       </ContainerData>
     );
   }
-
+  const filteredHistory = paymentHistory.filter((payment) =>
+    payment.createdBy.name.toLowerCase().includes(searchTerm.toLowerCase())
+  );
   return (
-    <ContainerData pagename={t("paymentHistory")}>
+    <ContainerData
+      value={searchTerm}
+      pagename={t("paymentHistory")}
+      onChange={(e) => setSearchTerm(e.target.value)}
+    >
       <div className="layout-table">
         <table>
           <thead>
@@ -70,7 +77,7 @@ const PaymentHistory = () => {
             </tr>
           </thead>
           <tbody>
-            {currentPayments.map((history) => (
+            {filteredHistory.map((history) => (
               <tr key={history._id}>
                 <td>
                   <input type="checkbox" />

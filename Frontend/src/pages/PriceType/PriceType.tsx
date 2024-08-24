@@ -17,6 +17,7 @@ const PriceType = () => {
   const price = useAppSelector((state: RootState) => state.price.price);
   const [openModal, setOpenModal] = useState(false);
   const dispatch = useAppDispatch();
+  const [searchTerm, setSearchTerm] = useState("");
   const [pricename, setPricename] = useState("");
   const [priceUnit, setPriceUnit] = useState("");
   const [description, setDescription] = useState("");
@@ -42,12 +43,16 @@ const PriceType = () => {
     dispatch(createPrice(priceData));
     setOpenModal(false);
   };
-
+  const filteredPrice = price.filter((price) =>
+    price.unit.toLowerCase().includes(searchTerm.toLowerCase())
+  );
   return (
     <div>
       <ContainerData
         pagename={t("priceList")}
         Canadd
+        value={searchTerm}
+        onChange={(e) => setSearchTerm(e.target.value)}
         onClickAdd={handleOpenModal}
       >
         <div className="item-list-wrapper">
@@ -83,7 +88,7 @@ const PriceType = () => {
                 </tr>
               </thead>
               <tbody className="content-wrapper">
-                {price.map((price) => (
+                {filteredPrice.map((price) => (
                   <motion.tr
                     whileHover={{
                       scale: 1.005,

@@ -10,7 +10,7 @@ import { useTranslation } from "react-i18next"; // Import useTranslation hook
 
 const CompositeItem = () => {
   const { t } = useTranslation(); // Get translation function
-
+  const [searchTerm, setSearchTerm] = useState("");
   const dispatch = useAppDispatch();
   const getTotal = useAppSelector(
     (state: RootState) => state.category.composite
@@ -20,7 +20,9 @@ const CompositeItem = () => {
   useEffect(() => {
     dispatch(getTotalComposite());
   }, [dispatch]);
-
+  const filteredComposite = getTotal.filter((Composite) =>
+    Composite.name.toLowerCase().includes(searchTerm.toLowerCase())
+  );
   return (
     <div>
       {isModalOpen ? (
@@ -34,9 +36,14 @@ const CompositeItem = () => {
           <CustomInput label={t("name")} value={""} />
         </SmallModal>
       ) : null}
-      <ContainerData pagename={t("compositeItem")} Canadd>
+      <ContainerData
+        value={searchTerm}
+        pagename={t("compositeItem")}
+        onChange={(e) => setSearchTerm(e.target.value)}
+        Canadd
+      >
         <div className="item-list-wrapper">
-          {getTotal.length === 0 ? (
+          {filteredComposite.length === 0 ? (
             <div className="empty-img">
               <img
                 width={450}

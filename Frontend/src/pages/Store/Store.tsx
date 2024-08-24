@@ -24,7 +24,7 @@ const Store = () => {
   const dispatch = useAppDispatch();
   const [storename, setStoreName] = useState("");
   const [location, setLocation] = useState("");
-
+  const [searchTerm, setSearchTerm] = useState("");
   const [openModal, setOpenModal] = useState(false);
 
   const handleOpenModal = () => {
@@ -72,16 +72,21 @@ const Store = () => {
     };
     dispatch(createStore(storeData));
   };
+  const filteredStore = store.filter((str) =>
+    str.storename.toLowerCase().includes(searchTerm.toLowerCase())
+  );
 
   return (
     <div>
       <ContainerData
+        value={searchTerm}
+        onChange={(e) => setSearchTerm(e.target.value)}
         pagename={t("store")}
         Canadd={true}
         onClickAdd={handleOpenModal}
       >
         <div className="item-list-wrapper">
-          {store.length === 0 ? (
+          {filteredStore.length === 0 ? (
             <div className="empty-img">
               <img
                 width={450}

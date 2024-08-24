@@ -11,7 +11,9 @@ type ContainerProps = {
   children?: ReactNode;
   path?: string;
   headerVisible?: boolean;
+  value?: string;
   onClickAdd?: () => void;
+  onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
   Canadd?: boolean;
   pagenameContainer?: boolean;
 };
@@ -22,6 +24,8 @@ const ContainerData: React.FC<ContainerProps> = ({
   pagename,
   pagenameContainer = true,
   onClickAdd,
+  onChange,
+  value,
   Canadd = false,
   headerVisible = true,
 }) => {
@@ -54,8 +58,11 @@ const ContainerData: React.FC<ContainerProps> = ({
                 <div className="searchbar-wrapper">
                   <Icon className="search-icon" icon="iconamoon:search-bold" />
                   <input
+                    name="search"
                     placeholder={t("searchProduct")}
                     className="searchbar"
+                    value={value}
+                    onChange={onChange}
                     type="text"
                   />
                 </div>

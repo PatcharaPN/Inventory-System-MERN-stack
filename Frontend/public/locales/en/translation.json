@@ -126,5 +126,7 @@
   "checkout": "Checkout",
   "productList": "Product List",
   "cash": "Cash",
-  "notFound": "Oop your content was not found"
+  "notFound": "Oop your content was not found",
+  "permision": "Permission Manager",
+  "loginHistory": "Login History"
 }

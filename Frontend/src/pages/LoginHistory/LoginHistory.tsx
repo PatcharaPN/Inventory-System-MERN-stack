@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import ContainerData from "../../components/ContainerData/ContainerData";
 import { Icon } from "@iconify/react";
 import { RootState, useAppDispatch, useAppSelector } from "../../store/store";
@@ -12,15 +12,23 @@ const LoginHistory = () => {
     (state: RootState) => state.auth.loginHistory
   );
   const dispatch = useAppDispatch();
-
+  const [searchTerm, setSearchTerm] = useState("");
   useEffect(() => {
     dispatch(getHistory());
   }, [dispatch]);
-
+  const filteredUser = loginHistory.filter(
+    (user) =>
+      user.user.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      user.user.name.toUpperCase().includes(searchTerm.toUpperCase())
+  );
   return (
-    <ContainerData pagename={t("loginHistory")}>
+    <ContainerData
+      pagename={t("loginHistory")}
+      value={searchTerm}
+      onChange={(e) => setSearchTerm(e.target.value)}
+    >
       <div className="item-list-wrapper">
-        {loginHistory.length === 0 ? (
+        {filteredUser.length === 0 ? (
           <div className="empty-img">
             <img
               width={450}

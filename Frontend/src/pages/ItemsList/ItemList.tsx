@@ -70,11 +70,12 @@ const ItemList = () => {
   const [image, setImage] = useState<File | null>(null);
   const [OpenModel, setOpenModel] = useState(false);
   const [currency, setCurrency] = useState("");
-  const [currentProduct, setcurrentProduct] = useState<Product | null>(null);
+  const [currentProduct, setcurrentProduct] = useState<Product | any>();
   const currentcy = useAppSelector((state: RootState) => state.price.price);
-
+  const [search, setSearch] = useState("");
   const indexOfLastPayment = currentpage * itemPerPage;
   const indexOfFirstPayment = indexOfLastPayment - itemPerPage;
+  const [searchTerm, setSerchTerm] = useState("");
   const currentProducts = products.slice(
     indexOfFirstPayment,
     indexOfLastPayment
@@ -236,9 +237,14 @@ const ItemList = () => {
       console.log("Fetch complete");
     }
   }, []);
+  const filteredProducts = products.filter((product) =>
+    product.name.toLowerCase().includes(searchTerm.toLowerCase())
+  );
   return (
     <div>
       <ContainerData
+        value={searchTerm}
+        onChange={(e) => setSerchTerm(e.target.value)}
         pagename={"Item"}
         path="/Item/AddItem"
         Canadd={true}
@@ -290,7 +296,7 @@ const ItemList = () => {
                   </tr>
                 </thead>
                 <tbody className="content-wrapper">
-                  {currentProducts.map((product) => (
+                  {filteredProducts.map((product) => (
                     <motion.tr
                       className="hover"
                       whileHover={{
