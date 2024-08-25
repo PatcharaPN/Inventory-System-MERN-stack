@@ -14,6 +14,7 @@ import PaymentPage from "../pages/PaymentPage/PaymentPage";
 import PaymentHistory from "../pages/PaymentHistory/PaymentHistory";
 import PageTranslate from "../pages/textlanguage/PageTranslate";
 import NotFound from "../pages/NotFound/NotFound";
+import Customers from "../pages/Customers/Customers";
 
 const AppRoutes: React.FC = () => {
   return (
@@ -31,6 +32,7 @@ const AppRoutes: React.FC = () => {
       <Route path="/Permission" element={<PermissionPage />} />
       <Route path="/Payment" element={<PaymentPage />} />
       <Route path="/PaymentHistory" element={<PaymentHistory />} />
+      <Route path="/Customers" element={<Customers />} />
     </Routes>
   );
 };

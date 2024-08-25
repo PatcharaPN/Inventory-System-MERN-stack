@@ -10,6 +10,7 @@ export interface History {
   userId: string;
   user: User;
   ipAddress: string;
+  loginFailed: boolean;
   loginTime: Date;
   userAgent: string;
 }
@@ -19,6 +20,7 @@ const initialState = {
   loginHistory: [] as History[],
   users: [] as User[],
   isLoading: false,
+  loginFailed: false,
   error: null as string | null,
 };
 
@@ -91,9 +93,11 @@ const authSlice = createSlice({
       .addCase(loginUser.fulfilled, (state, action) => {
         state.currentUser = action.payload;
         state.isLoading = false;
+        state.loginFailed = false;
       })
       .addCase(loginUser.rejected, (state, action) => {
         state.error = action.payload as string;
+        state.loginFailed = true;
         state.isLoading = false;
       })
       .addCase(getHistory.pending, (state) => {

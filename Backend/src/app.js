@@ -5,6 +5,7 @@ const connectDB = require("./config/db");
 const userRoutes = require("./routes/userRoutes");
 const authRoutes = require("./routes/authRoutes");
 const categoryRoutes = require("./routes/categoryRoutes");
+const customerRoutes = require("./routes/customerRoutes");
 const productRoutes = require("./routes/productRoutes");
 const priceRoutes = require("./routes/priceRoutes");
 const storeRoutes = require("./routes/storeRoutes");
@@ -40,10 +41,11 @@ app.use("/api", authRoutes);
 app.use("/api", compositeItemRoutes);
 app.use("/api", unitRoutes);
 app.use("/api", paymentRoutes);
+app.use("/api", customerRoutes);
 
 app.use((err, req, res, next) => {
   console.error(err.stack);
-  res.status(500).send("Something broke!");
+  res.status(500).send(err);
 });
 
 module.exports = app;

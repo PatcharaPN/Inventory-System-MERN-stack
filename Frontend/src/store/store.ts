@@ -4,6 +4,7 @@ import authReducer from "../features/AuthSlice";
 import productReducer from "../features/ProductSlice";
 import unitReducer from "../features/UnitSlice";
 import categoryReducer from "../features/CategorySlice";
+import customerReducer from "../features/customerSlice";
 import priceReducer from "../features/PriceSlice";
 import storeReducer from "../features/StoreSlice";
 import cartReducer from "../features/CartSlice";
@@ -19,6 +20,7 @@ const store = configureStore({
     cart: cartReducer,
     unit: unitReducer,
     payment: paymentReducer,
+    customer: customerReducer,
   },
 });
 export type RootState = ReturnType<typeof store.getState>;

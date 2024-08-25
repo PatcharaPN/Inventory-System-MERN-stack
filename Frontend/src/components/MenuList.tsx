@@ -19,7 +19,7 @@ export type MenuItem = {
 };
 
 export const menuItems: MenuItem[] = [
-  { icon: "material-symbols:dashboard", label: "Selling Interface", path: "/" },
+  { icon: "uil:shop", label: "Selling Interface", path: "/" },
   {
     icon: "material-symbols:dashboard",
     label: "Dashboard",
@@ -65,10 +65,10 @@ export const menuItems: MenuItem[] = [
     icon: "akar-icons:cart",
     label: "Member Customer",
     submenu: [
-      { label: "Customers", onClick: () => console.log("Items clicked") },
       {
-        label: "Sales Orders",
-        onClick: () => console.log("Composite Items clicked"),
+        label: "Customers",
+        onClick: () => console.log("Items clicked"),
+        path: "/Customers",
       },
       { label: "Packages", onClick: () => console.log("Category clicked") },
       {

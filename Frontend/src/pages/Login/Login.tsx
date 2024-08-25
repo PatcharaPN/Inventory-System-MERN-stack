@@ -2,16 +2,22 @@ import React, { useState, useEffect } from "react";
 import "./Login.scss";
 import { Icon } from "@iconify/react/dist/iconify.js";
 import InputButton from "../../components/InputButton/InputButton";
-import { useAppDispatch } from "../../store/store";
+import { RootState, useAppDispatch, useAppSelector } from "../../store/store";
 import { loginUser } from "../../features/AuthSlice";
 import { useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
+import Swal from "sweetalert2";
 
 const Login = () => {
+  const { t } = useTranslation();
   const [email, setemail] = useState("");
   const [password, setPassword] = useState("");
   const [slideOut, setSlideOut] = useState(false);
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
+  const loginfail = useAppSelector(
+    (state: RootState) => state.auth.loginFailed
+  );
 
   useEffect(() => {
     return () => setSlideOut(true);
@@ -26,7 +32,14 @@ const Login = () => {
       .then(() => {
         navigate("/");
       });
-    console.log({ email, password });
+    if (loginfail) {
+      Swal.fire({
+        icon: "error",
+        title: t("loginfail"),
+        text: t("loginfailreason"),
+        footer: `<a href="#">${t("checkpassword")}</a>`,
+      });
+    }
   };
 
   return (
@@ -56,7 +69,7 @@ const Login = () => {
               </div>
 
               <button type="submit" className="btn login">
-                Login
+                {t("login")}
               </button>
             </form>
             <div className="social-login">
