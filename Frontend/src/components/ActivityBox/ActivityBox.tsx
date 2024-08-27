@@ -21,7 +21,7 @@ const TYPE_STYLES: Record<string, { color: string; icon: string }> = {
   error: { color: "#FE4646", icon: "ri:bill-line" },
   incoming: {
     color: "#7F5AF0",
-    icon: "ic:outline-upcoming",
+    icon: "bi:people",
   },
 };
 const ActivityBox: React.FC<ActivityProps> = ({

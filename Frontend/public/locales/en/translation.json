@@ -4,14 +4,14 @@
     "complete": "Complete",
     "productsSale": "Products Sale",
     "pendingRequests": "Pending Requests",
-    "incomingInvoices": "Incoming Invoices"
+    "incomingInvoices": "Member subscribed"
   },
   "activityBoxUnit": {
     "lowStock": "Item",
     "complete": "Saled Product",
     "productsSale": "Qty",
     "pendingRequests": "Task",
-    "incomingInvoices": "Qty"
+    "incomingInvoices": "Member"
   },
   "graphLanguage": {
     "headerBar": "Monthly Summary",
@@ -43,6 +43,7 @@
     "Packages": "Packages",
     "Shipments": "Shipments",
     "Purchases History": "Purchases History",
+    "lowstockitem": "Low Stock Item",
     "Invoices": "Invoices",
     "Bills": "Bills",
     "User Permission": "User Permission",
@@ -134,5 +135,14 @@
   "loginfailreason": "Try to check your email and password to try again",
   "checkpassword": "Still have a problem ? contact support",
   "customers": "Customers",
-  "customername": "Customer name"
+  "customername": "Customer name",
+  "phonenumber": "Phone number",
+  "email": "Email",
+  "lowStock": "Low Stock Item",
+  "package": "Packaging",
+  "packageName": "Package Name",
+  "packageID": "ID",
+  "owner": "Buyer",
+  "date": "DD/MM/YYYY",
+  "time": "Time"
 }

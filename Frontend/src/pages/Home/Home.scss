@@ -151,5 +151,22 @@ body {
   align-content: center;
 }
 
-@media screen {
+@media (max-width: 479px) {
+  .graph-analysis {
+    display: grid;
+    width: 100%;
+    height: fit-content;
+    gap: 20px;
+  }
+  .dashboard-menu {
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+    flex-direction: column;
+  }
+  .menu-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
 }

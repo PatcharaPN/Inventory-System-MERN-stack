@@ -1,6 +1,5 @@
 import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
 import {
-  addBrand,
   addProduct,
   deleteProduct,
   getAmount,
@@ -20,6 +19,7 @@ export interface LowStockItem {
   _id: string;
   lowStock: number;
   total: number;
+  products: Product;
 }
 export interface ProductState {
   products: Product[];
@@ -60,7 +60,7 @@ export const getAmountSummary = createAsyncThunk<getAllAmount[]>(
       console.error("Error when fetching amount summary", error);
       throw error;
     }
-  }
+  },
 );
 
 export const addItem = createAsyncThunk<Product, FormData>(
@@ -72,7 +72,7 @@ export const addItem = createAsyncThunk<Product, FormData>(
     } catch (error: any) {
       return rejectWithValue(error.response?.data || error.message);
     }
-  }
+  },
 );
 
 export const lowStock = createAsyncThunk<LowStockItem[]>(
@@ -85,28 +85,28 @@ export const lowStock = createAsyncThunk<LowStockItem[]>(
       console.error("Error fetching low stock data:", error);
       throw error;
     }
-  }
+  },
 );
 
 export const createBrand = createAsyncThunk(
   "product/createBrand",
   async (
     brandData: { name: string; prefix: string; addedBy: string },
-    thunkAPI
+    thunkAPI,
   ) => {
     try {
       const response = await axios.post(
         "http://localhost:3000/api/brand",
         brandData,
-        { timeout: 10000 }
+        { timeout: 10000 },
       );
       return response.data;
     } catch (error: any) {
       return thunkAPI.rejectWithValue(
-        error.response?.data || error.message || "Failed to create brand"
+        error.response?.data || error.message || "Failed to create brand",
       );
     }
-  }
+  },
 );
 
 export const getAllProducts = createAsyncThunk<Product[]>(
@@ -130,14 +130,14 @@ export const getAllProducts = createAsyncThunk<Product[]>(
           acc[key].reserved += product.reserved;
           return acc;
         },
-        {} as Record<string, Product & { _id: string }>
+        {} as Record<string, Product & { _id: string }>,
       );
       return Object.values(groupedProducts);
     } catch (error) {
       console.error("Error when fetching products", error);
       throw error;
     }
-  }
+  },
 );
 
 export const deleteOne = createAsyncThunk<Product, string>(
@@ -149,7 +149,7 @@ export const deleteOne = createAsyncThunk<Product, string>(
     } catch (error) {
       return rejectWithValue("Failed to delete the product");
     }
-  }
+  },
 );
 
 const productSlice = createSlice({
@@ -180,7 +180,7 @@ const productSlice = createSlice({
       .addCase(deleteOne.fulfilled, (state, action) => {
         state.loading = false;
         state.products = state.products.filter(
-          (product) => product._id !== action.payload._id
+          (product) => product._id !== action.payload._id,
         );
       })
       .addCase(deleteOne.rejected, (state, action) => {

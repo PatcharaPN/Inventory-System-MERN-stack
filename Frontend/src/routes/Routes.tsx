@@ -15,6 +15,8 @@ import PaymentHistory from "../pages/PaymentHistory/PaymentHistory";
 import PageTranslate from "../pages/textlanguage/PageTranslate";
 import NotFound from "../pages/NotFound/NotFound";
 import Customers from "../pages/Customers/Customers";
+import LowstockPage from "../pages/LowStock/LowstockPage";
+import Package from "../pages/Package/Package";
 
 const AppRoutes: React.FC = () => {
   return (
@@ -33,6 +35,9 @@ const AppRoutes: React.FC = () => {
       <Route path="/Payment" element={<PaymentPage />} />
       <Route path="/PaymentHistory" element={<PaymentHistory />} />
       <Route path="/Customers" element={<Customers />} />
+      <Route path="/LowStock" element={<LowstockPage />} />
+      <Route path="/Package" element={<Package />} />
+      <Route path="/LowStock" element={<LowstockPage />} />
     </Routes>
   );
 };

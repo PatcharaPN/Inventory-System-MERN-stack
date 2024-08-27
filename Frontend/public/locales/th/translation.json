@@ -4,14 +4,14 @@
     "complete": "เสร็จสมบูรณ์",
     "productsSale": "สินค้าที่ขาย",
     "pendingRequests": "คำขอที่รอดำเนินการ",
-    "incomingInvoices": "ใบแจ้งหนี้ที่กำลังจะมา"
+    "incomingInvoices": "จำนวนสมาชิก"
   },
   "activityBoxUnit": {
     "lowStock": "รายการ",
     "complete": "สินค้าที่ขาย",
     "productsSale": "ชิ้น",
     "pendingRequests": "รายการ",
-    "incomingInvoices": "ชิ้น"
+    "incomingInvoices": "ท่าน"
   },
   "graphLanguage": {
     "headerBar": "กราฟสรุปรายเดือน",
@@ -41,6 +41,7 @@
     "Customers": "ลูกค้า",
     "Sales Orders": "คำสั่งซื้อ",
     "Packages": "แพ็กเกจ",
+    "lowstockitem": "รายการสิ้นค้าไกล้หมด",
     "Shipments": "การจัดส่ง",
     "Purchases History": "ประวัติการซื้อ",
     "Invoices": "ใบแจ้งหนี้",
@@ -134,5 +135,14 @@
   "loginfailreason": "ลองเช็ครหัสผ่านกับอีเมลล์ก่อนทำการล็อคอินอีกครั้ง",
   "checkpassword": "ยังคงพบปัญหาอยู่ใช่ไหม ติดต่อซัพพอร์ทดูสิ",
   "customers": "รายการลูกค้า",
-  "customername": "ชื่อลูกค้า"
+  "customername": "ชื่อลูกค้า",
+  "phonenumber": "เบอร์มือถือ",
+  "email": "อีเมลล์",
+  "lowStock": "รายการสินค้าไกล้หมด",
+  "package": "การแพ็คสินค้า",
+  "packageName": "รายชื่อแพ็คเกจ",
+  "packageID": "ไอดี",
+  "owner": "ผู้ซื้อ",
+  "date": "วว/ดด/ปปปป",
+  "time": "เวลา"
 }

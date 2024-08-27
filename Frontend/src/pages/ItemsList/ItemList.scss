@@ -259,3 +259,31 @@ td {
   flex-direction: column;
   gap: 1rem;
 }
+
+@media (max-width: 479px) {
+  .searchbar {
+    z-index: 1;
+    width: 100%;
+    padding: 10px 10px 10px 40px;
+    border: none;
+    border-radius: 10px;
+  }
+  .searchbar-wrapper {
+    position: relative;
+    display: none;
+    align-items: center;
+    border-radius: 10px;
+    border: solid 1px #94a1b2;
+    .search-icon {
+      display: none;
+      left: 10px;
+    }
+  }
+  .align-header {
+    display: none;
+  }
+  th,
+  .button-section {
+    display: none;
+  }
+}

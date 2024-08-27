@@ -2,12 +2,24 @@ import React, { useEffect, useState } from "react";
 import "./Header.scss";
 import { Icon } from "@iconify/react/dist/iconify.js";
 import { RootState, useAppDispatch, useAppSelector } from "../../store/store";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import i18n from "../../i18n";
+import { menuItems } from "../MenuList";
+import { useTranslation } from "react-i18next";
 
-const Header = () => {
+type MenuListProps = {
+  isCollapsed: boolean;
+};
+
+const Header: React.FC<MenuListProps> = ({ isCollapsed }) => {
   const [isPopover, setPopover] = useState(false);
   const [language, setLanguage] = useState(i18n.language);
+  const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+  const [expandedMenus, setExpandedMenus] = useState<number | null>(null);
+  const { t } = useTranslation();
+  const toggleSubmenu = (index: number) => {
+    setExpandedMenus((prev) => (prev === index ? null : index));
+  };
   const navigate = useNavigate();
   const currentUser = useAppSelector(
     (state: RootState) => state.auth.currentUser
@@ -29,6 +41,23 @@ const Header = () => {
     localStorage.removeItem("currentUser");
     localStorage.removeItem("accessToken");
     navigate("/login");
+  };
+
+  const toggleMenu = (index: number) => {
+    setExpandedMenus((prev) => (prev === index ? null : index));
+  };
+
+  const handleMenuClick = (item: any, index: number) => {
+    if (item.submenu) {
+      toggleSubmenu(index);
+    } else {
+      setIsDrawerOpen(false);
+    }
+  };
+
+  const handleSubmenuClick = (submenu: any) => {
+    setIsDrawerOpen(false);
+    submenu.onClick?.();
   };
 
   const handleLanguageChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
@@ -54,6 +83,28 @@ const Header = () => {
 
   return (
     <div className="head-container">
+      <div className="menu-icon-mobiles">
+        <div className="user-section-mobile">
+          <div
+            className="user-pic"
+            style={{
+              border:
+                currentUser.role === "admin" ? "solid 2px #00FF95" : "none",
+            }}
+          >
+            {getUserInitials(currentUser.username).toUpperCase()}
+          </div>{" "}
+          <p>
+            {currentUser.username} ({currentUser.role})
+          </p>
+        </div>
+        <Icon
+          icon="charm:menu-hamburger"
+          width={35}
+          color="#2DB67D"
+          onClick={() => setIsDrawerOpen(!isDrawerOpen)}
+        />
+      </div>
       <div className="user-container">
         <Icon color="#7F5AF0" icon="uil:setting" width={30} />
         <Icon color="#7F5AF0" icon="material-symbols:mail" width={30} />
@@ -97,6 +148,62 @@ const Header = () => {
           }}
         >
           {getUserInitials(currentUser.username).toUpperCase()}
+        </div>
+      </div>
+
+      <div className={`drawer-menu-mobile ${isDrawerOpen ? "open" : ""}`}>
+        <div className="menu-list">
+          <ul className="menu-ul">
+            {menuItems.map((item, index) => (
+              <li
+                key={item.label}
+                className={`menu-item ${
+                  expandedMenus === index ? "expanded" : ""
+                }`}
+              >
+                <Link to={item.path || "#"}>
+                  <div
+                    className="menu-item-content"
+                    onClick={() => handleMenuClick(item, index)}
+                  >
+                    <div
+                      className="menu-items"
+                      onClick={() => !item.submenu && setIsDrawerOpen(false)}
+                    >
+                      <Icon color="#7F5AF0" icon={item.icon} width={25} />
+                      {t(`menuItems.${item.label}`)}
+                    </div>
+                    {item.submenu && (
+                      <Icon
+                        icon={
+                          expandedMenus === index
+                            ? "octicon:triangle-down-16"
+                            : "octicon:triangle-right-16"
+                        }
+                        color="#2DB67D"
+                        width={25}
+                        className="submenu-toggle"
+                      />
+                    )}
+                  </div>
+                </Link>
+                {item.submenu && !isCollapsed && (
+                  <ul className="submenu">
+                    {item.submenu.map((subItem) => (
+                      <Link key={subItem.label} to={subItem.path || "#"}>
+                        <li
+                          className="submenu-item"
+                          onClick={() => handleSubmenuClick(subItem)}
+                        >
+                          {t(`menuItems.${subItem.label}`)}
+                        </li>
+                      </Link>
+                    ))}
+                  </ul>
+                )}
+              </li>
+            ))}
+          </ul>
         </div>
       </div>
     </div>

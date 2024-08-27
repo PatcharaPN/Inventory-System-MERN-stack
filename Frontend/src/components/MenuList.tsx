@@ -59,6 +59,11 @@ export const menuItems: MenuItem[] = [
         onClick: () => console.log("Price Types clicked"),
         path: "/Price",
       },
+      {
+        label: "lowstockitem",
+        onClick: () => console.log("Price Types clicked"),
+        path: "/LowStock",
+      },
     ],
   },
   {
@@ -70,7 +75,7 @@ export const menuItems: MenuItem[] = [
         onClick: () => console.log("Items clicked"),
         path: "/Customers",
       },
-      { label: "Packages", onClick: () => console.log("Category clicked") },
+      { label: "Packages", onClick: () => console.log("Category clicked"), path: "/Package" },
       {
         label: "Shipments",
         onClick: () => console.log("Price Types clicked"),

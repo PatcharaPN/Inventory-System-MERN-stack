@@ -40,3 +40,27 @@
     max-width: 300px;
   }
 }
+@media (max-width: 479px) {
+  /* Styles for mobile phones */
+  .box-container {
+    display: block;
+    cursor: pointer;
+    padding-top: 0;
+    padding-left: 1rem;
+    font-size: 0.9rem;
+    margin: 0px;
+    border: solid 1px #eaeffd;
+    width: 100%;
+    height: 60px;
+    border-radius: 10px;
+    display: flex;
+    justify-content: start;
+    align-items: center;
+    flex-direction: row;
+    gap: 1.4rem;
+    background-color: #f4f7ff;
+  }
+  .see-more {
+    display: none;
+  }
+}

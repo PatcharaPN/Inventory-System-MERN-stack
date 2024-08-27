@@ -21,23 +21,31 @@ const getLowStock = async (req, res) => {
     const products = await Product.aggregate([
       {
         $match: {
-          stock: { $lt: 10 },
+          stock: { $lt: 10 }, // Filter for products with stock less than 10
         },
       },
       {
         $group: {
           _id: null,
-          total: { $sum: 1 },
+          total: { $sum: 1 }, // Get the total count of low stock products
+          products: { $push: "$$ROOT" }, // Collect the products themselves
         },
       },
       {
         $project: {
-          _id: 0,
+          _id: 0, // Exclude the _id field
           total: 1,
+          products: 1, // Include the products array in the response
         },
       },
     ]);
-    res.status(201).json(products);
+
+    // If no products have low stock, return an empty response with total 0
+    if (products.length === 0) {
+      return res.status(200).json({ total: 0, products: [] });
+    }
+
+    res.status(200).json(products[0]); // Send the first (and only) aggregated result
   } catch (error) {
     console.error("Error fetching low stock products:", error);
     res.status(500).json({ message: "Internal server error" });

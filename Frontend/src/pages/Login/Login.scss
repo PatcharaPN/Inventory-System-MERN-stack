@@ -132,3 +132,23 @@
     opacity: 0;
   }
 }
+@media (max-width: 479px) {
+  .auth-form {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: fit-content;
+    border-radius: 20px;
+    height: 700px;
+    background-color: #ffffff00;
+  }
+  .header-text {
+    padding-top: 2rem;
+    padding-left: 2rem;
+  }
+  .image-section {
+    display: none;
+    justify-content: center;
+    align-items: center; }
+}

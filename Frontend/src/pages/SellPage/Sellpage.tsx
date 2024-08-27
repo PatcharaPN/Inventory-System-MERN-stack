@@ -11,7 +11,6 @@ import Swal from "sweetalert2";
 import { useNavigate } from "react-router-dom";
 import Modal from "../../components/Modal/Modal";
 import { createPayment } from "../../features/paymentSlice";
-import ItemList from "../ItemsList/ItemList";
 import { useTranslation } from "react-i18next"; // Import useTranslation
 import i18n from "../../i18n";
 
@@ -21,7 +20,7 @@ const Sellpage = () => {
   const [isOpen, setIsOpen] = useState(false);
   const dispatch = useAppDispatch();
   const categories = useAppSelector(
-    (state: RootState) => state.category.category
+    (state: RootState) => state.category.category,
   );
   const products = useAppSelector((state: RootState) => state.product.products);
   const cart = useAppSelector((state: RootState) => state.cart.items);
@@ -31,8 +30,6 @@ const Sellpage = () => {
   const outOfStock = useAppSelector((state) => state.cart.outOfStock);
   const [isModalOpen, setModalOpen] = useState(false);
   const [createdBy, setcreatedBy] = useState("");
-  const loading = useAppSelector((state) => state.product.loading);
-  const [showAlert, setAlert] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -54,7 +51,7 @@ const Sellpage = () => {
   const subtotal = useMemo(() => {
     return cart.reduce(
       (acc, item) => acc + item.product.price * item.quantity,
-      0
+      0,
     );
   }, [cart]);
 
@@ -122,7 +119,7 @@ const Sellpage = () => {
     setIsOpen(false);
   };
 
-  const toggleMenu = (productID: any) => {
+  const toggleMenu = (productID: string) => {
     setExpandId((prevID) => (prevID === productID ? null : productID));
   };
   const isThaiLanguage = i18n.language === "th";
@@ -175,20 +172,6 @@ const Sellpage = () => {
                 .map((products) => (
                   <motion.div
                     key={products._id}
-                    style={{ opacity: products.stock === 0 ? 0.5 : 1 }}
-                    whileHover={{
-                      scale: products.stock === 0 ? 1 : 1.1,
-                      boxShadow:
-                        products.stock === 0
-                          ? ""
-                          : "0px 8px 16px rgba(0, 0, 0, 0.3)",
-                    }}
-                    transition={{
-                      duration: 0.3,
-                      type: "spring",
-                      stiffness: 300,
-                      damping: 20,
-                    }}
                     className="product-card"
                     onClick={
                       products.stock === 0
@@ -198,15 +181,15 @@ const Sellpage = () => {
                   >
                     <div>
                       <div className="top-product-card">
-                        <div>{products.productID}</div>
-                        <div>{products.stock}</div>
+                        <p>{products.productID}</p>
+                        <p>{products.stock}</p>
                       </div>
                       <img
                         className="productcard-img"
                         src={`http://localhost:3000/${products.productImage}`}
                         alt={products.name}
                       />
-                      <div>{products.name}</div>
+                      <p className="product-name">{products.name}</p>
                       <div className="price-section">
                         <div>{products.price}</div>
                         <div>{products.priceunit}</div>

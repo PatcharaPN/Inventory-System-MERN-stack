@@ -9,6 +9,7 @@ import priceReducer from "../features/PriceSlice";
 import storeReducer from "../features/StoreSlice";
 import cartReducer from "../features/CartSlice";
 import paymentReducer from "../features/paymentSlice";
+import packageReducer from "../features/packageSlice";
 
 const store = configureStore({
   reducer: {
@@ -21,6 +22,7 @@ const store = configureStore({
     unit: unitReducer,
     payment: paymentReducer,
     customer: customerReducer,
+    package: packageReducer,
   },
 });
 export type RootState = ReturnType<typeof store.getState>;
