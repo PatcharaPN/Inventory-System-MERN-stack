@@ -16,7 +16,7 @@ const Login = () => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const loginfail = useAppSelector(
-    (state: RootState) => state.auth.loginFailed
+    (state: RootState) => state.auth.loginFailed,
   );
 
   useEffect(() => {
@@ -24,7 +24,7 @@ const Login = () => {
   }, []);
 
   const handleSubmit = (
-    e: React.FormEvent<HTMLInputElement | HTMLFormElement>
+    e: React.FormEvent<HTMLInputElement | HTMLFormElement>,
   ) => {
     e.preventDefault();
     dispatch(loginUser({ email, password }))
