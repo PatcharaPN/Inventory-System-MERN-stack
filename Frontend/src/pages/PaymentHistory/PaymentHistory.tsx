@@ -42,7 +42,7 @@ const PaymentHistory = () => {
       </ContainerData>
     );
   }
-  const filteredHistory = paymentHistory.filter((payment) =>
+  const filteredHistory = currentPayments.filter((payment) =>
     payment.createdBy.name.toLowerCase().includes(searchTerm.toLowerCase())
   );
   return (
@@ -52,7 +52,7 @@ const PaymentHistory = () => {
       onChange={(e) => setSearchTerm(e.target.value)}
     >
       <div className="layout-table">
-        <table>
+        <table className="table-container-list">
           <thead>
             <tr>
               <th>
@@ -78,7 +78,7 @@ const PaymentHistory = () => {
           </thead>
           <tbody>
             {filteredHistory.map((history) => (
-              <tr key={history._id}>
+              <tr key={history._id} className="history-list">
                 <td>
                   <input type="checkbox" />
                 </td>

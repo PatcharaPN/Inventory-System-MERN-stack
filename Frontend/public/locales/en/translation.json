@@ -144,5 +144,6 @@
   "packageID": "ID",
   "owner": "Buyer",
   "date": "DD/MM/YYYY",
-  "time": "Time"
+  "time": "Time",
+  "editUserPermission": "Edit user permission"
 }

@@ -2,6 +2,7 @@ import React from "react";
 import "./Input.scss";
 type InputProps = {
   label: string;
+  name?: string;
   type?: string;
   placeholder?: string;
   required?: boolean;
@@ -10,6 +11,7 @@ type InputProps = {
 };
 
 const CustomInput: React.FC<InputProps> = ({
+  name,
   label,
   type = "text",
   placeholder,
@@ -26,6 +28,7 @@ const CustomInput: React.FC<InputProps> = ({
         {label}
       </p>
       <input
+        name={name}
         type={type}
         className="additem-input-text"
         placeholder={placeholder}

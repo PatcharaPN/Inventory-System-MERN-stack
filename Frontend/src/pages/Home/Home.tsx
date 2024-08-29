@@ -8,9 +8,7 @@ import {
   lowStock,
 } from "../../features/ProductSlice";
 import { getAmountOfPayment } from "../../features/paymentSlice";
-import MyChart from "../../components/Graph/BarChart";
 import { Product } from "../../types/interface";
-import WeeklyLineChart from "../../components/Graph/WeekChart";
 import { useTranslation } from "react-i18next";
 import "../../i18n";
 import { useNavigate } from "react-router-dom";
@@ -19,21 +17,22 @@ import { getAmountCustomer } from "../../features/customerSlice";
 
 const Home = () => {
   const { t } = useTranslation();
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [newProducts, setNewProducts] = useState<Product[]>([]);
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const amountCustomer = useAppSelector(
-    (state: RootState) => state.customer.totalcustomer,
+    (state: RootState) => state.customer.totalcustomer
   );
   const amountPayment = useAppSelector(
-    (state: RootState) => state.payment.amount,
+    (state: RootState) => state.payment.amount
   );
   const totalAmount = useAppSelector(
-    (state: RootState) => state.product.totalAmount,
+    (state: RootState) => state.product.totalAmount
   );
   const product = useAppSelector((state: RootState) => state.product.products);
   const lowStockProducts = useAppSelector(
-    (state: RootState) => state.product.lowStock,
+    (state: RootState) => state.product.lowStock
   );
 
   useEffect(() => {
@@ -46,11 +45,11 @@ const Home = () => {
     if (product.length > 0) {
       const lastedSevenday = Date.now() - 7 * 24 * 60 * 60 * 1000;
       const filteredProducts = product.filter(
-        (products) => new Date(products.createdAt).getTime() >= lastedSevenday,
+        (products) => new Date(products.createdAt).getTime() >= lastedSevenday
       );
       const sortedProducts = filteredProducts.sort(
         (a, b) =>
-          new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime(),
+          new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
       );
       setNewProducts(sortedProducts.slice(0, 4));
     }
@@ -115,16 +114,6 @@ const Home = () => {
           color={"#FE4646"}
           text={t("activityBox.incomingInvoices")}
         />
-      </div>
-      <div className="graph-analysis">
-        <div className="dashboard-graph">
-          <MyChart />
-        </div>
-        <div className="dashboard-graph-line">
-          <div>
-            <WeeklyLineChart />
-          </div>
-        </div>
       </div>
     </div>
   );

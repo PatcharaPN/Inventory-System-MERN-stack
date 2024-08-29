@@ -17,6 +17,7 @@ import i18n from "../../i18n";
 const Sellpage = () => {
   const { t } = useTranslation(); // Initialize useTranslation
   const user = useAppSelector((state: RootState) => state.auth.currentUser);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [isOpen, setIsOpen] = useState(false);
   const dispatch = useAppDispatch();
   const categories = useAppSelector(

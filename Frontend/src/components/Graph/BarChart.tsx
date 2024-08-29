@@ -1,3 +1,4 @@
+import { TooltipItem } from "chart.js";
 import { Bar } from "react-chartjs-2";
 import "./BarChart.scss";
 import {
@@ -69,7 +70,7 @@ const BarChart: React.FC = () => {
       },
       tooltip: {
         callbacks: {
-          label: (context: any) => {
+          label: (context: TooltipItem<"bar">) => {
             let label = context.dataset.label || "";
             if (label) {
               label += ": ";
@@ -110,8 +111,8 @@ const BarChart: React.FC = () => {
   };
 
   return (
-    <div>
-      <h1>{t("graphLanguage.headerBar")}</h1>
+    <div className="bar-wrapper">
+      <h1 className="bar-header">{t("graphLanguage.headerBar")}</h1>
       <div className="chart-container">
         <Bar className="bar-element" data={data} options={options} />
       </div>

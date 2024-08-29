@@ -144,5 +144,6 @@
   "packageID": "ไอดี",
   "owner": "ผู้ซื้อ",
   "date": "วว/ดด/ปปปป",
-  "time": "เวลา"
+  "time": "เวลา",
+  "editUserPermission": "จัดการสิทธ์ผู้ใช้"
 }

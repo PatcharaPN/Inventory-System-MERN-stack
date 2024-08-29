@@ -170,3 +170,49 @@ body {
     justify-content: center;
   }
 }
+@media (min-width: 768px) and (max-width: 1024px) {
+  .dashboard-menu {
+    height: 100%;
+  }
+  .dashboard-menu {
+    @extend .dashboard;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 1rem;
+  }
+}
+@container (min-width: 300px) {
+  .dashboard-graph {
+    /* คุณสามารถปรับขนาดของกราฟตามขนาดของ container ที่นี่ */
+    max-height: 400px;
+  }
+
+  .dashboard-graph-line {
+    /* คุณสามารถปรับขนาดของกราฟ line ตามขนาดของ container ที่นี่ */
+    max-height: 400px;
+  }
+}
+
+@container (min-width: 600px) {
+  .dashboard-graph {
+    /* การปรับขนาดเพิ่มเติมเมื่อ container ใหญ่ขึ้น */
+    max-height: 500px;
+  }
+
+  .dashboard-graph-line {
+    /* การปรับขนาดเพิ่มเติมเมื่อ container ใหญ่ขึ้น */
+    max-height: 500px;
+  }
+}
+
+@container (min-width: 900px) {
+  .dashboard-graph {
+    /* การปรับขนาดเพิ่มเติมเมื่อ container ใหญ่ขึ้น */
+    max-height: 600px;
+  }
+
+  .dashboard-graph-line {
+    /* การปรับขนาดเพิ่มเติมเมื่อ container ใหญ่ขึ้น */
+    max-height: 600px;
+  }
+}

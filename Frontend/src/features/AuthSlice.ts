@@ -1,11 +1,24 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import Cookies from "js-cookie";
+import { jwtDecode } from "jwt-decode";
 import { login } from "../services/authService";
 import { getLoginHistory } from "../services/ApiService";
 import { User } from "../types/interface";
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 
 const storedUser = localStorage.getItem("currentUser");
 
+interface DecodedToken {
+  exp: number;
+}
+interface ErrorResponse {
+  message: string;
+}
+
+interface UpdateUserArgs {
+  userId: string;
+  role: string;
+}
 export interface History {
   userId: string;
   user: User;
@@ -14,6 +27,27 @@ export interface History {
   loginTime: Date;
   userAgent: string;
 }
+
+const getTokenExpired = (token: string): Date | null => {
+  try {
+    const decoded: DecodedToken = jwtDecode(token);
+    const expirationDate = new Date(decoded.exp * 1000);
+    return expirationDate;
+  } catch (error) {
+    console.error("Failed to decode token", error);
+    return null;
+  }
+};
+
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+const isTokenValid = (): boolean => {
+  const token = Cookies.get("accessToken");
+  if (!token) {
+    return false;
+  }
+  const expirationDate = getTokenExpired(token);
+  return expirationDate ? expirationDate > new Date() : false;
+};
 
 const initialState = {
   currentUser: storedUser ? JSON.parse(atob(storedUser)) : null,
@@ -29,13 +63,28 @@ export const getAllUsers = createAsyncThunk(
   async (_, { rejectWithValue }) => {
     try {
       const response = await axios.get("http://localhost:3000/api/users");
-      console.log(response.data);
-
       return response.data;
     } catch (error) {
+      const axiosError = error as AxiosError<ErrorResponse>;
       return rejectWithValue(
-        (error as any).response?.data?.message || "Failed to fetch users"
+        axiosError.response?.data.message || "failed to fetched all user"
       );
+    }
+  }
+);
+
+export const upDatedUser = createAsyncThunk<User, UpdateUserArgs>(
+  "user/edit",
+  async ({ userId, role }, { rejectWithValue }) => {
+    try {
+      const res = await axios.put(
+        `http://localhost:3000/api/user/update/${userId}`,
+        { userId, role }
+      );
+      return res.data;
+    } catch (error) {
+      const axiosError = error as AxiosError<ErrorResponse>;
+      return rejectWithValue(axiosError.response?.data.message);
     }
   }
 );
@@ -47,32 +96,33 @@ export const getHistory = createAsyncThunk(
       const response = await getLoginHistory();
       return response;
     } catch (error) {
-      return rejectWithValue(
-        (error as any).response?.data?.message ||
-          "Failed to fetch login history"
-      );
+      const axiosError = error as AxiosError<ErrorResponse>;
+      return rejectWithValue(axiosError.response?.data.message);
     }
   }
 );
 
-export const loginUser = createAsyncThunk(
-  "auth/loginUser",
-  async (
-    { email, password }: { email: string; password: string },
-    { rejectWithValue }
-  ) => {
-    try {
-      const user = await login(email, password);
-      localStorage.setItem("currentUser", btoa(JSON.stringify(user)));
-      localStorage.setItem("accessToken", user.token);
-      return user;
-    } catch (error) {
-      return rejectWithValue(
-        (error as any).response?.data?.message || "Login failed"
-      );
-    }
+export const loginUser = createAsyncThunk<
+  User,
+  { email: string; password: string },
+  { rejectValue: string }
+>("auth/loginUser", async ({ email, password }, { rejectWithValue }) => {
+  try {
+    const user = await login(email, password);
+    localStorage.setItem("currentUser", btoa(JSON.stringify(user)));
+    Cookies.set("accessToken", user.token, {
+      expires: 7,
+      secure: true,
+      sameSite: "strict",
+    });
+    return user;
+  } catch (error) {
+    const axiosError = error as AxiosError<ErrorResponse>;
+    return rejectWithValue(
+      axiosError.response?.data?.message || "Login failed"
+    );
   }
-);
+});
 
 const authSlice = createSlice({
   name: "auth",
@@ -82,7 +132,7 @@ const authSlice = createSlice({
       state.currentUser = null;
       state.loginHistory = [];
       localStorage.removeItem("currentUser");
-      localStorage.removeItem("accessToken");
+      Cookies.remove("accessToken");
     },
   },
   extraReducers: (builder) => {
@@ -120,6 +170,22 @@ const authSlice = createSlice({
       })
       .addCase(getAllUsers.rejected, (state, action) => {
         state.error = action.payload as string;
+        state.isLoading = false;
+      })
+      .addCase(upDatedUser.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(upDatedUser.fulfilled, (state, action) => {
+        const updatedUser = state.users.findIndex(
+          (user) => user._id === action.payload._id
+        );
+        if (updatedUser !== -1) {
+          state.users[updatedUser] = action.payload;
+        }
+        state.isLoading = false;
+      })
+      .addCase(upDatedUser.rejected, (state, action) => {
+        state.error = action.error as string;
         state.isLoading = false;
       });
   },

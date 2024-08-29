@@ -1,11 +1,7 @@
-import React from "react";
 import "./NotFound.scss";
-import ContainerData from "../../components/ContainerData/ContainerData";
-import { t } from "i18next";
 import { useTranslation } from "react-i18next";
-type Props = {};
 
-const NotFound = (props: Props) => {
+const NotFound = () => {
   const { t } = useTranslation();
   return (
     <>

@@ -27,6 +27,7 @@ import axios from "axios";
 import { Console } from "console";
 import { t } from "i18next";
 import { useTranslation } from "react-i18next";
+import strict from "assert/strict";
 interface WeightUnit {
   value: string;
   label: string;
@@ -44,12 +45,12 @@ const ItemList = () => {
   const products = useAppSelector((state: RootState) => state.product.products);
   const dispatch = useAppDispatch();
   const currentUser = useAppSelector(
-    (state: RootState) => state.auth.currentUser
+    (state: RootState) => state.auth.currentUser,
   );
 
   const store = useAppSelector((state: RootState) => state.store.store);
   const category = useAppSelector(
-    (state: RootState) => state.category.category
+    (state: RootState) => state.category.category,
   );
   const brand = useAppSelector((state: RootState) => state.product.brand);
 
@@ -73,12 +74,13 @@ const ItemList = () => {
   const [currentProduct, setcurrentProduct] = useState<Product | any>();
   const currentcy = useAppSelector((state: RootState) => state.price.price);
   const [search, setSearch] = useState("");
+  const [selectedItem, setSelectedItem] = useState<Set<string>>(new Set());
   const indexOfLastPayment = currentpage * itemPerPage;
   const indexOfFirstPayment = indexOfLastPayment - itemPerPage;
   const [searchTerm, setSerchTerm] = useState("");
   const currentProducts = products.slice(
     indexOfFirstPayment,
-    indexOfLastPayment
+    indexOfLastPayment,
   );
   useEffect(() => {
     dispatch(getAllProducts());
@@ -155,7 +157,7 @@ const ItemList = () => {
       console.error("Error adding item", error);
     }
   };
-  const handleUpdate = async (id: any) => {
+  const handleUpdate = async (id: string) => {
     console.log(selectedStore);
     const formData = new FormData();
     formData.append("name", itemName);
@@ -179,7 +181,7 @@ const ItemList = () => {
     try {
       const result = await axios.put(
         `(http://localhost:3000/api/products/${id}`,
-        formData
+        formData,
       );
 
       console.log(formData);
@@ -228,7 +230,7 @@ const ItemList = () => {
   const fetchCurrentProduct = useCallback(async (id: string) => {
     try {
       const response = await axios.get(
-        `http://localhost:3000/api/products/${id}`
+        `http://localhost:3000/api/products/${id}`,
       );
       console.log(response.data);
       setcurrentProduct(response.data);
@@ -237,11 +239,32 @@ const ItemList = () => {
       console.log("Fetch complete");
     }
   }, []);
-  const filteredProducts = products.filter((product) =>
-    product.name.toLowerCase().includes(searchTerm.toLowerCase())
+  const filteredProducts = currentProducts.filter((product) =>
+    product.name.toLowerCase().includes(searchTerm.toLowerCase()),
   );
+  const handleCheckAll = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const checked = e.target.checked;
+    const newSelectedItems = new Set<string>();
+
+    if (checked) {
+      currentProducts.forEach((product) => newSelectedItems.add(product._id));
+    }
+    setSelectedItem(newSelectedItems);
+  };
+
+  const handleCheckboxChange = (id: string, checked: boolean) => {
+    const newSelectedItems = new Set(selectedItem);
+
+    if (checked) {
+      newSelectedItems.add(id);
+    } else {
+      newSelectedItems.delete(id);
+    }
+    setSelectedItem(newSelectedItems);
+  };
   return (
     <div>
+      <ContainerData></ContainerData>
       <ContainerData
         value={searchTerm}
         onChange={(e) => setSerchTerm(e.target.value)}
@@ -268,7 +291,13 @@ const ItemList = () => {
                 <thead>
                   <tr>
                     <th>
-                      <input type="checkbox" name="" id="" />
+                      <input
+                        type="checkbox"
+                        name=""
+                        id=""
+                        onChange={handleCheckAll}
+                        checked={selectedItem.size === currentProducts.length}
+                      />
                     </th>
                     <th className="align-header">
                       {t("productName")}{" "}
@@ -309,7 +338,13 @@ const ItemList = () => {
                       key={product._id}
                     >
                       <td>
-                        <input type="checkbox" />
+                        <input
+                          type="checkbox"
+                          checked={selectedItem.has(product._id)}
+                          onChange={(e) =>
+                            handleCheckboxChange(product._id, e.target.checked)
+                          }
+                        />
                       </td>
                       <td className="table-data">
                         <img
@@ -441,7 +476,7 @@ const ItemList = () => {
                         <p style={{ fontWeight: "500" }}>File (Max: 15MB)</p>
                       </div>
                     </div>
-                    <div className="product-information">
+                    <div className="item-editmenu">
                       <Longinput
                         currency={""}
                         amount={weight}
@@ -612,7 +647,7 @@ const ItemList = () => {
                       <p style={{ fontWeight: "500" }}>File (Max: 15MB)</p>
                     </div>
                   </div>
-                  <div className="product-information">
+                  <div className="item-editmenu">
                     <Longinput
                       placeholder={currentProduct?.weight}
                       currency={""}

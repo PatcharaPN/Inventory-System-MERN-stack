@@ -2,7 +2,7 @@ import React, { ReactNode } from "react";
 import "./SmallModal.scss";
 
 type ModalProps = {
-  header: string;
+  header?: string;
   children?: ReactNode;
   onClose: () => void;
 };

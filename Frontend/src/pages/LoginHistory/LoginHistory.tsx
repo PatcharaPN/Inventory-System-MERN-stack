@@ -4,28 +4,39 @@ import { Icon } from "@iconify/react";
 import { RootState, useAppDispatch, useAppSelector } from "../../store/store";
 import { motion } from "framer-motion";
 import { getHistory } from "../../features/AuthSlice";
-import { useTranslation } from "react-i18next"; // Import useTranslation
+import { useTranslation } from "react-i18next";
 
 const LoginHistory = () => {
-  const { t } = useTranslation(); // Destructure t from useTranslation
+  const { t } = useTranslation();
   const loginHistory = useAppSelector(
     (state: RootState) => state.auth.loginHistory
   );
   const dispatch = useAppDispatch();
   const [searchTerm, setSearchTerm] = useState("");
+  const [currentPage] = useState<number>(1);
+
   useEffect(() => {
     dispatch(getHistory());
   }, [dispatch]);
-  const filteredUser = loginHistory.filter(
-    (user) =>
-      user.user.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      user.user.name.toUpperCase().includes(searchTerm.toUpperCase())
+
+  const itemPerPage = 7;
+  const indexOfLastItem = currentPage * itemPerPage;
+  const indexOfFirstItem = indexOfLastItem - itemPerPage;
+  const currentItem = loginHistory.slice(indexOfFirstItem, indexOfLastItem);
+
+  const filteredUser = currentItem.filter((user) =>
+    user.user.name.toLowerCase().includes(searchTerm.toLowerCase())
   );
+
+  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchTerm(e.target.value);
+  };
+
   return (
     <ContainerData
       pagename={t("loginHistory")}
       value={searchTerm}
-      onChange={(e) => setSearchTerm(e.target.value)}
+      onChange={handleSearchChange}
     >
       <div className="item-list-wrapper">
         {filteredUser.length === 0 ? (
@@ -33,7 +44,7 @@ const LoginHistory = () => {
             <img
               width={450}
               src="/assets/undraw_empty_re_opql.svg"
-              alt="Empty"
+              alt={t("emptyInventoryMessage")}
             />
             <h2 className="text-alert">{t("emptyInventoryMessage")}</h2>
           </div>
@@ -42,17 +53,27 @@ const LoginHistory = () => {
             <thead>
               <tr>
                 <th>
-                  <input type="checkbox" />
+                  <input type="checkbox" aria-label={t("selectAll")} />
                 </th>
-                <th className="align-header">{t("loginTime")}</th>
-                <th className="align-header">{t("ipAddress")}</th>
-                <th className="align-header">{t("username")}</th>
-                <th className="align-header">{t("userRole")}</th>
-                <th className="button-section">{t("action")}</th>
+                <th className="align-header" scope="col">
+                  {t("loginTime")}
+                </th>
+                <th className="align-header" scope="col">
+                  {t("ipAddress")}
+                </th>
+                <th className="align-header" scope="col">
+                  {t("username")}
+                </th>
+                <th className="align-header" scope="col">
+                  {t("userRole")}
+                </th>
+                <th className="button-section" scope="col">
+                  {t("action")}
+                </th>
               </tr>
             </thead>
             <tbody className="content-wrapper">
-              {loginHistory.map((history) => {
+              {filteredUser.map((history) => {
                 const loginDate = new Date(history.loginTime);
 
                 return (
@@ -64,10 +85,10 @@ const LoginHistory = () => {
                         ease: "easeInOut",
                       },
                     }}
-                    key={history.userId + history.loginTime}
+                    key={`${history.userId}-${history.loginTime}`}
                   >
                     <td>
-                      <input type="checkbox" />
+                      <input type="checkbox" aria-label={t("selectRow")} />
                     </td>
                     <td>
                       {loginDate.toLocaleDateString()}{" "}
@@ -76,7 +97,6 @@ const LoginHistory = () => {
                     <td>{history.ipAddress}</td>
                     <td>{history.user.username}</td>
                     <td>{history.user.role}</td>
-
                     <td>
                       <div className="button-section-wrapper">
                         <div className="button-section">
