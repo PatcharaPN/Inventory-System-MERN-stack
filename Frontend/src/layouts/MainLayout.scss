@@ -36,3 +36,16 @@
     margin-left: 0px;
   }
 }
+@media (max-width: 768px) {
+  .main-content {
+    flex: 1;
+    padding-top: 4rem;
+    margin-left: 0px;
+    transition: margin-left 0.3s;
+    overflow: auto;
+    height: 100vh;
+  }
+  .sidebar.collapsed ~ .main-content {
+    margin-left: 0px;
+  }
+}

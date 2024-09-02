@@ -33,3 +33,11 @@
   color: #1c901c;
   background-color: #c2ffda;
 }
+@media (max-width: 479px) {
+  .layout-table {
+    display: flex;
+    height: 100%;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+}

@@ -22,7 +22,7 @@ const Header: React.FC<MenuListProps> = ({ isCollapsed }) => {
   };
   const navigate = useNavigate();
   const currentUser = useAppSelector(
-    (state: RootState) => state.auth.currentUser
+    (state: RootState) => state.auth.currentUser,
   );
   const dispatch = useAppDispatch();
   useEffect(() => {

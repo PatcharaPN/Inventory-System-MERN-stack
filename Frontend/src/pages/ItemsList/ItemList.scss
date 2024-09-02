@@ -6,6 +6,9 @@
 }
 
 .item-list-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
   border: solid 2px #94a1b2;
   width: 100%;
   height: 80vh;
@@ -84,6 +87,7 @@
 }
 .searchbar-wrapper {
   position: relative;
+  z-index: 1;
   display: flex;
   align-items: center;
   border-radius: 10px;
@@ -225,7 +229,7 @@ td {
 .empty-img {
   margin-top: 10%;
   opacity: 80%;
-
+  position: static;
   left: 50vh;
 
   display: flex;
@@ -262,6 +266,7 @@ td {
 
 @media (max-width: 479px) {
   .searchbar {
+    position: relative;
     z-index: 1;
     width: 100%;
     padding: 10px 10px 10px 40px;
@@ -285,5 +290,31 @@ td {
   th,
   .button-section {
     display: none;
+  }
+  .empty-img {
+    display: none;
+  }
+}
+@media (max-width: 768px) {
+  .search-icon {
+    display: none;
+  }
+  .searchbar {
+    display: none;
+    padding: 10px 10px 10px 40px;
+    border: none;
+    border-radius: 10px;
+  }
+  .searchbar-wrapper {
+    display: none;
+    position: relative;
+    z-index: 1;
+    align-items: center;
+    border-radius: 10px;
+    border: solid 1px #94a1b2;
+    .search-icon {
+      position: absolute;
+      left: 10px;
+    }
   }
 }

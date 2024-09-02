@@ -150,5 +150,25 @@
   .image-section {
     display: none;
     justify-content: center;
-    align-items: center; }
+    align-items: center;
+  }
+}
+
+@media (max-width: 768px) {
+  .image-section {
+    display: none;
+  }
+  .auth-form {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: fit-content;
+    border-radius: 20px;
+    height: 700px;
+    background-color: #ffffff00;
+  }
+  .header-text {
+    padding: 2rem 0 0 2rem;
+  }
 }

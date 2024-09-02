@@ -80,6 +80,7 @@ const PermissionPage = () => {
       {isModalOpen && (
         <SmallModal onClose={() => setModalOpen(false)}>
           <div
+            
             style={{
               display: "flex",
               justifyContent: "space-between",
@@ -99,6 +100,7 @@ const PermissionPage = () => {
                 >
                   {t("discard")}
                 </button>
+              
               </div>
             </div>
           </div>

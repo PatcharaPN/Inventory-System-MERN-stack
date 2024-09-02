@@ -3,7 +3,7 @@ import "./Input.scss";
 type InputProps = {
   label: string;
   name?: string;
-  type?: string;
+  type?: "text" | "number" | "password" | "email";
   placeholder?: string;
   required?: boolean;
   value: string;
@@ -13,7 +13,7 @@ type InputProps = {
 const CustomInput: React.FC<InputProps> = ({
   name,
   label,
-  type = "text",
+  type,
   placeholder,
   required = false,
   value,

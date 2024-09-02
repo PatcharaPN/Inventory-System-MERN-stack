@@ -59,6 +59,7 @@ const Login = () => {
               <InputButton
                 onChange={(e) => setPassword(e.target.value)}
                 name="password"
+                type="password"
                 value={password}
                 label={"Password"}
                 placholder={"Enter 6 character or more"}

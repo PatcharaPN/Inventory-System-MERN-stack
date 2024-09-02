@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { useCallback, useEffect, useState } from "react";
 import "./ItemList.scss";
 import { Icon } from "@iconify/react/dist/iconify.js";
@@ -24,10 +26,7 @@ import Longinput from "../../components/Input/LongInput/Longinput";
 import { getAllUnit } from "../../features/UnitSlice";
 import { Product } from "../../types/interface";
 import axios from "axios";
-import { Console } from "console";
-import { t } from "i18next";
 import { useTranslation } from "react-i18next";
-import strict from "assert/strict";
 interface WeightUnit {
   value: string;
   label: string;
@@ -264,7 +263,6 @@ const ItemList = () => {
   };
   return (
     <div>
-      <ContainerData></ContainerData>
       <ContainerData
         value={searchTerm}
         onChange={(e) => setSerchTerm(e.target.value)}

@@ -84,3 +84,12 @@ $background: #16161a;
     display: none;
   }
 }
+@media (max-width: 768px) {
+  .sidebar {
+    display: hidden;
+    overflow: hidden;
+    z-index: 10;
+    position: fixed;
+    display: none;
+  }
+}

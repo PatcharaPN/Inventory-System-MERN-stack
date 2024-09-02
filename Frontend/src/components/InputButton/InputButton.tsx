@@ -5,6 +5,7 @@ type InputProps = {
   label: string;
   placholder: string;
   value: string;
+  type?: "text" | "password" | "email" | "number";
   name: string;
   onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void;
 };
@@ -13,12 +14,14 @@ const InputButton: React.FC<InputProps> = ({
   label,
   placholder,
   value,
+  type,
   name,
   onChange,
 }) => {
   return (
     <TextField
       name={name}
+      type={type}
       label={label}
       value={value}
       onChange={onChange}
